@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+NOTE: to deploy we can use the following command:
+mvn -s ./s3-settings.xml clean test site deploy
+to also deploy site use command:
+mvn -s s3-settings.xml clean test site deploy site-deploy
+-->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.irurueta</groupId>
@@ -20,14 +26,31 @@
     <distributionManagement>
         <snapshotRepository>
             <id>irurueta-algebra</id>
-            <url>s3://algebra.irurueta.com/snapshot</url>
+            <url>s3://artifacts.irurueta.com/snapshot</url>
         </snapshotRepository>
         <repository>
             <id>irurueta-algebra</id>
-            <url>s3://algebra.irurueta.com/release</url>
+            <url>s3://artifacts.irurueta.com/release</url>
         </repository>
+        <site>
+            <id>irurueta-algebra</id>
+            <url>s3://artifacts.irurueta.com/site/com/irurueta/irurueta-algebra</url>
+        </site>
     </distributionManagement>
-    
+
+    <repositories>
+        <repository>
+            <id>com.irurueta</id>
+            <url>http://s3.amazonaws.com/artifacts.irurueta.com/snapshot</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- dependencies for unit tests -->
         <dependency>

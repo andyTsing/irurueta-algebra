@@ -1,0 +1,47 @@
+About
+
+    A small algebra library
+
+Set up dependencies
+
+    To use this library add the following dependency to your pom.xml file:
+
++--
+<project>
+    ...
+    <dependencies>
+        ...
+        <dependency>
+            <groupId>com.irurueta</groupId>
+            <artifactId>irurueta-algebra</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        <dependency>
+        ...
+    </dependencies>
+    ...
+</project>
++--
+
+    Since the library is not available in Maven Central you also need to add the following repository:
+
++--
+<project>
+    ...
+    <repositories>
+        ...
+        <repository>
+            <id>com.irurueta</id>
+            <url>http://s3.amazonaws.com/artifacts.irurueta.com/snapshot</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        ...
+    </repositories>
+    ...
+</project>
++--
+
