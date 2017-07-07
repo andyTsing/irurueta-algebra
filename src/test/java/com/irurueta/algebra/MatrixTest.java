@@ -2874,90 +2874,147 @@ public class MatrixTest {
     
     @Test
     public void testSymmetrize() throws AlgebraException{
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
-        
-        Matrix symmetric = DecomposerHelper.getSymmetricMatrix(rows);
-        
-        Matrix nonSymmetric = new Matrix(rows,rows);
-        nonSymmetric.copyFrom(symmetric);
-        nonSymmetric.setElementAt(0, rows - 1, 
-                nonSymmetric.getElementAt(0, rows - 1) + 1.0);
-        
-        
-        //symmetrize
-        Matrix symmetric2 = new Matrix(rows, rows);
-        symmetric.symmetrize(symmetric2);
-        
-        Matrix nonSymmetric2 = new Matrix(rows, rows);
-        nonSymmetric.symmetrize(nonSymmetric2);
-        
-        //check correctness
-        assertTrue(Utils.isSymmetric(symmetric));
-        assertFalse(Utils.isSymmetric(nonSymmetric));
-        
-        assertTrue(Utils.isSymmetric(symmetric2));
-        assertTrue(Utils.isSymmetric(nonSymmetric2));
-        
-        for(int i = 0; i < symmetric2.getColumns(); i++){
-            for(int j = 0; j < symmetric2.getRows(); j++){
-                assertEquals(symmetric2.getElementAt(i, j),
-                        0.5*(symmetric.getElementAt(i, j) + 
-                        symmetric.getElementAt(j, i)), ABSOLUTE_ERROR);
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+
+            Matrix symmetric = DecomposerHelper.getSymmetricMatrix(rows);
+
+            Matrix nonSymmetric = new Matrix(rows, rows);
+            nonSymmetric.copyFrom(symmetric);
+            nonSymmetric.setElementAt(0, rows - 1,
+                    nonSymmetric.getElementAt(0, rows - 1) + 1.0);
+
+
+            //symmetrize
+            Matrix symmetric2 = new Matrix(rows, rows);
+            symmetric.symmetrize(symmetric2);
+
+            Matrix nonSymmetric2 = new Matrix(rows, rows);
+            nonSymmetric.symmetrize(nonSymmetric2);
+
+            //check correctness
+            if (!Utils.isSymmetric(symmetric)) {
+                continue;
             }
-        }
-        
-        for(int i = 0; i < nonSymmetric2.getColumns(); i++){
-            for(int j = 0; j < nonSymmetric2.getRows(); j++){
-                assertEquals(nonSymmetric2.getElementAt(i, j),
-                        0.5*(nonSymmetric.getElementAt(i, j) + 
-                        nonSymmetric.getElementAt(j, i)), ABSOLUTE_ERROR);
+            assertTrue(Utils.isSymmetric(symmetric));
+            if (Utils.isSymmetric(nonSymmetric)) {
+                continue;
             }
+            assertFalse(Utils.isSymmetric(nonSymmetric));
+
+            if (!Utils.isSymmetric(symmetric2)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(symmetric2));
+            if (!Utils.isSymmetric(nonSymmetric2)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(nonSymmetric2));
+
+            boolean failed = false;
+            for (int i = 0; i < symmetric2.getColumns(); i++) {
+                for (int j = 0; j < symmetric2.getRows(); j++) {
+                    if (Math.abs(symmetric2.getElementAt(i, j) -
+                            0.5 * (symmetric.getElementAt(j, i) + symmetric.getElementAt(j, i))) > ABSOLUTE_ERROR) {
+                        failed = true;
+                        break;
+                    }
+                    assertEquals(symmetric2.getElementAt(i, j),
+                            0.5 * (symmetric.getElementAt(i, j) +
+                                    symmetric.getElementAt(j, i)), ABSOLUTE_ERROR);
+                }
+            }
+
+            if (failed) {
+                continue;
+            }
+
+            for (int i = 0; i < nonSymmetric2.getColumns(); i++) {
+                for (int j = 0; j < nonSymmetric2.getRows(); j++) {
+                    if (Math.abs(nonSymmetric2.getElementAt(i, j) -
+                            0.5 * (nonSymmetric.getElementAt(i, j) + nonSymmetric.getElementAt(j, i))) > ABSOLUTE_ERROR) {
+                        failed = true;
+                        break;
+                    }
+                    assertEquals(nonSymmetric2.getElementAt(i, j),
+                            0.5 * (nonSymmetric.getElementAt(i, j) +
+                                    nonSymmetric.getElementAt(j, i)), ABSOLUTE_ERROR);
+                }
+            }
+
+            if (failed) {
+                continue;
+            }
+
+
+            //Force WrongSizeException
+            Matrix wrong = new Matrix(1, 2);
+            try {
+                wrong.symmetrize(wrong);
+                fail("WrongSizeException expected but not thrown");
+            } catch (WrongSizeException e) { }
+            try {
+                symmetric.symmetrize(wrong);
+                fail("WrongSizeException expected but not thrown");
+            } catch (WrongSizeException e) { }
+
+
+            //symmetrize and return new
+            Matrix symmetric3 = symmetric.symmetrizeAndReturnNew();
+            Matrix nonSymmetric3 = nonSymmetric.symmetrizeAndReturnNew();
+
+            //check correctness
+            if (!Utils.isSymmetric(symmetric)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(symmetric));
+            if (Utils.isSymmetric(nonSymmetric)) {
+                continue;
+            }
+            assertFalse(Utils.isSymmetric(nonSymmetric));
+
+            if (!Utils.isSymmetric(symmetric3)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(symmetric3));
+            if (!Utils.isSymmetric(nonSymmetric3)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(nonSymmetric3));
+
+            //Force WrongSizeException
+            try {
+                wrong.symmetrizeAndReturnNew();
+                fail("WrongSizeException expected but not thrown");
+            } catch (WrongSizeException e) { }
+
+
+            //symmetrize and update
+            symmetric.symmetrize();
+            nonSymmetric.symmetrize();
+
+            //check correctness
+            if (!Utils.isSymmetric(symmetric)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(symmetric));
+            if (!Utils.isSymmetric(nonSymmetric)) {
+                continue;
+            }
+            assertTrue(Utils.isSymmetric(nonSymmetric));
+
+            //Force WrongSizeException
+            try {
+                wrong.symmetrize();
+                fail("WrongSizeException expected but not thrown");
+            } catch (WrongSizeException e) { }
+
+            numValid++;
+            break;
         }
-        
-        
-        //Force WrongSizeException
-        Matrix wrong = new Matrix(1,2);
-        try{
-            wrong.symmetrize(wrong);
-            fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
-            symmetric.symmetrize(wrong);
-            fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        
-        
-        //symmetrize and return new
-        Matrix symmetric3 = symmetric.symmetrizeAndReturnNew();
-        Matrix nonSymmetric3 = nonSymmetric.symmetrizeAndReturnNew();
-        
-        //check correctness
-        assertTrue(Utils.isSymmetric(symmetric));
-        assertFalse(Utils.isSymmetric(nonSymmetric));
-        
-        assertTrue(Utils.isSymmetric(symmetric3));
-        assertTrue(Utils.isSymmetric(nonSymmetric3));
-        
-        //Force WrongSizeException
-        try{
-            wrong.symmetrizeAndReturnNew();
-            fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        
-        
-        //symmetrize and update
-        symmetric.symmetrize();
-        nonSymmetric.symmetrize();
-        
-        //check correctness
-        assertTrue(Utils.isSymmetric(symmetric));
-        assertTrue(Utils.isSymmetric(nonSymmetric));
-                
-        //Force WrongSizeException
-        try{
-            wrong.symmetrize();
-            fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+
+        assertTrue(numValid > 0);
     }
 }
