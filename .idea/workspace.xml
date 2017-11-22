@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eb7db504-a8d3-44e2-881c-4abe9778aa92" name="Default" comment="" />
+    <list default="true" id="eb7db504-a8d3-44e2-881c-4abe9778aa92" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/build-info.properties" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/build-info.properties" />
+    </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,54 +17,44 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BuildInfo.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2490">
-              <caret line="183" column="24" lean-forward="false" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
+            <state relative-caret-position="180">
+              <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
               <folding>
-                <element signature="n#!!doc" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="e#4643#4644#0" expanded="false" />
-                <element signature="e#4695#4696#0" expanded="false" />
-                <element signature="e#4825#4826#0" expanded="false" />
-                <element signature="e#4856#4857#0" expanded="false" />
-                <element signature="e#4995#4996#0" expanded="false" />
-                <element signature="e#5029#5030#0" expanded="false" />
-                <element signature="e#5159#5160#0" expanded="false" />
-                <element signature="e#5190#5191#0" expanded="false" />
-                <element signature="e#5302#5303#0" expanded="false" />
-                <element signature="e#5337#5338#0" expanded="false" />
-                <element signature="e#5444#5445#0" expanded="false" />
-                <element signature="e#5474#5475#0" expanded="false" />
+                <marker date="1511347285427" expanded="false" signature="8177:8447" ph="..." />
+                <marker date="1511347285427" expanded="true" signature="9472:9514" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="9472:9603" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="9565:9603" ph="}" />
+                <marker date="1511347285427" expanded="true" signature="9658:9700" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="9658:9778" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="9740:9778" ph="}" />
+                <marker date="1511347285427" expanded="true" signature="9833:9875" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="9833:9953" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="9915:9953" ph="}" />
+                <marker date="1511347285427" expanded="true" signature="10439:10481" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="10439:10566" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="10528:10566" ph="}" />
+                <marker date="1511347285427" expanded="true" signature="10621:10663" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="10621:10737" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="10699:10737" ph="}" />
+                <marker date="1511347285427" expanded="true" signature="10792:10834" ph="{" />
+                <marker date="1511347285427" expanded="true" signature="10792:10908" ph="{...}" />
+                <marker date="1511347285427" expanded="true" signature="10870:10908" ph="}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MatrixTest.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java">
+      <file leaf-file-name="MultivariateNormalDist.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="144">
-              <caret line="2987" column="17" lean-forward="false" selection-start-line="2987" selection-start-column="17" selection-end-line="2987" selection-end-column="17" />
+            <state relative-caret-position="389">
+              <caret line="513" column="4" lean-forward="false" selection-start-line="513" selection-start-column="4" selection-end-line="513" selection-end-column="4" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BuildInfoTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-              <folding>
-                <element signature="n#!!doc" expanded="false" />
-                <element signature="imports" expanded="false" />
-                <element signature="method#testGetters#0;class#BuildInfoTest#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -85,13 +79,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/site/apt/index.apt" />
-        <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="110" />
+    <option name="x" value="214" />
     <option name="y" value="23" />
     <option name="width" value="1122" />
     <option name="height" value="873" />
@@ -111,111 +105,56 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="irurueta-algebra" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
+          <expand>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+              <item name="statistics" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="AndroidView" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -227,8 +166,20 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager" selected="JUnit.MatrixTest">
-    <configuration default="false" name="MatrixTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MatrixTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="com.irurueta.algebra.*" />
@@ -252,14 +203,87 @@
       </option>
       <envs />
       <patterns />
-      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <module />
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
-      <method />
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
     </configuration>
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="" />
@@ -316,29 +340,6 @@
       </Profilers>
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <module />
-      <method />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -353,27 +354,6 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
@@ -422,45 +402,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
-      <method />
-    </configuration>
-    <list size="1">
-      <item index="0" class="java.lang.String" itemvalue="JUnit.MatrixTest" />
-    </list>
     <recent_temporary>
       <list size="1">
         <item index="0" class="java.lang.String" itemvalue="JUnit.MatrixTest" />
@@ -489,12 +430,11 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="110" y="23" width="1122" height="873" extended-state="0" />
+    <frame x="214" y="23" width="1122" height="873" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -502,7 +442,6 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290653" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -514,10 +453,12 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32904884" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
@@ -536,26 +477,67 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <marker date="1511347285427" expanded="false" signature="8177:8447" ph="..." />
+            <marker date="1511347285427" expanded="true" signature="9472:9514" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9472:9603" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9565:9603" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9658:9700" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9658:9778" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9740:9778" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9833:9875" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9833:9953" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9915:9953" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10439:10481" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10439:10566" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10528:10566" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10621:10663" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10621:10737" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10699:10737" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10792:10834" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10792:10908" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10870:10908" ph="}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7050">
+          <caret line="501" column="41" lean-forward="false" selection-start-line="501" selection-start-column="41" selection-end-line="501" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2490">
           <caret line="183" column="24" lean-forward="false" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4643#4644#0" expanded="false" />
-            <element signature="e#4695#4696#0" expanded="false" />
-            <element signature="e#4825#4826#0" expanded="false" />
-            <element signature="e#4856#4857#0" expanded="false" />
-            <element signature="e#4995#4996#0" expanded="false" />
-            <element signature="e#5029#5030#0" expanded="false" />
-            <element signature="e#5159#5160#0" expanded="false" />
-            <element signature="e#5190#5191#0" expanded="false" />
-            <element signature="e#5302#5303#0" expanded="false" />
-            <element signature="e#5337#5338#0" expanded="false" />
-            <element signature="e#5444#5445#0" expanded="false" />
-            <element signature="e#5474#5475#0" expanded="false" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="44640">
+          <caret line="2987" column="17" lean-forward="false" selection-start-line="2987" selection-start-column="17" selection-end-line="2987" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2490">
+          <caret line="183" column="24" lean-forward="false" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -563,7 +545,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -571,11 +552,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="method#testGetters#0;class#BuildInfoTest#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -583,22 +559,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4643#4644#0" expanded="false" />
-            <element signature="e#4695#4696#0" expanded="false" />
-            <element signature="e#4825#4826#0" expanded="false" />
-            <element signature="e#4856#4857#0" expanded="false" />
-            <element signature="e#4995#4996#0" expanded="false" />
-            <element signature="e#5029#5030#0" expanded="false" />
-            <element signature="e#5159#5160#0" expanded="false" />
-            <element signature="e#5190#5191#0" expanded="false" />
-            <element signature="e#5302#5303#0" expanded="false" />
-            <element signature="e#5337#5338#0" expanded="false" />
-            <element signature="e#5444#5445#0" expanded="false" />
-            <element signature="e#5474#5475#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -606,11 +566,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="method#testGetters#0;class#BuildInfoTest#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -619,25 +574,25 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1498686093000" expanded="false" signature="8205:8475" ph="..." />
-            <marker date="1498686093000" expanded="true" signature="9500:9542" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9500:9631" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9593:9631" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="9686:9728" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9686:9806" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9768:9806" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="9861:9903" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9861:9981" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9943:9981" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10467:10509" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10467:10594" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10556:10594" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10649:10691" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10649:10765" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10727:10765" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10820:10862" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10820:10936" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10898:10936" ph="}" />
+            <marker date="1511347285427" expanded="false" signature="8177:8447" ph="..." />
+            <marker date="1511347285427" expanded="true" signature="9472:9514" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9472:9603" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9565:9603" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9658:9700" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9658:9778" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9740:9778" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9833:9875" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9833:9953" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9915:9953" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10439:10481" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10439:10566" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10528:10566" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10621:10663" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10621:10737" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10699:10737" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10792:10834" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10792:10908" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10870:10908" ph="}" />
           </folding>
         </state>
       </provider>
@@ -653,34 +608,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="19" column="15" lean-forward="false" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="37" lean-forward="false" selection-start-line="31" selection-start-column="37" selection-end-line="31" selection-end-column="37" />
-          <folding>
-            <marker date="1498686093000" expanded="false" signature="8205:8475" ph="..." />
-            <marker date="1498686093000" expanded="true" signature="9500:9542" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9500:9631" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9593:9631" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="9686:9728" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9686:9806" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9768:9806" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="9861:9903" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="9861:9981" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="9943:9981" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10467:10509" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10467:10594" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10556:10594" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10649:10691" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10649:10765" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10727:10765" ph="}" />
-            <marker date="1498686093000" expanded="true" signature="10820:10862" ph="{" />
-            <marker date="1498686093000" expanded="true" signature="10820:10936" ph="{...}" />
-            <marker date="1498686093000" expanded="true" signature="10898:10936" ph="}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -702,34 +629,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="20" column="20" lean-forward="false" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="method#testGetters#0;class#BuildInfoTest#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2490">
-          <caret line="183" column="24" lean-forward="false" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="imports" expanded="false" />
-            <element signature="e#4643#4644#0" expanded="false" />
-            <element signature="e#4695#4696#0" expanded="false" />
-            <element signature="e#4825#4826#0" expanded="false" />
-            <element signature="e#4856#4857#0" expanded="false" />
-            <element signature="e#4995#4996#0" expanded="false" />
-            <element signature="e#5029#5030#0" expanded="false" />
-            <element signature="e#5159#5160#0" expanded="false" />
-            <element signature="e#5190#5191#0" expanded="false" />
-            <element signature="e#5302#5303#0" expanded="false" />
-            <element signature="e#5337#5338#0" expanded="false" />
-            <element signature="e#5444#5445#0" expanded="false" />
-            <element signature="e#5474#5475#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -737,6 +636,48 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="144">
           <caret line="2987" column="17" lean-forward="false" selection-start-line="2987" selection-start-column="17" selection-end-line="2987" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="698">
+          <caret line="183" column="24" lean-forward="false" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <marker date="1511347285427" expanded="false" signature="8177:8447" ph="..." />
+            <marker date="1511347285427" expanded="true" signature="9472:9514" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9472:9603" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9565:9603" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9658:9700" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9658:9778" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9740:9778" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="9833:9875" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="9833:9953" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="9915:9953" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10439:10481" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10439:10566" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10528:10566" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10621:10663" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10621:10737" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10699:10737" ph="}" />
+            <marker date="1511347285427" expanded="true" signature="10792:10834" ph="{" />
+            <marker date="1511347285427" expanded="true" signature="10792:10908" ph="{...}" />
+            <marker date="1511347285427" expanded="true" signature="10870:10908" ph="}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="389">
+          <caret line="513" column="4" lean-forward="false" selection-start-line="513" selection-start-column="4" selection-end-line="513" selection-end-column="4" />
           <folding />
         </state>
       </provider>
