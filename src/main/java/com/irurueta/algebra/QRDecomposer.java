@@ -46,7 +46,7 @@ public class QRDecomposer extends Decomposer{
     /**
      * Constructor of this class.
      */
-    QRDecomposer(){
+    public QRDecomposer(){
         super();
         q = r = null;
         sing = false;
@@ -56,7 +56,7 @@ public class QRDecomposer extends Decomposer{
      * Constructor of this class
      * @param inputMatrix Reference to input matrix to be decomposed
      */
-    QRDecomposer(Matrix inputMatrix){
+    public QRDecomposer(Matrix inputMatrix){
         super(inputMatrix);
         q = r = null;
         sing = false;

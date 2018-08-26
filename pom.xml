@@ -141,26 +141,6 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
     
     <!-- default profile -->
     <build>
-        <!-- 
-        include al non java files in source and test folders, this can
-        include properties files, or other resources 
-        -->
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </resource>
-        </resources>
-        <testResources>
-            <testResource>
-                <directory>src/test/java</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
-            </testResource>
-        </testResources>        
         <plugins>
             <!-- unit tests plugins -->
             <plugin>
@@ -243,6 +223,17 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
                                     if(branch == null){
                                         branch = System.getenv("TRAVIS_BRANCH");
                                     }
+
+                                    //GITLAB
+                                    if (buildNumber == null) {
+                                        buildNumber = System.getenv("CI_JOB_ID");
+                                    }
+                                    if (commit == null) {
+                                        commit = System.getenv("CI_COMMIT_SHA");
+                                    }
+                                    if (branch == null) {
+                                        branch = System.getenv("CI_COMMIT_REF_NAME");
+                                    }
                                     
                                     def props = new Properties();
                                     props.setProperty("BUILD_TIMESTAMP", buildTimestamp);
@@ -259,7 +250,7 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
                                         props.setProperty("BRANCH", branch);
                                     }
                                     
-                                    File dir = new File("src/main/java/com/irurueta/algebra");
+                                    File dir = new File("src/main/resources/com/irurueta/algebra");
                                     dir.mkdirs();
                                     File file = new File(dir, "build-info.properties");
                                     FileWriter writer = new FileWriter(file);
@@ -308,7 +299,7 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.6.201602180812</version>
+                <version>0.7.9</version>
             </plugin>     
             <!-- adds code quality reports into site -->               
             <plugin>
@@ -345,10 +336,7 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>2.5</version>
-                <configuration>
-                    <aggregate>true</aggregate>
-                </configuration>
-            </plugin>            
+            </plugin>
         </plugins>
     </reporting>    
 </project>
