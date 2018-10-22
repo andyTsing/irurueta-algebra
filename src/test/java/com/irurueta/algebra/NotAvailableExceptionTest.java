@@ -1,50 +1,53 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.NotAvailableException
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 15, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
-import static org.junit.Assert.assertNotNull;
 import org.junit.*;
+
+import static org.junit.Assert.assertNotNull;
 
 public class NotAvailableExceptionTest {
     
-    public NotAvailableExceptionTest() {
-    }
+    public NotAvailableExceptionTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
-    public void testConstructor(){
-        NotAvailableException ex;
-        assertNotNull(ex = new NotAvailableException());
-        
-        ex = null;
-        assertNotNull(ex = new NotAvailableException("message"));
-        
-        ex = null;
-        assertNotNull(ex = new NotAvailableException(new Exception()));
-        
-        ex = null;
-        assertNotNull(ex = new NotAvailableException("message", 
-                new Exception()));        
+    public void testConstructor() {
+        NotAvailableException ex = new NotAvailableException();
+        assertNotNull(ex);
+
+        ex = new NotAvailableException("message");
+        assertNotNull(ex);
+
+        ex = new NotAvailableException(new Exception());
+        assertNotNull(ex);
+
+        ex = new NotAvailableException("message",
+                new Exception());
+        assertNotNull(ex);
     }
 }

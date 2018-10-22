@@ -1,10 +1,17 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.RQDecomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 19, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
@@ -13,19 +20,20 @@ package com.irurueta.algebra;
  * provided input matrix into an upper triangular matrix (R) and an orthogonal
  * matrix (Q). In other words, if input matrix is A, then A = R * Q
  */
-public class RQDecomposer extends Decomposer{
+@SuppressWarnings("WeakerAccess")
+public class RQDecomposer extends Decomposer {
     
     /**
      * Internal QR decomposer used behind the scenes to compute RQ 
      * decomposition. Notice that QR and RQ decompositions are related and for
      * that reason QRDecomposer is used
      */
-    QRDecomposer internalDecomposer;
+    private QRDecomposer internalDecomposer;
     
     /**
      * Constructor of this class.
      */
-    public RQDecomposer(){
+    public RQDecomposer() {
         super();
         internalDecomposer = new QRDecomposer();
     }
@@ -34,14 +42,14 @@ public class RQDecomposer extends Decomposer{
      * Constructor of this class.
      * @param inputMatrix Reference to input matrix to be decomposed.
      */
-    public RQDecomposer(Matrix inputMatrix){
+    public RQDecomposer(Matrix inputMatrix) {
         super(inputMatrix);
         internalDecomposer = new QRDecomposer();
     }
 
     /**
-     * Returns decomposer type corresponding to RQ decomposition
-     * @return Decomposer type
+     * Returns decomposer type corresponding to RQ decomposition.
+     * @return Decomposer type.
      */            
     @Override
     public DecomposerType getDecomposerType() {
@@ -55,7 +63,7 @@ public class RQDecomposer extends Decomposer{
      * method while this instance remains locked.
      */
     @Override
-    public void setInputMatrix(Matrix inputMatrix) throws LockedException{
+    public void setInputMatrix(Matrix inputMatrix) throws LockedException {
         super.setInputMatrix(inputMatrix);
         internalDecomposer.setInputMatrix(inputMatrix);
     }
@@ -65,7 +73,7 @@ public class RQDecomposer extends Decomposer{
      * Returns boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      * Attempting to retrieve decomposition results when not available, will
-     * probably raise a NotAvailableException
+     * probably raise a NotAvailableException.
      * @return Boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      */                
@@ -98,10 +106,14 @@ public class RQDecomposer extends Decomposer{
      */
     @Override
     public void decompose() throws NotReadyException, LockedException, 
-    DecomposerException {
+            DecomposerException {
         
-        if(!isReady()) throw new NotReadyException();
-        if(isLocked()) throw new LockedException();
+        if (!isReady()) {
+            throw new NotReadyException();
+        }
+        if (isLocked()) {
+            throw new LockedException();
+        }
         
         Matrix tmp = null;
         
@@ -110,17 +122,17 @@ public class RQDecomposer extends Decomposer{
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
         
-        try{
+        try {
             tmp = new Matrix(columns, rows);
-        }catch(WrongSizeException e){}
-        
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                tmp.setElementAt(j, rows - i -1, 
-                        inputMatrix.getElementAt(i, j));
+
+            for (int j = 0; j < columns; j++) {
+                for (int i = 0; i < rows; i++) {
+                    tmp.setElementAt(j, rows - i -1,
+                            inputMatrix.getElementAt(i, j));
+                }
             }
-        }
-        
+        } catch (WrongSizeException ignore) { }
+
         internalDecomposer.setInputMatrix(tmp);        
         internalDecomposer.decompose();
         
@@ -137,9 +149,11 @@ public class RQDecomposer extends Decomposer{
      * decompose() method first.
      * @see #decompose()
      */
-    public Matrix getR() throws NotAvailableException{
+    public Matrix getR() throws NotAvailableException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
@@ -149,33 +163,34 @@ public class RQDecomposer extends Decomposer{
         //Left-right flipped identity
         //Instance initialized to zero
         Matrix flipI = null;
-        try{
+        try {
             flipI = new Matrix(rows, rows);
-        }catch(WrongSizeException ignore){}
-        
-        flipI.initialize(0.0);
-        
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == rows - j - 1) flipI.setElementAt(i, j, 1.0);
+
+            flipI.initialize(0.0);
+
+            for (int j = 0; j < rows; j++) {
+                for (int i = 0; i < rows; i++) {
+                    if(i == rows - j - 1) flipI.setElementAt(i, j, 1.0);
+                }
             }
-        }
-        
+        } catch (WrongSizeException ignore) { }
+
+
         //Big permutation
         Matrix perm = null;
-        try{
+        try {
             perm = Matrix.identity(columns, columns);
-        }catch(WrongSizeException ignore){}
-        
-        //Copy flipped identity into top-left corner
-        perm.setSubmatrix(0, 0, rows - 1, rows - 1, flipI);
 
-        try{
+            //Copy flipped identity into top-left corner
+            perm.setSubmatrix(0, 0,
+                    rows - 1, rows - 1, flipI);
+
             perm.multiply(r2); //perm * r2
             perm.multiply(flipI); //perm * r2 * flipI
             perm.transpose();
-        }catch(WrongSizeException ignore){}        
-        
+
+        } catch (WrongSizeException ignore) { }
+
         return perm;
     }
     
@@ -189,8 +204,10 @@ public class RQDecomposer extends Decomposer{
      * decompose() method first.
      * @see #decompose()
      */
-    public Matrix getQ() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public Matrix getQ() throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
@@ -200,32 +217,38 @@ public class RQDecomposer extends Decomposer{
         //Left-right flipped identity
         //Instance initialized to zero
         Matrix flipI = null;
-        try{
-            flipI = new Matrix(rows, rows);            
-        }catch(WrongSizeException ignore){}
-        
-        flipI.initialize(0.0);
-        
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == rows - j -1) flipI.setElementAt(i, j, 1.0);
+        try {
+            flipI = new Matrix(rows, rows);
+
+            flipI.initialize(0.0);
+
+            for (int j = 0; j < rows; j++) {
+                for (int i = 0; i < rows; i++) {
+                    if (i == rows - j -1) {
+                        flipI.setElementAt(i, j, 1.0);
+                    }
+                }
             }
-        }
-        
+        } catch (WrongSizeException ignore) { }
+
+
         //Big permutation
         Matrix perm = null;
-        try{
+        try {
             perm = Matrix.identity(columns, columns);
-        }catch(WrongSizeException ignore){}
 
-        //Copy flipped identity into top-left corner
-        perm.setSubmatrix(0, 0, rows - 1, rows - 1, flipI);
+            //Copy flipped identity into top-left corner
+            perm.setSubmatrix(0, 0,
+                    rows - 1, rows - 1, flipI);
+
+        } catch (WrongSizeException ignore) { }
+
 
         Matrix q = null;
-        try{
+        try {
             q = q2.multiplyAndReturnNew(perm); //qTrans = q2 * perm
             q.transpose();
-        }catch(WrongSizeException ignore){}        
+        } catch (WrongSizeException ignore) { }
         
         return q;
     }

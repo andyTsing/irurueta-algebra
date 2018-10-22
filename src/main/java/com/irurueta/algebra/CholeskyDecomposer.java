@@ -1,10 +1,17 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.CholeskyDecomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 15, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
@@ -16,23 +23,24 @@ package com.irurueta.algebra;
  * Note: Cholesky decomposition can only be correctly computed on positive 
  * definite matrices.
  */
-public class CholeskyDecomposer extends Decomposer{
+@SuppressWarnings("WeakerAccess")
+public class CholeskyDecomposer extends Decomposer {
     
     /**
-     * Internal storage of Cholesky decomposition for provided input matrix
+     * Internal storage of Cholesky decomposition for provided input matrix.
      */
     private Matrix r;
     
     /**
      * Boolean indicating whether provided input matrix is symmetric and 
-     * positive definite
+     * positive definite.
      */
-    boolean spd;
+    private boolean spd;
 
     /**
      * Constructor of this class.
      */
-    public CholeskyDecomposer(){
+    public CholeskyDecomposer() {
         super();
         r = null;
         spd = false;
@@ -40,17 +48,17 @@ public class CholeskyDecomposer extends Decomposer{
     
     /**
      * Constructor of this class.
-     * @param inputMatrix Reference to input matrix to be decomposed
+     * @param inputMatrix Reference to input matrix to be decomposed.
      */
-    public CholeskyDecomposer(Matrix inputMatrix){
+    public CholeskyDecomposer(Matrix inputMatrix) {
         super(inputMatrix);
         r = null;
         spd = false;
     }
     
     /**
-     * Returns decomposer type corresponding to Cholesky decomposition
-     * @return Decomposer type
+     * Returns decomposer type corresponding to Cholesky decomposition.
+     * @return Decomposer type.
      */
     @Override
     public DecomposerType getDecomposerType() {
@@ -64,7 +72,7 @@ public class CholeskyDecomposer extends Decomposer{
      * method while this instance remains locked.
      */
     @Override
-    public void setInputMatrix(Matrix inputMatrix) throws LockedException{
+    public void setInputMatrix(Matrix inputMatrix) throws LockedException {
         super.setInputMatrix(inputMatrix);
         r = null;
         spd = false;
@@ -75,7 +83,7 @@ public class CholeskyDecomposer extends Decomposer{
      * Returns boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      * Attempting to retrieve decomposition results when not available, will
-     * probably raise a NotAvailableException
+     * probably raise a NotAvailableException.
      * @return Boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      */    
@@ -115,23 +123,34 @@ public class CholeskyDecomposer extends Decomposer{
      * results cannot be obtained, etc.
      */
     @Override
-    public void decompose() throws NotReadyException, LockedException, 
+    public void decompose() throws NotReadyException, LockedException,
         DecomposerException {
+
+        if (isLocked()) {
+            throw new LockedException();
+        }
         
-        if(!isReady()) throw new NotReadyException();
+        if(!isReady()) {
+            throw new NotReadyException();
+        }
         
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
         
-        if(rows != columns) throw new DecomposerException();
+        if(rows != columns) {
+            throw new DecomposerException();
+        }
         
         locked = true;
         
-        Matrix localR = null;
-        try{
+        Matrix localR;
+        try {
             localR = new Matrix(columns, columns);
-        }catch(WrongSizeException e){}
-        boolean localSpd = (rows == columns);
+        } catch (WrongSizeException e) {
+            throw new DecomposerException(e);
+        }
+
+        boolean localSpd = true;
         double d, s;
         
         //Main loop
@@ -175,8 +194,10 @@ public class CholeskyDecomposer extends Decomposer{
      * exception call decompose() method first.
      * @see #decompose()
      */
-    public Matrix getL() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public Matrix getL() throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         return r.transposeAndReturnNew();
     }
@@ -192,8 +213,10 @@ public class CholeskyDecomposer extends Decomposer{
      * exception call decompose() method first.
      * @see #decompose()
      */
-    public Matrix getR() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public Matrix getR() throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         return r;
     }
@@ -211,8 +234,10 @@ public class CholeskyDecomposer extends Decomposer{
      * call decompose() method first.
      * @see #decompose()
      */
-    public boolean isSPD() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public boolean isSPD() throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         return spd;
     }
@@ -246,21 +271,27 @@ public class CholeskyDecomposer extends Decomposer{
      * if input matrix provided to Cholesky decomposer is not positive definite.
      */    
     public void solve(Matrix b, Matrix result) throws NotAvailableException,
-            WrongSizeException, NonSymmetricPositiveDefiniteMatrixException{
+            WrongSizeException, NonSymmetricPositiveDefiniteMatrixException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
         int rowsB = b.getRows();
         int colsB = b.getColumns();
         
-        if(rowsB != rows) throw new WrongSizeException();
+        if (rowsB != rows) {
+            throw new WrongSizeException();
+        }
         
-        if(!isSPD()) throw new NonSymmetricPositiveDefiniteMatrixException();
+        if (!isSPD()) {
+            throw new NonSymmetricPositiveDefiniteMatrixException();
+        }
         
         //resize result matrix if needed
-        if(result.getRows() != rowsB || result.getColumns() != colsB){
+        if (result.getRows() != rowsB || result.getColumns() != colsB) {
             result.resize(rowsB, colsB);
         }
         
@@ -270,9 +301,9 @@ public class CholeskyDecomposer extends Decomposer{
         Matrix l = getL();
         
         //Solve L * Y = B
-        for(int k = 0; k < columns; k++){
-            for(int j = 0; j < colsB; j++){
-                for(int i = 0; i < k; i++){
+        for (int k = 0; k < columns; k++) {
+            for (int j = 0; j < colsB; j++) {
+                for (int i = 0; i < k; i++) {
                     result.setElementAt(k, j, result.getElementAt(k, j) -
                             result.getElementAt(i, j) * l.getElementAt(k, i));
                 }
@@ -283,10 +314,10 @@ public class CholeskyDecomposer extends Decomposer{
         
         //Solv L' * X = Y
         int k2;
-        for(int k = columns - 1; k >= 0; k--){
+        for (int k = columns - 1; k >= 0; k--) {
             k2 = k;
-            for(int j = 0; j < colsB; j++){
-                for(int i = k2 + 1; i < columns; i++){
+            for (int j = 0; j < colsB; j++) {
+                for (int i = k2 + 1; i < columns; i++) {
                     result.setElementAt(k2, j, result.getElementAt(k2, j) -
                             result.getElementAt(i, j) * l.getElementAt(i, k2));
                 }
@@ -323,7 +354,7 @@ public class CholeskyDecomposer extends Decomposer{
      * if input matrix provided to Cholesky decomposer is not positive definite.
      */
     public Matrix solve(Matrix b) throws NotAvailableException,
-            WrongSizeException, NonSymmetricPositiveDefiniteMatrixException{
+            WrongSizeException, NonSymmetricPositiveDefiniteMatrixException {
         
         int columns = inputMatrix.getColumns();
         int colsB = b.getColumns();

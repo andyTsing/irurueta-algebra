@@ -1,53 +1,58 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.RQDecomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 20, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import java.util.Random;
-import static org.junit.Assert.*;
 import org.junit.*;
 
+import java.util.Random;
+
+import static org.junit.Assert.*;
+
+@SuppressWarnings("Duplicates")
 public class RQDecomposerTest {
     
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
     
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
     
-    public static final int MIN_RANDOM_VALUE = 0;
-    public static final int MAX_RANDOM_VALUE = 100;
+    private static final int MIN_RANDOM_VALUE = 0;
+    private static final int MAX_RANDOM_VALUE = 100;
     
-    public static final double RELATIVE_ERROR = 1.0;
-    public static final double ROUND_ERROR = 1e-3;
+    private static final double RELATIVE_ERROR = 1.0;
+    private static final double ROUND_ERROR = 1e-3;
     
-    public RQDecomposerTest() {
-    }
+    public RQDecomposerTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
-    public void testConstructor() throws WrongSizeException, LockedException{
+    public void testConstructor() throws WrongSizeException, LockedException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -82,9 +87,7 @@ public class RQDecomposerTest {
     
     @Test
     public void testGetSetInputMatrix() throws WrongSizeException, 
-        LockedException, 
-        NotReadyException, 
-        DecomposerException{
+            LockedException, NotReadyException, DecomposerException {
         
         //RQ decomposition works for any rectangular matrix size
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -124,7 +127,8 @@ public class RQDecomposerTest {
     }
     
     @Test
-    public void testDecompose() throws WrongSizeException, LockedException, DecomposerException, NotReadyException, NotAvailableException{
+    public void testDecompose() throws WrongSizeException, LockedException,
+            DecomposerException, NotReadyException, NotAvailableException {
         //Works for any rectangular matrix size having rows < columns (it also
         //works for square matrices)
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -139,10 +143,10 @@ public class RQDecomposerTest {
         RQDecomposer decomposer = new RQDecomposer();
         
         //Force NotReadyException
-        try{
+        try {
             decomposer.decompose();
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
+        } catch (NotReadyException ignore) { }
         
         decomposer.setInputMatrix(m);
         
@@ -173,14 +177,16 @@ public class RQDecomposerTest {
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         decomposer.setInputMatrix(m);
         
-        try{
+        try {
             decomposer.decompose();
             fail("DecomposerException expected but not thrown");
-        }catch(DecomposerException e){}
+        } catch (DecomposerException ignore) { }
     }
     
     @Test
-    public void testGetR() throws WrongSizeException, LockedException, NotReadyException, DecomposerException, NotAvailableException{
+    public void testGetR() throws WrongSizeException, LockedException,
+            NotReadyException, DecomposerException, NotAvailableException {
+
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
         int rows = randomizer.nextInt(MIN_ROWS, columns - 1);
@@ -194,10 +200,10 @@ public class RQDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.getR();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         r = decomposer.getR();
@@ -205,15 +211,19 @@ public class RQDecomposerTest {
         assertEquals(r.getRows(), rows);
         assertEquals(r.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                if(i > j) assertEquals(r.getElementAt(i, j), 0.0, ROUND_ERROR);
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i > j) {
+                    assertEquals(r.getElementAt(i, j), 0.0, ROUND_ERROR);
+                }
             }
         }
     }
     
     @Test
-    public void testGetQ() throws WrongSizeException, LockedException, NotReadyException, DecomposerException, NotAvailableException{
+    public void testGetQ() throws WrongSizeException, LockedException,
+            NotReadyException, DecomposerException, NotAvailableException {
+
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
         int rows = randomizer.nextInt(MIN_ROWS, columns - 1);
@@ -228,10 +238,10 @@ public class RQDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.getQ();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         q = decomposer.getQ();
@@ -248,12 +258,12 @@ public class RQDecomposerTest {
         assertEquals(test.getColumns(), columns);
         
         //Check that test is similar to identity
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j){
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
                     assertEquals(Math.abs(test.getElementAt(i, j)), 1.0, 
                             RELATIVE_ERROR);
-                }else{
+                } else {
                     assertEquals(test.getElementAt(i, j), 0.0, ROUND_ERROR);
                 }
             }
@@ -265,10 +275,10 @@ public class RQDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.getQ();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         
@@ -286,12 +296,12 @@ public class RQDecomposerTest {
         assertEquals(test.getColumns(), rows);
         
         //Check that test is similar to identity
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j){
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
                     assertEquals(Math.abs(test.getElementAt(i, j)), 1.0, 
                             RELATIVE_ERROR);
-                }else{
+                } else {
                     assertEquals(test.getElementAt(i, j), 0.0, ROUND_ERROR);
                 }
             }

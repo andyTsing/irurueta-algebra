@@ -1,59 +1,57 @@
-/**
- * @file
- * This file contains unit tests for
- * com.irurueta.statistics.MultivariateNormalDist
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date December 30, 2015
+/*
+ * Copyright (C) 2015 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.statistics;
 
-import com.irurueta.algebra.AlgebraException;
-import com.irurueta.algebra.ArrayUtils;
-import com.irurueta.algebra.DecomposerException;
-import com.irurueta.algebra.DecomposerHelper;
-import com.irurueta.algebra.Matrix;
-import com.irurueta.algebra.NotReadyException;
-import com.irurueta.algebra.Utils;
-import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.algebra.*;
 import com.irurueta.statistics.MultivariateNormalDist.JacobianEvaluator;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class MultivariateNormalDistTest {
     
-    public static final double MIN_RANDOM_VALUE = -100.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
+    private static final double MIN_RANDOM_VALUE = -100.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
-    public static final double ABSOLUTE_ERROR = 1e-6;
-    public static final double LARGE_ABSOLUTE_ERROR = 1e-3;
+    private static final double ABSOLUTE_ERROR = 1e-6;
+    private static final double LARGE_ABSOLUTE_ERROR = 1e-3;
     
-    public static final int N_SAMPLES = 1000000;
-    public static final double RELATIVE_ERROR = 0.05;
+    private static final int N_SAMPLES = 1000000;
+    private static final double RELATIVE_ERROR = 0.05;
     
-    public MultivariateNormalDistTest() {}
+    public MultivariateNormalDistTest() { }
     
     @BeforeClass
-    public static void setUpClass() {}
+    public static void setUpClass() { }
     
     @AfterClass
-    public static void tearDownClass() {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
 
     @Test
     public void testConstructor() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         //empty constructor
         MultivariateNormalDist dist = new MultivariateNormalDist();
         
@@ -76,10 +74,10 @@ public class MultivariateNormalDistTest {
         
         //Force IllegalArgumentException
         dist = null;
-        try{
+        try {
             dist = new MultivariateNormalDist(0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(dist);
         
         
@@ -103,30 +101,30 @@ public class MultivariateNormalDistTest {
         
         //Force IllegalArgumentException
         dist = null;
-        try{
+        try {
             dist = new MultivariateNormalDist(new double[0], cov);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist = new MultivariateNormalDist(new double[3], cov);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         Matrix wrong = DecomposerHelper.getLeftLowerTriangulatorFactor(2);
         Matrix wrong2 = DecomposerHelper.getSingularMatrixInstance(2, 2);
         Matrix wrong3 = new Matrix(2, 3);
-        try{
+        try {
             dist = new MultivariateNormalDist(mean, wrong);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
-        try{
+        } catch (InvalidCovarianceMatrixException ignore) { }
+        try {
             dist = new MultivariateNormalDist(mean, wrong2);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
+        } catch (InvalidCovarianceMatrixException ignore) { }
         try{
             dist = new MultivariateNormalDist(mean, wrong3);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}        
+        } catch (InvalidCovarianceMatrixException ignore) { }
         assertNull(dist);
         
         dist = new MultivariateNormalDist(mean, cov, false);
@@ -140,7 +138,7 @@ public class MultivariateNormalDistTest {
     }
     
     @Test
-    public void testGetSetMean(){
+    public void testGetSetMean() {
         MultivariateNormalDist dist = new MultivariateNormalDist();
         
         //check default value
@@ -158,15 +156,15 @@ public class MultivariateNormalDistTest {
         
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.setMean(new double[0]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
     public void testGetSetCovariance() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         MultivariateNormalDist dist = new MultivariateNormalDist();
         
         //check default value
@@ -195,23 +193,23 @@ public class MultivariateNormalDistTest {
         Matrix wrong = DecomposerHelper.getLeftLowerTriangulatorFactor(2);
         Matrix wrong2 = DecomposerHelper.getSingularMatrixInstance(2, 2);
         Matrix wrong3 = new Matrix(3, 2);
-        try{
+        try {
             dist.setCovariance(wrong);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
-        try{
+        } catch (InvalidCovarianceMatrixException ignore) { }
+        try {
             dist.setCovariance(wrong2);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
+        } catch (InvalidCovarianceMatrixException ignore) { }
         try{
             dist.setCovariance(wrong3);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}        
+        } catch (InvalidCovarianceMatrixException ignore) { }
     }
     
     @Test
     public void testSetMeanAndCovariance() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         MultivariateNormalDist dist = new MultivariateNormalDist();
         
         //check default values
@@ -239,34 +237,34 @@ public class MultivariateNormalDistTest {
         assertEquals(dist.getCovariance(), cov);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.setMeanAndCovariance(new double[0], cov);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist.setMeanAndCovariance(new double[3], cov);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         Matrix wrong = DecomposerHelper.getLeftLowerTriangulatorFactor(2);
         Matrix wrong2 = DecomposerHelper.getSingularMatrixInstance(2, 2);
         Matrix wrong3 = new Matrix(2, 3);
-        try{
+        try {
             dist.setMeanAndCovariance(mean, wrong);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
-        try{
+        } catch (InvalidCovarianceMatrixException ignore) { }
+        try {
             dist.setMeanAndCovariance(mean, wrong2);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}
-        try{
+        } catch (InvalidCovarianceMatrixException ignore) { }
+        try {
             dist.setMeanAndCovariance(mean, wrong3);
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        }catch(InvalidCovarianceMatrixException e){}        
+        } catch (InvalidCovarianceMatrixException ignore) { }
     }
     
     @Test
-    public void testIsValidCovariance() throws AlgebraException{
+    public void testIsValidCovariance() throws AlgebraException {
         Matrix cov = DecomposerHelper.
                 getSymmetricPositiveDefiniteMatrixInstance(
                         DecomposerHelper.getLeftLowerTriangulatorFactor(2));        
@@ -282,7 +280,7 @@ public class MultivariateNormalDistTest {
     }
     
     @Test
-    public void testIsReady(){
+    public void testIsReady() {
         MultivariateNormalDist dist = new MultivariateNormalDist();
         
         //check initial value
@@ -295,7 +293,7 @@ public class MultivariateNormalDistTest {
     
     @Test
     public void testP() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -317,22 +315,22 @@ public class MultivariateNormalDistTest {
                 ABSOLUTE_ERROR);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.p(new double[1]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         //Force NotReadyException
         dist.setMean(new double[1]);
-        try{
+        try {
             dist.p(x);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
+        } catch (NotReadyException ignore) { }
     }
     
     @Test
     public void testCdf() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -346,20 +344,20 @@ public class MultivariateNormalDistTest {
         assertEquals(dist.cdf(mean), 0.25, ABSOLUTE_ERROR);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.cdf(new double[1]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         Matrix basis = new Matrix(2,2);
         assertEquals(dist.cdf(mean, basis), 0.25, ABSOLUTE_ERROR);
         assertEquals(dist.getCovarianceBasis(), basis);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.cdf(new double[3], basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] variances = dist.getVariances();
         assertNotNull(variances);
@@ -510,18 +508,18 @@ public class MultivariateNormalDistTest {
         
         //Force NotReadyException
         dist.setMean(new double[1]);
-        try{
+        try {
             dist.cdf(x);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}        
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.cdf(x, basis);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}                
+        } catch (NotReadyException ignore) { }
     }
     
     @Test
-    public void testJointProbability(){
+    public void testJointProbability() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] p = new double[2];
         randomizer.fill(p);
@@ -534,7 +532,7 @@ public class MultivariateNormalDistTest {
     
     @Test
     public void testInvcdf() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -551,10 +549,10 @@ public class MultivariateNormalDistTest {
                 MultivariateNormalDist.jointProbability(p), ABSOLUTE_ERROR);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(new double[1]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         Matrix basis = new Matrix(2,2);
         assertEquals(dist.cdf(dist.invcdf(p, basis)), 
@@ -562,10 +560,10 @@ public class MultivariateNormalDistTest {
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(new double[1], basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] result = new double[2];
         dist.invcdf(p, result);
@@ -574,14 +572,14 @@ public class MultivariateNormalDistTest {
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(new double[1], result);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist.invcdf(p, new double[1]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
                 
         dist.invcdf(p, result, basis);
         assertEquals(dist.cdf(result),
@@ -589,39 +587,39 @@ public class MultivariateNormalDistTest {
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException        
-        try{
+        try {
             dist.invcdf(new double[1], result, basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist.invcdf(p, new double[1], basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         //Force NotReadyException
         dist.setMean(new double[1]); 
-        try{
+        try {
             dist.invcdf(p);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}     
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(p, basis);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(p, result);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(p, result, basis);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
+        } catch (NotReadyException ignore) { }
     }
     
     @Test
     public void testInvcdfJointProbability() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -640,14 +638,14 @@ public class MultivariateNormalDistTest {
         assertArrayEquals(dist.invcdf(dist.cdf(x)), x, ABSOLUTE_ERROR);
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(0.0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist.invcdf(1.0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         Matrix basis = new Matrix(2,2);
@@ -655,14 +653,14 @@ public class MultivariateNormalDistTest {
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(0.0, basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             dist.invcdf(1.0, basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] result = new double[2];
         dist.invcdf(dist.cdf(x), result);
@@ -670,45 +668,45 @@ public class MultivariateNormalDistTest {
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException
-        try{
+        try {
             dist.invcdf(dist.cdf(x), new double[1]);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
                 
         dist.invcdf(dist.cdf(x), result, basis);
         assertArrayEquals(result, x, ABSOLUTE_ERROR);
         assertEquals(basis, dist.getCovarianceBasis());
         
         //Force IllegalArgumentException        
-        try{
+        try {
             dist.invcdf(dist.cdf(x), new double[1], basis);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         //Force NotReadyException
         dist.setMean(new double[1]); 
-        try{
+        try {
             dist.invcdf(dist.cdf(x));
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}     
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(dist.cdf(x), basis);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(dist.cdf(x), result);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
-        try{
+        } catch (NotReadyException ignore) { }
+        try {
             dist.invcdf(dist.cdf(x), result, basis);
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}
+        } catch (NotReadyException ignore) { }
     }   
     
     @Test
     public void testMahalanobisDistance() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         //check for 2 dimensions
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
@@ -756,7 +754,7 @@ public class MultivariateNormalDistTest {
     
     @Test
     public void testProcessCovariance() throws AlgebraException, 
-            InvalidCovarianceMatrixException{
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -797,8 +795,7 @@ public class MultivariateNormalDistTest {
     
     @Test
     public void testPropagate() throws WrongSizeException, 
-            InvalidCovarianceMatrixException,
-            DecomposerException {
+            InvalidCovarianceMatrixException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         randomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);

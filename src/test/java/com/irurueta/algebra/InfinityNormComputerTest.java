@@ -1,56 +1,65 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.InfinityNormComputer;
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 22, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.*;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class InfinityNormComputerTest {
     
-    public static final int MIN_LIMIT = 0;
-    public static final int MAX_LIMIT = 50;
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
-    public static final int MIN_LENGTH = 1;
-    public static final int MAX_LENGTH = 100;
-    public static final double MIN_RANDOM_VALUE = 0;
-    public static final double MAX_RANDOM_VALUE = 100;
-    public static final double RELATIVE_ERROR = 1.0;
-    public static final double ABSOLUTE_ERROR = 1e-6;
+    private static final int MIN_LIMIT = 0;
+    private static final int MAX_LIMIT = 50;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
+    private static final int MIN_LENGTH = 1;
+    private static final int MAX_LENGTH = 100;
+    private static final double MIN_RANDOM_VALUE = 0;
+    private static final double MAX_RANDOM_VALUE = 100;
+    private static final double ABSOLUTE_ERROR = 1e-6;
     
-    public InfinityNormComputerTest() {}
+    public InfinityNormComputerTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {}
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
     
     @Test
-    public void testGetNormType(){
+    public void testGetNormType() {
         InfinityNormComputer normComputer = new InfinityNormComputer();
         assertEquals(normComputer.getNormType(), NormType.INFINITY_NORM);
     }
     
     @Test
-    public void testGetNormMatrix() throws WrongSizeException{
+    public void testGetNormMatrix() throws WrongSizeException {
         InfinityNormComputer normComputer = new InfinityNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -62,9 +71,9 @@ public class InfinityNormComputerTest {
         
         //For random non-initialized matrix
         Matrix m = new Matrix(rows, columns);
-        for(int i = 0; i < rows; i++){
+        for (int i = 0; i < rows; i++) {
             rowSum = 0.0;
-            for(int j = 0; j < columns; j++){
+            for (int j = 0; j < columns; j++) {
                 value = randomizer.nextInt(MIN_LIMIT, MAX_LIMIT);
                 m.setElementAt(i, j, value);
                 rowSum += Math.abs(value);
@@ -92,7 +101,7 @@ public class InfinityNormComputerTest {
     }
     
     @Test
-    public void testGetNormArray(){
+    public void testGetNormArray() {
         InfinityNormComputer normComputer = new InfinityNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
@@ -102,7 +111,7 @@ public class InfinityNormComputerTest {
         double[] v = new double[length];
         
         //randomly initialize vector
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         }
         
@@ -120,7 +129,7 @@ public class InfinityNormComputerTest {
     }
     
     @Test
-    public void testNormWithJacobian() throws AlgebraException{
+    public void testNormWithJacobian() throws AlgebraException {
         InfinityNormComputer normComputer = new InfinityNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
@@ -129,7 +138,7 @@ public class InfinityNormComputerTest {
         double[] v = new double[length];
         
         //randomly initialize vector
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         }
         
@@ -143,10 +152,10 @@ public class InfinityNormComputerTest {
                 transposeAndReturnNew());     
         
         //Force WrongSizeException
-        try{
+        try {
             InfinityNormComputer.norm(v, new Matrix(2,length));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         
         jacobian = new Matrix(1, length);
@@ -156,9 +165,9 @@ public class InfinityNormComputerTest {
                 transposeAndReturnNew()); 
         
         //Force WrongSizeException
-        try{
+        try {
             normComputer.getNorm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}        
+        } catch (WrongSizeException ignore) { }
     }
 }

@@ -1,52 +1,50 @@
-/**
- * @file
- * This file contains unit tests for
- * com.irurueta.statistics.MultivariateGaussianRandomizer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date August 12, 2016.
+/*
+ * Copyright (C) 2016 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.statistics;
 
-import com.irurueta.algebra.ArrayUtils;
-import com.irurueta.algebra.DecomposerException;
-import com.irurueta.algebra.DecomposerHelper;
-import com.irurueta.algebra.Matrix;
-import com.irurueta.algebra.Utils;
-import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.algebra.*;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class MultivariateGaussianRandomizerTest {
     
-    public static final int NUM_SAMPLES = 1000000;
-    public static final double RELATIVE_ERROR = 0.05;
+    private static final int NUM_SAMPLES = 1000000;
+    private static final double RELATIVE_ERROR = 0.05;
     
-    public static final double MIN_RANDOM_VALUE = -100.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
-    
-    public static final double ABSOLUTE_ERROR = 1e-6;
+    private static final double MIN_RANDOM_VALUE = -100.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
     
-    public MultivariateGaussianRandomizerTest() {}
+    public MultivariateGaussianRandomizerTest() { }
     
     @BeforeClass
-    public static void setUpClass() {}
+    public static void setUpClass() { }
     
     @AfterClass
-    public static void tearDownClass() {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
     
     @Test
     public void testConstructor() throws WrongSizeException, 
@@ -72,7 +70,7 @@ public class MultivariateGaussianRandomizerTest {
         try {
             randomizer = new MultivariateGaussianRandomizer(null);
             fail("NullPointerException expected but not thrown");
-        } catch (NullPointerException e) { }
+        } catch (NullPointerException ignore) { }
         assertNull(randomizer);
         
         
@@ -95,14 +93,14 @@ public class MultivariateGaussianRandomizerTest {
         try {
             randomizer = new MultivariateGaussianRandomizer(new double[1], cov);
             fail("WrongSizeException expected but not thrown");
-        } catch (WrongSizeException e) { }
+        } catch (WrongSizeException ignore) { }
         
         //Force InvalidCovarianceMatrixException
         try {
             randomizer = new MultivariateGaussianRandomizer(mean, 
                     new Matrix(2,2));
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        } catch (InvalidCovarianceMatrixException e) { }
+        } catch (InvalidCovarianceMatrixException ignore) { }
         assertNull(randomizer);
         
         //test constructor with random, mean and covariance
@@ -119,14 +117,14 @@ public class MultivariateGaussianRandomizerTest {
             randomizer = new MultivariateGaussianRandomizer(new Random(), 
                     new double[1], cov);
             fail("WrongSizeException expected but not thrown");
-        } catch (WrongSizeException e) { }
+        } catch (WrongSizeException ignore) { }
         
         //Force InvalidCovarianceMatrixException
         try {
             randomizer = new MultivariateGaussianRandomizer(new Random(), mean, 
                     new Matrix(2,2));
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        } catch (InvalidCovarianceMatrixException e) { }
+        } catch (InvalidCovarianceMatrixException ignore) { }
         assertNull(randomizer);        
     }
     
@@ -160,19 +158,19 @@ public class MultivariateGaussianRandomizerTest {
         try {
             randomizer.setMeanAndCovariance(new double[1], cov);
             fail("WrongSizeException expected but not thrown");            
-        } catch (WrongSizeException e) { }
+        } catch (WrongSizeException ignore) { }
         
         //Force InvalidCovarianceMatrixException
         try {
             randomizer.setMeanAndCovariance(mean, new Matrix(2,2));
             fail("InvalidCovarianceMatrixException expected but not thrown");
-        } catch (InvalidCovarianceMatrixException e) { }
+        } catch (InvalidCovarianceMatrixException ignore) { }
     }
     
     @Test
     public void testNext() throws WrongSizeException, 
-            InvalidCovarianceMatrixException,
-            DecomposerException {
+            InvalidCovarianceMatrixException, DecomposerException {
+
         UniformRandomizer uniRandomizer = new UniformRandomizer(new Random());
         double[] mean = new double[2];
         uniRandomizer.fill(mean, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
@@ -199,7 +197,7 @@ public class MultivariateGaussianRandomizerTest {
         
         Matrix sqrSum1 = new Matrix(2,2);
         Matrix sqrSum2 = new Matrix(2,2);
-        for(int i = 0; i < NUM_SAMPLES; i++) {
+        for (int i = 0; i < NUM_SAMPLES; i++) {
             randomizer.next(values1);
             values2 = randomizer.next();
             

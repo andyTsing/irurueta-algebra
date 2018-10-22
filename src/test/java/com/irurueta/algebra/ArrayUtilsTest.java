@@ -1,45 +1,54 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.ArrayUtils
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date May 26, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
+
 import static org.junit.Assert.*;
-import org.junit.*;
 
 public class ArrayUtilsTest {
     
-    public static final int MIN_LENGTH = 1;
-    public static final int MAX_LENGTH = 50;
+    private static final int MIN_LENGTH = 1;
+    private static final int MAX_LENGTH = 50;
     
-    public static final double MIN_RANDOM_VALUE = -100.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
+    private static final double MIN_RANDOM_VALUE = -100.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
-    public static final double ABSOLUTE_ERROR = 1e-6;
+    private static final double ABSOLUTE_ERROR = 1e-6;
     
-    public ArrayUtilsTest() {}
+    public ArrayUtilsTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {}
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
     
     @Test
-    public void testMultiplyByScalar(){
+    public void testMultiplyByScalar() {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
@@ -50,7 +59,7 @@ public class ArrayUtilsTest {
         randomizer.fill(input, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double[] expectedResult = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input[i] * scalar;
         }
         
@@ -62,21 +71,21 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             assertEquals(result1[i], expectedResult[i], 0.0);
             assertEquals(result2[i], expectedResult[i], 0.0);
         }
         
         //Force IllegalArgumentException
         double[] wrongResult = new double[length + 1];
-        try{
+        try {
             ArrayUtils.multiplyByScalar(input, scalar, wrongResult);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSum(){
+    public void testSum() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -86,7 +95,7 @@ public class ArrayUtilsTest {
         randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double[] expectedResult = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input1[i] + input2[i];
         }
         
@@ -97,25 +106,25 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             assertEquals(result1[i], expectedResult[i], 0.0);
             assertEquals(result2[i], expectedResult[i], 0.0);
         }
         
         //Force IllegalArgumentException
         double[] wrongArray = new double[length + 1];
-        try{
+        try {
             ArrayUtils.sum(input1, input2, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.sumAndReturnNew(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSubtract(){
+    public void testSubtract() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -125,7 +134,7 @@ public class ArrayUtilsTest {
         randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double[] expectedResult = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input1[i] - input2[i];
         }
         
@@ -136,25 +145,25 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             assertEquals(result1[i], expectedResult[i], 0.0);
             assertEquals(result2[i], expectedResult[i], 0.0);
         }
         
         //Force IllegalArgumentException
         double[] wrongArray = new double[length + 1];
-        try{
+        try {
             ArrayUtils.subtract(input1, input2, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.subtractAndReturnNew(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }    
     
     @Test
-    public void testDotProduct() throws WrongSizeException{
+    public void testDotProduct() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -164,7 +173,7 @@ public class ArrayUtilsTest {
         randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double expectedResult = 0.0;
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult += input1[i] * input2[i];
         }
         
@@ -175,14 +184,16 @@ public class ArrayUtilsTest {
         
         //Force IllegalArgumentException
         double[] wrongArray = new double[length + 1];
-        try{
+        try {
+            //noinspection all
             ArrayUtils.dotProduct(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
+            //noinspection all
             ArrayUtils.dotProduct(wrongArray, input2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}    
+        } catch (IllegalArgumentException ignore) { }
         
         //Test with jacobians
         Matrix jacobian1 = new Matrix(1, length);
@@ -196,26 +207,26 @@ public class ArrayUtilsTest {
         assertArrayEquals(jacobian2.getBuffer(), input2, 0.0);
         
         //Force IllegalArgumentException
-        try{
+        try {
             ArrayUtils.dotProduct(wrongArray, input2, jacobian1, jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.dotProduct(input1, wrongArray, jacobian1, jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.dotProduct(input1, input2, new Matrix(1,1), jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.dotProduct(input1, input2, jacobian1, new Matrix(1,1));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testAngle() throws WrongSizeException{
+    public void testAngle() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -225,12 +236,12 @@ public class ArrayUtilsTest {
         randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double dotProduct = 0.0;
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             dotProduct += input1[i] * input2[i];
         }
         
         double expectedResult = Math.acos(dotProduct);
-        if(expectedResult > (Math.PI/2.0)){
+        if (expectedResult > (Math.PI/2.0)) {
             expectedResult = Math.PI - expectedResult;
         }
         
@@ -242,7 +253,7 @@ public class ArrayUtilsTest {
     }
     
     @Test
-    public void testMultiplyByScalarComplex(){
+    public void testMultiplyByScalarComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         double scalar = randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -250,14 +261,14 @@ public class ArrayUtilsTest {
         
         Complex[] input = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             input[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
         }
         
         Complex[] expectedResult = new Complex[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input[i].multiplyByScalarAndReturnNew(scalar);
         }
         
@@ -267,41 +278,45 @@ public class ArrayUtilsTest {
         Complex[] result2 = new Complex[length];
         //Force NullPointerException (because result2 hasn't been initialized
         //with instances in the array
-        try{
+        try {
             ArrayUtils.multiplyByScalar(input, scalar, result2);        
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         
         //initialize array with instances (otherwise null pointer exception will
         //be raised
-        for(int i = 0; i < length; i++) result2[i] = new Complex();
+        for (int i = 0; i < length; i++) {
+            result2[i] = new Complex();
+        }
         ArrayUtils.multiplyByScalar(input, scalar, result2);
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result1[i].equals(expectedResult[i]));
-            assertTrue(result2[i].equals(expectedResult[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result1[i], expectedResult[i]);
+            assertEquals(result2[i], expectedResult[i]);
         }
         
         //Force IllegalArgumentException
         Complex[] wrongResult = new Complex[length + 1];
-        for(int i = 0; i < length; i++) wrongResult[i] = new Complex();
-        try{
+        for (int i = 0; i < length; i++) {
+            wrongResult[i] = new Complex();
+        }
+        try {
             ArrayUtils.multiplyByScalar(input, scalar, wrongResult);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSumComplex(){
+    public void testSumComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
         Complex[] input1 = new Complex[length];
         Complex[] input2 = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             input1[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -311,7 +326,7 @@ public class ArrayUtilsTest {
         }
         
         Complex[] expectedResult = new Complex[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input1[i].addAndReturnNew(input2[i]);
         }
         
@@ -320,44 +335,46 @@ public class ArrayUtilsTest {
         Complex[] result2 = new Complex[length];
         //Force NullPointerException (because result2 hasn't been initialized
         //with instances in the array)
-        try{
+        try {
             ArrayUtils.sum(input1, input2, result2);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         
         //initialize array with instances (otherwise null pointer exception will
         //be raised
-        for(int i = 0; i < length; i++) result2[i] = new Complex();
+        for (int i = 0; i < length; i++) {
+            result2[i] = new Complex();
+        }
         ArrayUtils.sum(input1, input2, result2);
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result1[i].equals(expectedResult[i]));
-            assertTrue(result2[i].equals(expectedResult[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result1[i], expectedResult[i]);
+            assertEquals(result2[i], expectedResult[i]);
         }
         
         //Force IllegalArgumentException
         Complex[] wrongArray = new Complex[length + 1];
-        try{
+        try {
             ArrayUtils.sum(input1, input2, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.sumAndReturnNew(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSubtractComplex(){
+    public void testSubtractComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
         Complex[] input1 = new Complex[length];
         Complex[] input2 = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             input1[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -367,7 +384,7 @@ public class ArrayUtilsTest {
         }
         
         Complex[] expectedResult = new Complex[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult[i] = input1[i].subtractAndReturnNew(input2[i]);
         }
         
@@ -376,44 +393,46 @@ public class ArrayUtilsTest {
         Complex[] result2 = new Complex[length];
         //Force NullPointerException (because result2 hasn't been initialized
         //with instances in the array)
-        try{
+        try {
             ArrayUtils.subtract(input1, input2, result2);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         
         //initialize array with instances (otherwise null pointer exception will
         //be raised
-        for(int i = 0; i < length; i++) result2[i] = new Complex();
+        for (int i = 0; i < length; i++) {
+            result2[i] = new Complex();
+        }
         ArrayUtils.subtract(input1, input2, result2);
         
         //check correctness
         assertEquals(result1.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result1[i].equals(expectedResult[i]));
-            assertTrue(result2[i].equals(expectedResult[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result1[i], expectedResult[i]);
+            assertEquals(result2[i], expectedResult[i]);
         }
         
         //Force IllegalArgumentException
         Complex[] wrongArray = new Complex[length + 1];
-        try{
+        try {
             ArrayUtils.subtract(input1, input2, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.subtractAndReturnNew(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }    
     
     @Test
-    public void testDotProductComplex(){
+    public void testDotProductComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
         Complex[] input1 = new Complex[length];
         Complex[] input2 = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             input1[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -423,7 +442,7 @@ public class ArrayUtilsTest {
         }
         
         Complex expectedResult = new Complex(0.0);
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult.add(input1[i].multiplyAndReturnNew(input2[i]));
         }
                 
@@ -434,18 +453,18 @@ public class ArrayUtilsTest {
         
         //Force IllegalArgumentException
         Complex[] wrongArray = new Complex[length + 1];
-        try{
+        try {
             ArrayUtils.dotProduct(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.dotProduct(wrongArray, input2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }  
     
     @Test
-    public void testNormalize() throws AlgebraException{
+    public void testNormalize() throws AlgebraException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -472,18 +491,18 @@ public class ArrayUtilsTest {
         assertTrue(jacobian.equals(jacobian2, ABSOLUTE_ERROR));
         
         //Force IllegalArgumentException
-        try{
+        try {
             ArrayUtils.normalize(new double[length + 1], result, jacobian);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.normalize(v, new double[length + 1], jacobian);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.normalize(v, result, new Matrix(length + 1, length));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test normalize and return new with jacobian
@@ -495,14 +514,14 @@ public class ArrayUtilsTest {
         assertTrue(jacobian.equals(jacobian2, ABSOLUTE_ERROR));
         
         //Force IllegalArgumentException
-        try{
+        try {
             ArrayUtils.normalizeAndReturnNew(new double[length + 1], jacobian);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.normalizeAndReturnNew(v, new Matrix(length + 1, length));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test normalize and update with jacobian
@@ -515,14 +534,14 @@ public class ArrayUtilsTest {
         assertTrue(jacobian.equals(jacobian2, ABSOLUTE_ERROR));
         
         //Force IllegalArgumentException
-        try{
+        try {
             ArrayUtils.normalize(new double[length + 1], jacobian);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             ArrayUtils.normalize(v, new Matrix(length + 1, length));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
         
         //test normalize and return new
         result = ArrayUtils.normalizeAndReturnNew(v);
@@ -539,7 +558,7 @@ public class ArrayUtilsTest {
     }
     
     @Test
-    public void testReverse(){
+    public void testReverse() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -551,7 +570,7 @@ public class ArrayUtilsTest {
         
         //check correctness
         double[] result2 = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[length - 1 -i] = v[i];
         }
         
@@ -574,7 +593,7 @@ public class ArrayUtilsTest {
         
         //check correctness
         result2 = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[length - 1 -i] = v[i];
         }
         
@@ -587,7 +606,7 @@ public class ArrayUtilsTest {
     }
     
     @Test
-    public void testReverseAndReturnNew(){
+    public void testReverseAndReturnNew() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -598,7 +617,7 @@ public class ArrayUtilsTest {
         
         //check correctness
         double[] result2 = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[length - 1 -i] = v[i];
         }
         
@@ -615,7 +634,7 @@ public class ArrayUtilsTest {
         
         //check correctness
         result2 = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[length - 1 -i] = v[i];
         }
         
@@ -623,13 +642,13 @@ public class ArrayUtilsTest {
     }
     
     @Test
-    public void testReverseComplex(){
+    public void testReverseComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
         Complex[] v = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -640,21 +659,21 @@ public class ArrayUtilsTest {
         
         //check correctness        
         assertEquals(result.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result[length - 1 - i].equals(v[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result[length - 1 - i], v[i]);
         }
         
         //copy and reverse
         Complex[] result2 = new Complex[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[i] = result[i].clone();
         }
         ArrayUtils.reverse(v);
         
         //check correctness
         assertEquals(v.length, result2.length);
-        for(int i = 0; i < length; i++){
-            assertTrue(v[i].equals(result2[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(v[i], result2[i]);
         }
         
         //test for odd/even case
@@ -662,7 +681,7 @@ public class ArrayUtilsTest {
         
         v = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -673,32 +692,32 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result[length - 1 - i].equals(v[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result[length - 1 - i], v[i]);
         }
         
         //copy and reverse
         result2 = new Complex[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             result2[i] = result[i].clone();
         }        
         ArrayUtils.reverse(v);
         
         //check correctness
         assertEquals(v.length, result2.length);
-        for(int i = 0; i < length; i++){
-            assertTrue(v[i].equals(result2[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(v[i], result2[i]);
         }
     }
     
     @Test
-    public void testReverseAndReturnNewComplex(){
+    public void testReverseAndReturnNewComplex() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
         Complex[] v = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -708,8 +727,8 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result[length - 1 - i].equals(v[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result[length - 1 - i], v[i]);
         }
         
         
@@ -718,7 +737,7 @@ public class ArrayUtilsTest {
         
         v = new Complex[length];
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             v[i] = new Complex(randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE), randomizer.nextDouble(MIN_RANDOM_VALUE,
                     MAX_RANDOM_VALUE));
@@ -728,8 +747,8 @@ public class ArrayUtilsTest {
         
         //check correctness
         assertEquals(result.length, length);
-        for(int i = 0; i < length; i++){
-            assertTrue(result[length - 1 - i].equals(v[i]));
+        for (int i = 0; i < length; i++) {
+            assertEquals(result[length - 1 - i], v[i]);
         }
     }
     
@@ -740,7 +759,7 @@ public class ArrayUtilsTest {
 
         double[] v = new double[length];
         double[] sqrt = new double[length];
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             v[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
             sqrt[i] = Math.sqrt(v[i]);
         }
@@ -768,13 +787,13 @@ public class ArrayUtilsTest {
         double maxValue = -Double.MAX_VALUE;
         int minPos = -1;
         int maxPos = -1;
-        for(int i = 0; i < length; i++) {
+        for (int i = 0; i < length; i++) {
             v[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-            if(v[i] < minValue) {
+            if (v[i] < minValue) {
                 minValue = v[i];
                 minPos = i;
             }
-            if(v[i] > maxValue) {
+            if (v[i] > maxValue) {
                 maxValue = v[i];
                 maxPos = i;
             }

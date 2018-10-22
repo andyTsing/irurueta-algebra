@@ -1,17 +1,25 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.FrobeniusNormComputer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 22, 2012.
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 /**
- * Class in charge of coputing Frobenius norms of vectors and matrices
+ * Class in charge of coputing Frobenius norms of vectors and matrices.
  */
-public class FrobeniusNormComputer extends NormComputer{
+@SuppressWarnings("WeakerAccess")
+public class FrobeniusNormComputer extends NormComputer {
 
     /**
      * Constructor of this class.
@@ -34,12 +42,12 @@ public class FrobeniusNormComputer extends NormComputer{
      * @param m matrix being used for norm computation.
      * @return norm of provided matrix.
      */
-    public static double norm(Matrix m){
+    public static double norm(Matrix m) {
         int rows = m.getRows();
         int columns = m.getColumns();
         int length = rows * columns;
         double sum = 0.0, value;
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             value = m.getElementAtIndex(i);
             sum += value * value;
         }
@@ -58,15 +66,15 @@ public class FrobeniusNormComputer extends NormComputer{
      */
     public static double norm(double[] array, Matrix jacobian)
             throws WrongSizeException{
-        if(jacobian != null && (jacobian.getRows() != 1 || 
-                jacobian.getColumns() != array.length)){
+        if (jacobian != null && (jacobian.getRows() != 1 ||
+                jacobian.getColumns() != array.length)) {
             throw new WrongSizeException("jacobian must be 1xN, where " + 
                     "N is length of array");
         }
         
         double norm = norm(array);
         
-        if(jacobian != null){
+        if (jacobian != null) {
             jacobian.fromArray(array);
             jacobian.multiplyByScalar(1.0 / norm);
         }
@@ -89,11 +97,9 @@ public class FrobeniusNormComputer extends NormComputer{
      * @param array array being used for norm computation.
      * @return norm of provided vector.
      */
-    public static double norm(double[] array){
-        int length = array.length;
-        double sum = 0.0, value;
-        for(int i = 0; i < length; i++){
-            value = array[i];
+    public static double norm(double[] array) {
+        double sum = 0.0;
+        for (double value : array) {
             sum += value * value;
         }
         return Math.sqrt(sum);        

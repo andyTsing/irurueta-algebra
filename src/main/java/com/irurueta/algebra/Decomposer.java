@@ -1,40 +1,48 @@
-/**
- * @file
- * This file contains definition of
- * com.irurueta.algebra.Decomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 15, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
+@SuppressWarnings("WeakerAccess")
 public abstract class Decomposer {
     
     /**
-     * Reference to input matrix to be decomposed
+     * Reference to input matrix to be decomposed.
      */
     protected Matrix inputMatrix;
     
     /**
      * Member indicating whether this decomposer instance is locked or not.
      * When locked, attempting to change parameters of this instance might
-     * raise a com.algebra.LockedException
+     * raise a com.algebra.LockedException.
      */
     protected boolean locked;
     
     /**
      * Constructor of this class.
      */
-    public Decomposer(){
+    public Decomposer() {
         this.inputMatrix = null;
         locked = false;
     }
     
     /**
      * Constructor of this class.
-     * @param inputMatrix Reference to input matrix to be decomposed
+     * @param inputMatrix Reference to input matrix to be decomposed.
      */
-    public Decomposer(Matrix inputMatrix){
+    public Decomposer(Matrix inputMatrix) {
         this.inputMatrix = inputMatrix;
         locked = false;
     }
@@ -50,7 +58,7 @@ public abstract class Decomposer {
     
     /**
      * Returns a reference to input matrix to be decomposed.
-     * @return Reference to input matrix to be deocmposed
+     * @return Reference to input matrix to be decomposed.
      */
     public Matrix getInputMatrix(){
         return inputMatrix;
@@ -62,8 +70,10 @@ public abstract class Decomposer {
      * @throws LockedException Exception thrown if attempting to call this
      * method while this instance remains locked.
      */
-    public void setInputMatrix(Matrix inputMatrix) throws LockedException{
-        if(isLocked()) throw new LockedException();
+    public void setInputMatrix(Matrix inputMatrix) throws LockedException {
+        if (isLocked()) {
+            throw new LockedException();
+        }
         this.inputMatrix = inputMatrix;
     }
     
@@ -75,17 +85,17 @@ public abstract class Decomposer {
      * @return Boolean indicating whether this instance is ready for 
      * decomposition computation.
      */
-    public boolean isReady(){
+    public boolean isReady() {
         return inputMatrix != null;
     }
     
     /**
      * Returns boolean indicating whether this instance is locked or not. When
      * locked, attempting to change some parameters of this instance might raise
-     * a LockedExcpetion
+     * a LockedExcpetion.
      * @return Boolean indicating whether this instance is locked or not.
      */
-    public boolean isLocked(){
+    public boolean isLocked() {
         return locked;
     }
     
@@ -93,7 +103,7 @@ public abstract class Decomposer {
      * Returns boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      * Attempting to retrieve decomposition results when not available, will
-     * probably raise a NotAvailableException
+     * probably raise a NotAvailableException.
      * @return Boolean indicating whether decomposition has been computed and
      * results can be retrieved.
      */

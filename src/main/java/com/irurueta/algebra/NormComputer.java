@@ -1,10 +1,17 @@
-/**
- * @file
- * This file contains definition of
- * com.irurueta.algebra.NormComputer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 22, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
@@ -17,6 +24,7 @@ package com.irurueta.algebra;
  * on computing the square root of summation of all the squared elements within
  * a given matrix or array.
  */
+@SuppressWarnings("WeakerAccess")
 public abstract class NormComputer {
     /**
      * Constant defining default norm type to be used.
@@ -26,7 +34,7 @@ public abstract class NormComputer {
     /**
      * Constructor of this class.
      */
-    public NormComputer(){}
+    public NormComputer() { }
     
     /**
      * Returns norm type being used by this class.
@@ -59,16 +67,16 @@ public abstract class NormComputer {
      * length of array.
      */
     public double getNorm(double[] array, Matrix jacobian) 
-            throws WrongSizeException{
-        if(jacobian != null && (jacobian.getRows() != 1 || 
-                jacobian.getColumns() != array.length)){
+            throws WrongSizeException {
+        if (jacobian != null && (jacobian.getRows() != 1 ||
+                jacobian.getColumns() != array.length)) {
             throw new WrongSizeException("jacobian must be 1xN, where " + 
                     "N is length of array");
         }
         
         double norm = getNorm(array);
         
-        if(jacobian != null){
+        if (jacobian != null) {
             jacobian.fromArray(array);
             jacobian.multiplyByScalar(1.0 / norm);
         }
@@ -82,8 +90,8 @@ public abstract class NormComputer {
      * @param normType Norm type to be used by returned instance.
      * @return New instance of NormComputer.
      */
-    public static NormComputer create(NormType normType){
-        switch(normType){
+    public static NormComputer create(NormType normType) {
+        switch (normType) {
             case INFINITY_NORM:
                 return new InfinityNormComputer();
             case ONE_NORM:
@@ -99,7 +107,7 @@ public abstract class NormComputer {
      * compute norms using provided NormType.
      * @return New instance of NormComputer.
      */
-    public static NormComputer create(){
+    public static NormComputer create() {
         return create(DEFAULT_NORM_TYPE);
     }
 }

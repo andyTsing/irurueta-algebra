@@ -1,55 +1,59 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.Complex
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date May 13, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import java.util.Random;
 import org.junit.*;
+
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
 public class ComplexTest {
     
-    public static final double MIN_RANDOM_VALUE = -100.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
+    private static final double MIN_RANDOM_VALUE = -100.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
-    public static final double MIN_MODULUS = 1.0;
-    public static final double MAX_MODULUS = 10.0;
+    private static final double MIN_MODULUS = 1.0;
+    private static final double MAX_MODULUS = 10.0;
     
-    public static final double MIN_PHASE = -Math.PI;
-    public static final double MAX_PHASE = Math.PI;
+    private static final double MIN_PHASE = -Math.PI;
+    private static final double MAX_PHASE = Math.PI;
     
-    public static final double MIN_EXPONENT = -2.0;
-    public static final double MAX_EXPONENT = 2.0;
+    private static final double MIN_EXPONENT = -2.0;
+    private static final double MAX_EXPONENT = 2.0;
     
-    public static final double ABSOLUTE_ERROR = 1e-9;
+    private static final double ABSOLUTE_ERROR = 1e-9;
     
-    public ComplexTest() {
-    }
+    public ComplexTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
-    public void testConstructor(){
+    public void testConstructor() {
         Complex c;
         
         //Test 1st constructor
@@ -92,7 +96,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testGetSetReal(){
+    public void testGetSetReal() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         Complex c = new Complex();
@@ -106,7 +110,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testGetSetImaginary(){
+    public void testGetSetImaginary() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
@@ -121,7 +125,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testGetSetRealAndImaginary(){
+    public void testGetSetRealAndImaginary() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -139,7 +143,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testGetModulus(){
+    public void testGetModulus() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -151,7 +155,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testGetPhase(){
+    public void testGetPhase() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -163,7 +167,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testSetModulusAndPhase(){
+    public void testSetModulusAndPhase() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -180,7 +184,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testConjugate(){
+    public void testConjugate() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -220,7 +224,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testAdd(){
+    public void testAdd() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real1 = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
@@ -265,7 +269,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testSubtract(){
+    public void testSubtract() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real1 = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
@@ -310,7 +314,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testMultiply(){
+    public void testMultiply() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus1 = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase1 = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -365,7 +369,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testDivide(){
+    public void testDivide() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus1 = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase1 = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -420,7 +424,7 @@ public class ComplexTest {
     }    
     
     @Test
-    public void testMultiplyByScalar(){
+    public void testMultiplyByScalar() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
@@ -457,7 +461,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testPow(){
+    public void testPow() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -506,7 +510,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testSqrt(){
+    public void testSqrt() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double modulus = randomizer.nextDouble(MIN_MODULUS, MAX_MODULUS);
         double phase = randomizer.nextDouble(MIN_PHASE, MAX_PHASE);
@@ -554,7 +558,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testEquals(){
+    public void testEquals() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real1 = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
@@ -566,15 +570,15 @@ public class ComplexTest {
         Complex c1 = new Complex(real1, imaginary1);
         Complex c2 = new Complex(real1, imaginary1);
         Complex c3 = new Complex(real2, imaginary2);
-        
-        assertTrue(c1.equals(c1));
-        assertTrue(c1.equals(c2));
-        assertFalse(c1.equals(c3));
-        assertFalse(c1.equals(new Object()));
+
+        assertEquals(c1, c1);
+        assertEquals(c1, c2);
+        assertNotEquals(c1, c3);
+        assertNotEquals(c1, new Object());
     }
     
     @Test
-    public void testClone(){
+    public void testClone() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -586,7 +590,7 @@ public class ComplexTest {
     }
     
     @Test
-    public void testCopyFrom(){
+    public void testCopyFrom() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE,

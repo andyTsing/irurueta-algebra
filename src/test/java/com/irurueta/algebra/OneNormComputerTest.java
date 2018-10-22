@@ -1,54 +1,63 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.OneNormComputer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 22, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
+
 import static org.junit.Assert.*;
-import org.junit.*;
 
 public class OneNormComputerTest {
     
-    public static final int MIN_LIMIT = 0;
-    public static final int MAX_LIMIT = 50;
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
-    public static final int MIN_LENGTH = 1;
-    public static final int MAX_LENGTH = 100;
-    public static final double ABSOLUTE_ERROR = 1e-6;
+    private static final int MIN_LIMIT = 0;
+    private static final int MAX_LIMIT = 50;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
+    private static final int MIN_LENGTH = 1;
+    private static final int MAX_LENGTH = 100;
+    private static final double ABSOLUTE_ERROR = 1e-6;
     
-    public OneNormComputerTest() {}
+    public OneNormComputerTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {}
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
     
     @Test
-    public void testGetNormType(){
+    public void testGetNormType() {
         OneNormComputer normComputer = new OneNormComputer();
         assertNotNull(normComputer);
         assertEquals(normComputer.getNormType(), NormType.ONE_NORM);
     }
     
     @Test
-    public void testGetNormMatrix() throws WrongSizeException{
+    public void testGetNormMatrix() throws WrongSizeException {
         OneNormComputer normComputer = new OneNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -58,9 +67,9 @@ public class OneNormComputerTest {
         double value;
         
         Matrix m = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
+        for (int j = 0; j < columns; j++) {
             colSum = 0.0;
-            for(int i = 0; i < rows; i++){
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
                 m.setElementAt(i, j, value);
                 colSum += Math.abs(value);
@@ -87,7 +96,7 @@ public class OneNormComputerTest {
     }
     
     @Test
-    public void testGetNormArray(){
+    public void testGetNormArray() {
         OneNormComputer normComputer = new OneNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
@@ -96,7 +105,7 @@ public class OneNormComputerTest {
         double value;
         
         double[] v = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
             v[i] = value;
             sum += Math.abs(value);
@@ -115,7 +124,7 @@ public class OneNormComputerTest {
     }
     
     @Test
-    public void testNormWithJacobian() throws AlgebraException{
+    public void testNormWithJacobian() throws AlgebraException {
         OneNormComputer normComputer = new OneNormComputer();
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
@@ -123,7 +132,7 @@ public class OneNormComputerTest {
         double value;
         
         double[] v = new double[length];
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
             v[i] = value;
             sum += Math.abs(value);
@@ -139,10 +148,10 @@ public class OneNormComputerTest {
                 transposeAndReturnNew());  
         
         //Force WrongSizeException
-        try{
+        try {
             OneNormComputer.norm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         jacobian = new Matrix(1, length);
         assertEquals(normComputer.getNorm(v, jacobian), norm, ABSOLUTE_ERROR);
@@ -151,9 +160,9 @@ public class OneNormComputerTest {
                 transposeAndReturnNew()); 
         
         //Force WrongSizeException
-        try{
+        try {
             normComputer.getNorm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}        
+        } catch (WrongSizeException ignore) { }
     }
 }

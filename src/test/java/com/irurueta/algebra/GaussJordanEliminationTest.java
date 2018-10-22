@@ -1,21 +1,26 @@
-/**
- * @file
- * This file contains unit tests for
- * com.irurueta.algebra.GaussJordanElimination
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date May 20, 2015
+/*
+ * Copyright (C) 2015 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
+import org.junit.*;
+
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 public class GaussJordanEliminationTest {
@@ -28,24 +33,24 @@ public class GaussJordanEliminationTest {
 
     public static final double ABSOLUTE_ERROR = 1e-6;
     
-    public GaussJordanEliminationTest() {}
+    public GaussJordanEliminationTest() { }
     
     @BeforeClass
-    public static void setUpClass() {}
+    public static void setUpClass() { }
     
     @AfterClass
-    public static void tearDownClass() {}
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {}
+    public void setUp() { }
     
     @After
-    public void tearDown() {}
+    public void tearDown() { }
 
     @Test
     public void testProcessMatrix() throws WrongSizeException, 
             SingularMatrixException, RankDeficientMatrixException, 
-            DecomposerException{
+            DecomposerException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
         int colsB = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -74,33 +79,33 @@ public class GaussJordanEliminationTest {
         //non square matrix a
         a = new Matrix(rows, rows + 1);
         b = new Matrix(rows, colsB);        
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //different rows
         a = new Matrix(rows, rows);
         b = new Matrix(rows + 1, colsB);        
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}     
+        } catch (WrongSizeException ignore) { }
         
         //Force SingularMatrixException
         a = new Matrix(rows, rows);
         b = Matrix.createWithUniformRandomValues(rows, colsB, MIN_RANDOM_VALUE, 
                 MAX_RANDOM_VALUE);
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("SingularMatrixException expected but not thrown");
-        }catch(SingularMatrixException e){}             
+        } catch (SingularMatrixException ignore) { }
     }
     
     @Test
     public void testProcessArray() throws WrongSizeException, 
             SingularMatrixException, RankDeficientMatrixException, 
-            DecomposerException{
+            DecomposerException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
                 
@@ -129,26 +134,26 @@ public class GaussJordanEliminationTest {
         //non square matrix a
         a = new Matrix(rows, rows + 1);
         b = new double[rows];
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //different lengths
         a = new Matrix(rows, rows);
         b = new double[rows + 1];
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}     
+        } catch (WrongSizeException ignore) { }
         
         //Force SingularMatrixException
         a = new Matrix(rows, rows);
         b = new double[rows];
-        try{
+        try {
             GaussJordanElimination.process(a, b);
             fail("SingularMatrixException expected but not thrown");
-        }catch(SingularMatrixException e){}             
+        } catch (SingularMatrixException ignore) { }
     }
     
     @Test
@@ -159,7 +164,6 @@ public class GaussJordanEliminationTest {
         int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
                 
         Matrix a, a2, invA;
-        double[] b, b2, x;
         
         //Test for non-singular square matrix
         a = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
@@ -177,17 +181,17 @@ public class GaussJordanEliminationTest {
         
         //non square matrix a
         a = new Matrix(rows, rows + 1);
-        try{
+        try {
             GaussJordanElimination.inverse(a);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force SingularMatrixException
         a = new Matrix(rows, rows);
-        try{
+        try {
             GaussJordanElimination.inverse(a);
             fail("SingularMatrixException expected but not thrown");
-        }catch(SingularMatrixException e){}             
+        } catch (SingularMatrixException ignore) { }
         
     }
 }

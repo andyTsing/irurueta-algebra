@@ -1,47 +1,54 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.QRDecomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 19, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import java.util.Random;
 import org.junit.After;
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Random;
+
+import static org.junit.Assert.*;
+
+@SuppressWarnings("Duplicates")
 public class QRDecomposerTest {
     
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
-    public static final double MIN_RANDOM_VALUE = 0.0;
-    public static final double MIN_RANDOM_VALUE2 = 1.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
+    private static final double MIN_RANDOM_VALUE = 0.0;
+    private static final double MIN_RANDOM_VALUE2 = 1.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
-    public static final double ABSOLUTE_ERROR = 1e-6;
-    public static final double RELATIVE_ERROR = 0.35;
-    public static final double VALID_RATIO = 0.25;
+    private static final double ABSOLUTE_ERROR = 1e-6;
+    private static final double RELATIVE_ERROR = 0.35;
+    private static final double VALID_RATIO = 0.25;
     
-    public QRDecomposerTest() {
-    }
+    public QRDecomposerTest() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
-    public void testConstructor() throws WrongSizeException, LockedException{
+    public void testConstructor() throws WrongSizeException, LockedException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -78,7 +85,7 @@ public class QRDecomposerTest {
     
     @Test
     public void testGetSetInputMatrixAndIsReady() throws WrongSizeException, 
-        LockedException, NotReadyException, DecomposerException{
+        LockedException, NotReadyException, DecomposerException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -118,7 +125,7 @@ public class QRDecomposerTest {
     
     @Test
     public void testDecompose() throws WrongSizeException, NotReadyException, 
-        LockedException, DecomposerException, NotAvailableException{
+            LockedException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -151,8 +158,8 @@ public class QRDecomposerTest {
         
         assertEquals(m.getRows(), m2.getRows());
         assertEquals(m.getColumns(), m2.getColumns());
-        for(int j = 0; j < m2.getColumns(); j++){
-            for(int i = 0; i < m2.getRows(); i++){
+        for (int j = 0; j < m2.getColumns(); j++) {
+            for (int i = 0; i < m2.getRows(); i++) {
                 assertEquals(m.getElementAt(i, j), m2.getElementAt(i, j),
                         ABSOLUTE_ERROR);
             }
@@ -163,22 +170,22 @@ public class QRDecomposerTest {
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         decomposer.setInputMatrix(m);
-        try{
+        try {
             decomposer.decompose();
             fail("DecomposerException expected but not thrown");
-        }catch(DecomposerException e){}
+        } catch (DecomposerException ignore) { }
         
         //Force NotReadyException
         decomposer = new QRDecomposer();
-        try{
+        try {
             decomposer.decompose();
             fail("NotReadyException expected but not thrown");
-        }catch(NotReadyException e){}        
+        } catch (NotReadyException ignore) { }
     }
     
     @Test
     public void testIsFullRank() throws WrongSizeException, LockedException, 
-        NotReadyException, DecomposerException, NotAvailableException{
+            NotReadyException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS);
@@ -193,18 +200,18 @@ public class QRDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.isFullRank();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         
         //Force IllegalArgumentException with a negative round error
-        try{
+        try {
             decomposer.isFullRank(-1.0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         assertTrue(decomposer.isFullRank(ABSOLUTE_ERROR));
         
@@ -219,7 +226,7 @@ public class QRDecomposerTest {
     
     @Test
     public void testGetH() throws WrongSizeException, LockedException, 
-        NotReadyException, DecomposerException, NotAvailableException{
+            NotReadyException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -233,10 +240,10 @@ public class QRDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.getR();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         r = decomposer.getR();
@@ -244,9 +251,9 @@ public class QRDecomposerTest {
         assertEquals(r.getRows(), rows);
         assertEquals(r.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                if(i > j){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i > j) {
                     assertEquals(r.getElementAt(i, j), 0.0, 
                             ABSOLUTE_ERROR);
                 }
@@ -256,7 +263,7 @@ public class QRDecomposerTest {
     
     @Test
     public void testGetR() throws WrongSizeException, LockedException, 
-        NotReadyException, DecomposerException, NotAvailableException{
+            NotReadyException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -271,10 +278,10 @@ public class QRDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvcailableException
-        try{
+        try {
             decomposer.getQ();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         
@@ -299,10 +306,10 @@ public class QRDecomposerTest {
         decomposer.setInputMatrix(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.getQ();
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         
         decomposer.decompose();
         
@@ -325,8 +332,8 @@ public class QRDecomposerTest {
     
     @Test
     public void testSolve() throws WrongSizeException, 
-        RankDeficientMatrixException, NotReadyException, LockedException, 
-        DecomposerException, NotAvailableException{
+            RankDeficientMatrixException, NotReadyException, LockedException,
+            DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 4, MAX_ROWS + 2);
@@ -344,17 +351,17 @@ public class QRDecomposerTest {
         QRDecomposer decomposer = new QRDecomposer(m);
         
         //Force NotAvailableException
-        try{
+        try {
             decomposer.solve(b);
             fail("NotAvailableException expected but not thrown");
-        }catch(NotAvailableException e){}
+        } catch (NotAvailableException ignore) { }
         decomposer.decompose();
         
         //Force IllegalArgumentException
-        try{
+        try {
             decomposer.solve(b, -1.0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         s = decomposer.solve(b);
         
@@ -377,10 +384,10 @@ public class QRDecomposerTest {
         decomposer.decompose();
         
         //Force IllegalArgumentException
-        try{
+        try {
             decomposer.solve(b, -1.0);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         s = decomposer.solve(b);
         
@@ -392,11 +399,13 @@ public class QRDecomposerTest {
         assertEquals(b2.getColumns(), b.getColumns());
         
         int valid = 0, total = b2.getColumns() * b2.getRows();
-        for(int j = 0; j < b2.getColumns(); j++){
-            for(int i = 0; i < b2.getRows(); i++){
+        for (int j = 0; j < b2.getColumns(); j++) {
+            for (int i = 0; i < b2.getRows(); i++) {
                 relError = Math.abs(RELATIVE_ERROR * b2.getElementAt(i, j));
-                if(Math.abs(b2.getElementAt(i, j) - b.getElementAt(i, j)) < 
-                        relError) valid++;
+                if (Math.abs(b2.getElementAt(i, j) - b.getElementAt(i, j)) <
+                        relError) {
+                    valid++;
+                }
             }
         }
         
@@ -409,10 +418,10 @@ public class QRDecomposerTest {
                 MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
         decomposer.setInputMatrix(m);
         decomposer.decompose();
-        try{
+        try {
             decomposer.solve(b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Test for Rank deficient matrix only for squared matrices
         //(for other sizes, rank deficiency might not be detected and solve
@@ -422,9 +431,9 @@ public class QRDecomposerTest {
                 MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
         decomposer.setInputMatrix(m);
         decomposer.decompose();
-        try{
+        try {
             decomposer.solve(b, ABSOLUTE_ERROR);
             fail("RankDeficientMatrixException expected but not thrown");
-        }catch(RankDeficientMatrixException e){}
+        } catch (RankDeficientMatrixException ignore) { }
     }
 }

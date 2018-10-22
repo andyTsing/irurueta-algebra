@@ -1,17 +1,26 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.statistics.MultivariateGaussianRandomizer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date August 11, 2016.
+/*
+ * Copyright (C) 2016 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package com.irurueta.statistics;
 
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.CholeskyDecomposer;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
+
 import java.util.Random;
 
 /**
@@ -19,6 +28,7 @@ import java.util.Random;
  * having the specified mean and covariance. By default mean is equal to zero 
  * and the covariance is equal to the identity (unitary standard deviation).
  */
+@SuppressWarnings("WeakerAccess")
 public class MultivariateGaussianRandomizer {
     
     /**
@@ -60,7 +70,7 @@ public class MultivariateGaussianRandomizer {
      */
     public MultivariateGaussianRandomizer(Random internalRandom) 
             throws NullPointerException {
-        if(internalRandom == null) {
+        if (internalRandom == null) {
             throw new NullPointerException();
         }
         
@@ -68,7 +78,7 @@ public class MultivariateGaussianRandomizer {
         mMean = new double[1];
         try {
             mCovariance = mL = Matrix.identity(1, 1);
-        } catch(WrongSizeException ignore) { /* never thrown */ }
+        } catch (WrongSizeException ignore) { /* never thrown */ }
     }
     
     /**
@@ -102,7 +112,7 @@ public class MultivariateGaussianRandomizer {
     public MultivariateGaussianRandomizer(Random internalRandom, double[] mean,
             Matrix covariance) throws WrongSizeException, 
             InvalidCovarianceMatrixException, NullPointerException {
-        if(internalRandom == null) {
+        if (internalRandom == null) {
             throw new NullPointerException();
         }
         
@@ -139,7 +149,7 @@ public class MultivariateGaussianRandomizer {
     public final void setMeanAndCovariance(double[] mean, Matrix covariance) 
             throws WrongSizeException, InvalidCovarianceMatrixException {
         int length = mean.length;
-        if(covariance.getRows() != length || 
+        if (covariance.getRows() != length ||
                 covariance.getColumns() != length) {
             throw new WrongSizeException("mean must have same covariance size");
         }
@@ -147,7 +157,7 @@ public class MultivariateGaussianRandomizer {
         try {
             CholeskyDecomposer decomposer = new CholeskyDecomposer(covariance);
             decomposer.decompose();
-            if(!decomposer.isSPD()) {
+            if (!decomposer.isSPD()) {
                 throw new InvalidCovarianceMatrixException(
                         "covariance matrix must be symmetric positive " + 
                         "definite (non singular)");                
@@ -157,7 +167,7 @@ public class MultivariateGaussianRandomizer {
             mCovariance = covariance;
             
             mL = decomposer.getL();
-        } catch(AlgebraException e) {
+        } catch (AlgebraException e) {
             throw new InvalidCovarianceMatrixException(
                     "covariance matrix must be square", e);            
         }
@@ -171,24 +181,24 @@ public class MultivariateGaussianRandomizer {
     public void next(double[] values) throws IllegalArgumentException {  
         int n = values.length;
         
-        if(n != mMean.length) {
+        if (n != mMean.length) {
             throw new IllegalArgumentException("values must have mean length");
         }
         
         //generate initial Gaussian values with zero mean and unitary standard 
         //deviation
         double[] tmp = new double[n];
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             tmp[i] = mInternalRandom.nextGaussian();
         }
         
         //multiply square root of covariance (its Lower triangular Cholesky 
         //decomposition) by the generated values and add mean
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             values[i] = 0.0;
             
-            for(int j = 0; j < n; j++) {
-                if(i >= j) {
+            for (int j = 0; j < n; j++) {
+                if (i >= j) {
                     //only evaluate lower triangular portion
                     values[i] += mL.getElementAt(i, j) * tmp[j];
                 }

@@ -1,10 +1,17 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.LUDecomposer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 17, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
@@ -17,7 +24,8 @@ package com.irurueta.algebra;
  * LU decomposition is a useful and fast way of solving systems of linear
  * equations, computing determinants or finding whether a matrix is singular.
  */
-public class LUDecomposer extends Decomposer{
+@SuppressWarnings({"WeakerAccess", "Duplicates"})
+public class LUDecomposer extends Decomposer {
 
     /**
      * Constant defining default round error when determining singularity of
@@ -32,24 +40,24 @@ public class LUDecomposer extends Decomposer{
     public static final double MIN_ROUND_ERROR = 0.0;
     
     /**
-     * Internal matrix containing resuts of decomposition
+     * Internal matrix containing resuts of decomposition.
      */
     private Matrix lu;
     
     /**
-     * Internal array containing pivotings after decomposition
+     * Internal array containing pivotings after decomposition.
      */
     int[] piv;
     
     /**
-     * Member containing pivot sign after decomposition
+     * Member containing pivot sign after decomposition.
      */
     int pivSign;
     
     /**
      * Constructor of this class.
      */
-    public LUDecomposer(){
+    public LUDecomposer() {
         super();
         lu = null;
         piv = null;
@@ -59,7 +67,7 @@ public class LUDecomposer extends Decomposer{
      * Constructor of this class.
      * @param inputMatrix Reference to input matrix to be decomposed
      */
-    public LUDecomposer(Matrix inputMatrix){
+    public LUDecomposer(Matrix inputMatrix) {
         super(inputMatrix);
         lu = null;
         piv = null;
@@ -81,7 +89,7 @@ public class LUDecomposer extends Decomposer{
      * method while this instance remains locked.
      */
     @Override
-    public void setInputMatrix(Matrix inputMatrix) throws LockedException{
+    public void setInputMatrix(Matrix inputMatrix) throws LockedException {
         super.setInputMatrix(inputMatrix);
         lu = null;
         piv = null;
@@ -128,13 +136,19 @@ public class LUDecomposer extends Decomposer{
     public void decompose() throws NotReadyException, LockedException, 
         DecomposerException {
         
-        if(!isReady()) throw new NotReadyException();
-        if(isLocked()) throw new LockedException();
+        if (!isReady()) {
+            throw new NotReadyException();
+        }
+        if (isLocked()) {
+            throw new LockedException();
+        }
         
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
         
-        if(columns > rows) throw new DecomposerException();
+        if (columns > rows) {
+            throw new DecomposerException();
+        }
         
         locked = true;
         
@@ -142,23 +156,23 @@ public class LUDecomposer extends Decomposer{
         lu = inputMatrix.clone();
         
         piv = new int[rows];
-        for(int i = 0; i < rows; i++){
+        for (int i = 0; i < rows; i++) {
             piv[i] = i;
         }
         
         pivSign = 1;
         
         //Main loop
-        for(int k = 0; k < columns; k++){
+        for (int k = 0; k < columns; k++) {
             //Find pivot
             int p = k;
-            for(int i = k + 1; i < rows; i++){
+            for (int i = k + 1; i < rows; i++) {
                 p = Math.abs(lu.getElementAt(i, k)) > 
                         Math.abs(lu.getElementAt(p, k)) ? i : p;
             }
             //Exchange if necessary
-            if(p != k){
-                for(int j = 0; j < columns; j++){
+            if (p != k) {
+                for (int j = 0; j < columns; j++) {
                     double t = lu.getElementAt(p, j);
                     lu.setElementAt(p, j, lu.getElementAt(k, j));
                     lu.setElementAt(k, j, t);
@@ -169,11 +183,11 @@ public class LUDecomposer extends Decomposer{
                 pivSign = -pivSign;
             }
             //Compute multipliers and eliminate k-th column
-            if(lu.getElementAt(k, k) != 0.0){
-                for(int i = k + 1; i < rows; i++){
+            if (lu.getElementAt(k, k) != 0.0) {
+                for (int i = k + 1; i < rows; i++) {
                     lu.setElementAt(i, k, lu.getElementAt(i, k) / 
                             lu.getElementAt(k, k));
-                    for(int j = k + 1; j < columns; j++){
+                    for (int j = k + 1; j < columns; j++) {
                         lu.setElementAt(i, j, lu.getElementAt(i, j) - 
                                 lu.getElementAt(i, k) * lu.getElementAt(k, j));
                     }
@@ -209,7 +223,7 @@ public class LUDecomposer extends Decomposer{
      * @see #decompose()
      */    
     public boolean isSingular() throws NotAvailableException, 
-            WrongSizeException{
+            WrongSizeException {
         return isSingular(DEFAULT_ROUND_ERROR);
     }
     
@@ -243,24 +257,31 @@ public class LUDecomposer extends Decomposer{
      */
     public boolean isSingular(double roundingError) 
             throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException{
+            IllegalArgumentException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
-        if(roundingError < MIN_ROUND_ERROR) 
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
+        if (roundingError < MIN_ROUND_ERROR) {
             throw new IllegalArgumentException();
+        }
         
         //A matrix is singular when its determinant is zero. Hence, in order to
         //compute singularity matrix must be square
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
-        if(rows != columns) throw new WrongSizeException();
+        if (rows != columns) {
+            throw new WrongSizeException();
+        }
         
         //Since we have computed LU decomposition into triangular matrices. The
         //determinant of a triangular matrix is the product of its diagonal
         //elements. Hence, if any element in the diagonal is zero, input matrix
         //will be singular.
-        for(int j = 0; j < columns; j++){
-            if(lu.getElementAt(j, j) == 0.0) return true;
+        for (int j = 0; j < columns; j++) {
+            if (lu.getElementAt(j, j) == 0.0) {
+                return true;
+            }
         }
         return false;
     }
@@ -273,33 +294,35 @@ public class LUDecomposer extends Decomposer{
      * achieve this, we need to apply pivot correction.
      * A pivot corrected version of this matrix can be obtained by calling
      * method getL().
-     * @param pivottedL Lower triangular matrix
+     * @param pivottedL Lower triangular matrix.
      * @throws NotAvailableException  Exception thrown if attempting to call
      * this method before computing LU decomposition. To avoid this exception
      * call decompose() method first.
      * @see #getL()
      * @see #decompose()
      */    
-    public void getPivottedL(Matrix pivottedL) throws NotAvailableException{
+    public void getPivottedL(Matrix pivottedL) throws NotAvailableException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = lu.getRows();
         int columns = lu.getColumns();
         
-        if(pivottedL.getRows() != rows || pivottedL.getColumns() != columns){
-            try{
+        if (pivottedL.getRows() != rows || pivottedL.getColumns() != columns) {
+            try {
                 pivottedL.resize(rows, columns);
-            }catch(WrongSizeException ignore){}
+            } catch (WrongSizeException ignore) { }
         }
         
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                if(i > j){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (i > j) {
                     pivottedL.setElementAt(i, j, lu.getElementAt(i, j));
-                }else if(i == j){
+                } else if (i == j) {
                     pivottedL.setElementAt(i, j, 1.0);
-                }else{
+                } else {
                     pivottedL.setElementAt(i, j, 0.0);
                 }
             }
@@ -314,24 +337,26 @@ public class LUDecomposer extends Decomposer{
      * achieve this, we need to apply pivot correction.
      * A pivot corrected version of this matrix can be obtained by calling
      * method getL().
-     * @return Lower triangular matrix
+     * @return Lower triangular matrix.
      * @throws NotAvailableException  Exception thrown if attempting to call
      * this method before computing LU decomposition. To avoid this exception
      * call decompose() method first.
      * @see #getL()
      * @see #decompose()
      */
-    public Matrix getPivottedL() throws NotAvailableException{
+    public Matrix getPivottedL() throws NotAvailableException {
 
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = lu.getRows();
         int columns = lu.getColumns();
         
         Matrix out = null;
-        try{
+        try {
             out = new Matrix(rows, columns);
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         getPivottedL(out);
         return out;
     }
@@ -352,25 +377,27 @@ public class LUDecomposer extends Decomposer{
      * call decompose() method first.
      * @see #decompose()
      */    
-    public void getL(Matrix l) throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public void getL(Matrix l) throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = lu.getRows();
         int columns = lu.getColumns();
         
-        if(l.getRows() != rows || l.getColumns() != columns){
-            try{
+        if (l.getRows() != rows || l.getColumns() != columns) {
+            try {
                 l.resize(rows, columns);
-            }catch(WrongSizeException ignore){}
+            } catch (WrongSizeException ignore) { }
         }
         
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < columns; j++){
-                if(i > j){
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (i > j) {
                     l.setElementAt(piv[i], j, lu.getElementAt(i, j));
-                }else if(i == j){
+                } else if (i == j) {
                     l.setElementAt(piv[i], j, 1.0);
-                }else{
+                } else {
                     l.setElementAt(piv[i], j, 0.0);
                 }
             }
@@ -394,14 +421,16 @@ public class LUDecomposer extends Decomposer{
      * @see #decompose()
      */
     public Matrix getL() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int rows = lu.getRows();
         int columns = lu.getColumns();
         Matrix out = null;
-        try{
+        try {
             out = new Matrix(rows, columns);
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         getL(out);        
         return out;
     }
@@ -419,21 +448,23 @@ public class LUDecomposer extends Decomposer{
      * call decompose() method first.
      * @see #decompose()
      */    
-    public void getU(Matrix u) throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public void getU(Matrix u) throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int columns = lu.getColumns();
         
-        if(u.getRows() != columns || u.getColumns() != columns){
-            try{
+        if (u.getRows() != columns || u.getColumns() != columns) {
+            try {
                 u.resize(columns, columns);
-            }catch(WrongSizeException ignore){}
+            } catch (WrongSizeException ignore) { }
         }
-        for(int i = 0; i < columns; i++){
-            for(int j = 0; j < columns; j++){
-                if(i <= j){
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < columns; j++) {
+                if (i <= j) {
                     u.setElementAt(i, j, lu.getElementAt(i, j));
-                }else{
+                } else {
                     u.setElementAt(i, j, 0.0);
                 }
             }
@@ -453,14 +484,16 @@ public class LUDecomposer extends Decomposer{
      * call decompose() method first.
      * @see #decompose()
      */
-    public Matrix getU() throws NotAvailableException{
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+    public Matrix getU() throws NotAvailableException {
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int columns = lu.getColumns();
         Matrix out = null;
-        try{
+        try {
             out = new Matrix(columns, columns);
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         getU(out);
         return out;
     }
@@ -472,10 +505,11 @@ public class LUDecomposer extends Decomposer{
      * this method before computing LU decomposition. To avoid this exception 
      * call decompose() method first.
      */
-    public int[] getPivot() throws NotAvailableException{
+    public int[] getPivot() throws NotAvailableException {
         
-        if(!this.isDecompositionAvailable())
-            throw new NotAvailableException();        
+        if (!this.isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         return piv;
     }
     
@@ -504,18 +538,22 @@ public class LUDecomposer extends Decomposer{
      * @see #decompose()
      */
     public double determinant() throws NotAvailableException, 
-            WrongSizeException{
+            WrongSizeException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         //Determinants can only be computed on squared matrices
         int rows = inputMatrix.getRows();
         int columns = inputMatrix.getColumns();
         
-        if(rows != columns) throw new WrongSizeException();
+        if (rows != columns) {
+            throw new WrongSizeException();
+        }
         
         double d = pivSign;
-        for(int j = 0; j < columns; j++){
+        for (int j = 0; j < columns; j++) {
             d *= lu.getElementAt(j, j);
         }
         
@@ -565,7 +603,7 @@ public class LUDecomposer extends Decomposer{
      * @see #decompose()
      */        
     public void solve(Matrix b, Matrix result) throws NotAvailableException, 
-            WrongSizeException, SingularMatrixException{
+            WrongSizeException, SingularMatrixException {
         solve(b, DEFAULT_ROUND_ERROR, result);
     }
     
@@ -615,40 +653,48 @@ public class LUDecomposer extends Decomposer{
      */    
     public void solve(Matrix b, double roundingError, Matrix result) 
             throws NotAvailableException, WrongSizeException, 
-            SingularMatrixException{
+            SingularMatrixException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
-        if(b.getRows() != inputMatrix.getRows())
+        if (b.getRows() != inputMatrix.getRows()) {
             throw new WrongSizeException();
+        }
         
-        if(roundingError < MIN_ROUND_ERROR) 
+        if (roundingError < MIN_ROUND_ERROR) {
             throw new IllegalArgumentException();
+        }
         
         //Copy right hand side with pivoting
         int rows = lu.getRows();
         int columns = lu.getColumns();
         int colsB = b.getColumns();
         
-        if(rows != columns) throw new WrongSizeException();
-        if(isSingular(roundingError)) throw new SingularMatrixException();
+        if (rows != columns) {
+            throw new WrongSizeException();
+        }
+        if (isSingular(roundingError)) {
+            throw new SingularMatrixException();
+        }
         
         //resize result matrix if needed
-        if(result.getRows() != columns || result.getColumns() != colsB){
+        if (result.getRows() != columns || result.getColumns() != colsB) {
             result.resize(columns, colsB);
         }
         result.initialize(0.0);
         
-        for(int i = 0; i < columns; i++){
-            for(int j = 0; j < colsB; j++){
+        for (int i = 0; i < columns; i++) {
+            for (int j = 0; j < colsB; j++) {
                 result.setElementAt(i, j, b.getElementAt(piv[i], j));
             }
         }
         
         //Solve L * Y = b(piv, :)
-        for(int k = 0; k < columns; k++){
-            for(int i = k + 1; i < columns; i++){
-                for(int j = 0; j < colsB; j++){
+        for (int k = 0; k < columns; k++) {
+            for (int i = k + 1; i < columns; i++) {
+                for (int j = 0; j < colsB; j++) {
                     result.setElementAt(i, j, result.getElementAt(i, j) - 
                             result.getElementAt(k, j) * lu.getElementAt(i, k));
                 }
@@ -656,13 +702,13 @@ public class LUDecomposer extends Decomposer{
         }
         
         //Solve U * X = Y
-        for(int k = columns - 1; k >= 0; k--){
-            for(int j = 0; j < colsB; j++){
+        for (int k = columns - 1; k >= 0; k--) {
+            for (int j = 0; j < colsB; j++) {
                 result.setElementAt(k, j, result.getElementAt(k, j) / 
                         lu.getElementAt(k, k));
             }
-            for(int i = 0; i < k; i++){
-                for(int j = 0; j < colsB; j++){
+            for (int i = 0; i < k; i++) {
+                for (int j = 0; j < colsB; j++) {
                     result.setElementAt(i, j, result.getElementAt(i, j) -
                             result.getElementAt(k, j) * lu.getElementAt(i, k));
                 }
@@ -710,7 +756,7 @@ public class LUDecomposer extends Decomposer{
      * @see #decompose()
      */    
     public Matrix solve(Matrix b) throws NotAvailableException, 
-            WrongSizeException, SingularMatrixException{
+            WrongSizeException, SingularMatrixException {
         return solve(b, DEFAULT_ROUND_ERROR);
     }
     
@@ -758,9 +804,11 @@ public class LUDecomposer extends Decomposer{
      */
     public Matrix solve(Matrix b, double roundingError) 
             throws NotAvailableException, WrongSizeException, 
-            SingularMatrixException, IllegalArgumentException{
+            SingularMatrixException, IllegalArgumentException {
         
-        if(!isDecompositionAvailable()) throw new NotAvailableException();
+        if (!isDecompositionAvailable()) {
+            throw new NotAvailableException();
+        }
         
         int columns = lu.getColumns();
         int colsB = b.getColumns();

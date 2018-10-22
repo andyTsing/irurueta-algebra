@@ -1,55 +1,59 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.Utils
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 23, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import java.util.Random;
 import org.junit.*;
+
+import java.util.Random;
+
 import static org.junit.Assert.*;
 
+@SuppressWarnings("Duplicates")
 public class UtilsTest {
     
-    public static final double MIN_RANDOM_VALUE = 0.0;
-    public static final double MAX_RANDOM_VALUE = 50.0;
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
-    public static final int MIN_LENGTH = 1;
-    public static final int MAX_LENGTH = 100;
+    private static final double MIN_RANDOM_VALUE = 0.0;
+    private static final double MAX_RANDOM_VALUE = 50.0;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
+    private static final int MIN_LENGTH = 1;
+    private static final int MAX_LENGTH = 100;
+
+    private static final double ROUND_ERROR = 1e-3;
+    private static final double BIG_ROUND_ERROR = 1.0;
+    private static final double ABSOLUTE_ERROR = 1e-6;
     
-    public static final double RELATIVE_ERROR = 1.0;
-    public static final double ROUND_ERROR = 1e-3;
-    public static final double BIG_ROUND_ERROR = 1.0;
-    public static final double ABSOLUTE_ERROR = 1e-6;
-    
-    public UtilsTest() {
-    }
+    public UtilsTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
-    public void testTrace() throws WrongSizeException{
+    public void testTrace() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -58,9 +62,11 @@ public class UtilsTest {
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         double trace = 0.0;
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j) trace += m.getElementAt(i, j);
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
+                    trace += m.getElementAt(i, j);
+                }
             }
         }
         
@@ -69,7 +75,7 @@ public class UtilsTest {
     
     @Test
     public void testCond() throws WrongSizeException, NotReadyException, 
-        LockedException, DecomposerException, NotAvailableException{
+            LockedException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -89,7 +95,7 @@ public class UtilsTest {
     
     @Test
     public void testRank() throws WrongSizeException, NotReadyException, 
-        LockedException, DecomposerException, NotAvailableException{
+            LockedException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -106,13 +112,15 @@ public class UtilsTest {
     }
     
     @Test
-    public void testDet() throws WrongSizeException, NotReadyException, LockedException, DecomposerException, NotAvailableException{
+    public void testDet() throws WrongSizeException, NotReadyException,
+            LockedException, DecomposerException, NotAvailableException {
+
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns;
-        do{
+        do {
             columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
-        }while(rows == columns);
+        } while (rows == columns);
         
         //Test for square matrix
         Matrix m = Matrix.createWithUniformRandomValues(rows, rows, 
@@ -127,16 +135,16 @@ public class UtilsTest {
         //Test for non-square matrix (Force WrongSizeException)
         m = Matrix.createWithUniformRandomValues(rows, columns, 
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-        try{
+        try {
             Utils.det(m);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
     public void testSolve() throws WrongSizeException, NotReadyException, 
-        LockedException, DecomposerException, NotAvailableException, 
-        SingularMatrixException, RankDeficientMatrixException{
+            LockedException, DecomposerException, NotAvailableException,
+            SingularMatrixException, RankDeficientMatrixException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
@@ -160,10 +168,10 @@ public class UtilsTest {
         
         //Test for singular square matrix (Force RankDeficientMatrixException)
         m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
-        try{
+        try {
             Utils.solve(m, b);
             fail("RankDeficientMatrixException expected but not thrown");
-        }catch(RankDeficientMatrixException e){}
+        } catch (RankDeficientMatrixException ignore) { }
         
         //Test for non-square (rows > columns) non-rank deficient matrix
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
@@ -182,23 +190,23 @@ public class UtilsTest {
         m = DecomposerHelper.getSingularMatrixInstance(columns, rows);
         b = Matrix.createWithUniformRandomValues(columns, colsB, 
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-        try{
+        try {
             Utils.solve(m, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Test for b having different number of rows than m
         m = DecomposerHelper.getSingularMatrixInstance(rows, columns);
         b = Matrix.createWithUniformRandomValues(columns, colsB, 
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-        try{
+        try {
             Utils.solve(m, b);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
-    public void testNormF() throws WrongSizeException{
+    public void testNormF() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -212,7 +220,7 @@ public class UtilsTest {
     }
     
     @Test
-    public void testNormInf() throws WrongSizeException{
+    public void testNormInf() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -227,7 +235,7 @@ public class UtilsTest {
     
     @Test
     public void testNorm2() throws WrongSizeException, NotReadyException, 
-        LockedException, DecomposerException, NotAvailableException{
+            LockedException, DecomposerException, NotAvailableException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -244,7 +252,7 @@ public class UtilsTest {
     }
     
     @Test
-    public void testNorm1() throws WrongSizeException{
+    public void testNorm1() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -259,7 +267,7 @@ public class UtilsTest {
     
     @Test
     public void testInverse() throws WrongSizeException, 
-        RankDeficientMatrixException, DecomposerException{
+        RankDeficientMatrixException, DecomposerException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -273,10 +281,10 @@ public class UtilsTest {
         
         //Test for singular square matrix (Force RankDeficientMatrixException)
         m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
-        try{
+        try {
             Utils.inverse(m);
             fail("RankDeficientMatrixException expected but not thrown");
-        }catch(RankDeficientMatrixException e){}
+        } catch (RankDeficientMatrixException ignore) { }
         
         //Test for non-square (rows > columns) non-singular matrix to find
         //pseudoinverse, hence we use BIG_RELATIVE_ERROR to test correctness
@@ -285,12 +293,12 @@ public class UtilsTest {
         
         identity = m.multiplyAndReturnNew(inverse);
         //Check identity is correct
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j){
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
                     assertEquals(identity.getElementAt(i, j), 1.0, 
                             BIG_ROUND_ERROR);
-                }else{
+                } else {
                     assertEquals(identity.getElementAt(i, j), 0.0, 
                             BIG_ROUND_ERROR);
                 }
@@ -299,14 +307,14 @@ public class UtilsTest {
         
         //Test for non-square (rows < columns) matrix (Force WrongSizeException)
         m = DecomposerHelper.getSingularMatrixInstance(columns, rows);
-        try{
+        try {
             Utils.inverse(m);
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
 
     @Test
     public void testInverse2() throws WrongSizeException, 
-        RankDeficientMatrixException, DecomposerException{
+            RankDeficientMatrixException, DecomposerException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -321,10 +329,10 @@ public class UtilsTest {
         
         //Test for singular square matrix (Force RankDeficientMatrixException)
         m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
-        try{
+        try {
             Utils.inverse(m, inverse);
             fail("RankDeficientMatrixException expected but not thrown");
-        }catch(RankDeficientMatrixException e){}
+        } catch (RankDeficientMatrixException ignore) { }
         
         //Test for non-square (rows > columns) non-singular matrix to find
         //pseudoinverse, hence we use BIG_RELATIVE_ERROR to test correctness
@@ -334,12 +342,12 @@ public class UtilsTest {
         
         identity = m.multiplyAndReturnNew(inverse);
         //Check identity is correct
-        for(int j = 0; j < rows; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j){
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
                     assertEquals(identity.getElementAt(i, j), 1.0, 
                             BIG_ROUND_ERROR);
-                }else{
+                } else {
                     assertEquals(identity.getElementAt(i, j), 0.0, 
                             BIG_ROUND_ERROR);
                 }
@@ -348,14 +356,14 @@ public class UtilsTest {
         
         //Test for non-square (rows < columns) matrix (Force WrongSizeException)
         m = DecomposerHelper.getSingularMatrixInstance(columns, rows);
-        try{
+        try {
             Utils.inverse(m, inverse);
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
     public void testPseudoInverse() throws WrongSizeException, 
-        DecomposerException{
+            DecomposerException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -386,7 +394,8 @@ public class UtilsTest {
     }
     
     @Test
-    public void testSkew1() throws WrongSizeException{
+    public void testSkew1() throws WrongSizeException {
+
         double[] array = new double[3];
         array[0] = 1.0;
         array[1] = 4.0;
@@ -443,14 +452,14 @@ public class UtilsTest {
         assertEquals(jacobian.getElementAt(8, 2), 0.0, 0.0);
         
         //Force WrongSizeException
-        try{
+        try {
             Utils.skewMatrix(array, m3, new Matrix(1,1));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
-    public void testSkew2() throws WrongSizeException{
+    public void testSkew2() throws WrongSizeException {
         Matrix m = new Matrix(3,1);
         m.setElementAt(0, 0, 1.0);
         m.setElementAt(1, 0, 4.0);
@@ -508,14 +517,15 @@ public class UtilsTest {
         assertEquals(jacobian.getElementAt(8, 2), 0.0, 0.0);  
         
         //Force WrongSizeException
-        try{
+        try {
             Utils.skewMatrix(m, m3, new Matrix(1,1));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
-    public void testCrossProduct1() throws WrongSizeException{
+    public void testCrossProduct1() throws WrongSizeException {
+
         double[] output;
         double[] array1 = new double[3];
         double[] array2 = new double[3];
@@ -548,35 +558,35 @@ public class UtilsTest {
         assertEquals(jacobian2, Utils.skewMatrix(array2));
         
         //Force WrongSizeException
-        try{
+        try {
             Utils.crossProduct(array1, array2, new Matrix(1,1), jacobian2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Utils.crossProduct(array1, array2, jacobian1, new Matrix(1,1));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
-        try{
+        try {
             Utils.crossProduct(array1, array2, new double[1], jacobian1, 
                     jacobian2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Utils.crossProduct(array1, array2, output2, new Matrix(1,1), 
                     jacobian2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Utils.crossProduct(array1, array2, output2, jacobian1, 
                     new Matrix(1,1));
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
     }
     
     @Test
-    public void testCrossProduct2() throws WrongSizeException{
+    public void testCrossProduct2() throws WrongSizeException {
 
         Matrix output;
         double[] array = new double[3];
@@ -617,7 +627,7 @@ public class UtilsTest {
     }    
     
     @Test
-    public void testIsSymmetric() throws WrongSizeException{
+    public void testIsSymmetric() throws WrongSizeException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -639,7 +649,7 @@ public class UtilsTest {
     }
     
     @Test
-    public void testIsOrthonormalAndIsOrthogonal() throws WrongSizeException{
+    public void testIsOrthonormalAndIsOrthogonal() throws WrongSizeException {
         
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -678,18 +688,18 @@ public class UtilsTest {
         assertFalse(Utils.isOrthonormal(m, ABSOLUTE_ERROR));
 
         //Force IllegalArgumentException (by setting negative threshold)
-        try{
+        try {
             Utils.isOrthogonal(m, -ABSOLUTE_ERROR);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             Utils.isOrthonormal(m, -ABSOLUTE_ERROR);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testDotProduct() throws WrongSizeException{
+    public void testDotProduct() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
         
@@ -699,7 +709,7 @@ public class UtilsTest {
         randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         
         double expectedResult = 0.0;
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             expectedResult += input1[i] * input2[i];
         }
         
@@ -710,14 +720,16 @@ public class UtilsTest {
         
         //Force IllegalArgumentException
         double[] wrongArray = new double[length + 1];
-        try{
+        try {
+            //noinspection all
             Utils.dotProduct(input1, wrongArray);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         try{
+            //noinspection all
             Utils.dotProduct(wrongArray, input2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         //test with jacobians
         Matrix jacobian1 = new Matrix(1,length);
@@ -731,22 +743,22 @@ public class UtilsTest {
         assertArrayEquals(jacobian2.getBuffer(), input2, 0.0);
         
         //Force IllegalArgumentException
-        try{
+        try {
             Utils.dotProduct(wrongArray, input2, jacobian1, jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             Utils.dotProduct(input1, wrongArray, jacobian1, jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore){ }
+        try {
             Utils.dotProduct(input1, input2, new Matrix(1,1), jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             Utils.dotProduct(input1, input2, jacobian1, new Matrix(1,1));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test with matrices
@@ -760,14 +772,14 @@ public class UtilsTest {
         
         //Force WrongSizeException
         Matrix wrongMatrix = new Matrix(length + 1, 1);
-        try{
+        try {
             Utils.dotProduct(m1, wrongMatrix);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Utils.dotProduct(wrongMatrix, m2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //test with jacobians
         result = Utils.dotProduct(m1, m2, jacobian1, jacobian2);
@@ -779,28 +791,30 @@ public class UtilsTest {
         assertArrayEquals(jacobian2.getBuffer(), m2.getBuffer(), 0.0);
         
         //Force WrongSizeException
-        try{
+        try {
             Utils.dotProduct(wrongMatrix, m2, jacobian1, jacobian2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Utils.dotProduct(m1, wrongMatrix, jacobian1, jacobian2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force IllegalArgumentException
-        try{
+        try {
             Utils.dotProduct(m1, m2, new Matrix(1,1), jacobian2);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             Utils.dotProduct(m1, m2, jacobian1, new Matrix(1,1));
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}                
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSchurc() throws WrongSizeException, DecomposerException, RankDeficientMatrixException {
+    public void testSchurc() throws WrongSizeException, DecomposerException,
+            RankDeficientMatrixException {
+
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int size = randomizer.nextInt(MIN_ROWS + 1, MAX_ROWS);
         int pos = randomizer.nextInt(1, size);
@@ -904,22 +918,22 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, true, true, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, true, true, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, true, true, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         //Force RankDeficientMatrixException
         Matrix m2 = new Matrix(size, size);
         try {
             Utils.schurc(m2, pos, true, true, result, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        } catch (RankDeficientMatrixException e) { }
+        } catch (RankDeficientMatrixException ignore) { }
 
         
         //test 2nd schurc method
@@ -969,21 +983,21 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, false, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, true, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, false, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
 
         //Force RankDeficientMatrixException
         try {
             Utils.schurc(m2, pos, true, result, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        } catch (RankDeficientMatrixException e) { }
+        } catch (RankDeficientMatrixException ignore) { }
 
         
         //test 3rd schurc method
@@ -1013,21 +1027,21 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, result, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         //Force RankDeficientMatrixException
         try {
             Utils.schurc(m2, pos, result, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        } catch (RankDeficientMatrixException e) { }
+        } catch (RankDeficientMatrixException ignore) { }
 
         
         
@@ -1114,21 +1128,21 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos, true, true, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size, true, true, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0, true, true, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         //Force RankDeficientMatrixException
         try {
             result = Utils.schurcAndReturnNew(m2, pos, true, true, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        }catch (RankDeficientMatrixException e) { }
+        }catch (RankDeficientMatrixException ignore) { }
         assertNull(result);
         
         
@@ -1179,21 +1193,21 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos, false, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size, true, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0, false, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         //Force RankDeficientMatrixException
         try {
             result = Utils.schurcAndReturnNew(m2, pos, true, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        } catch (RankDeficientMatrixException e) { }
+        } catch (RankDeficientMatrixException ignore) { }
         assertNull(result);
         
         
@@ -1225,21 +1239,21 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0, iA);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         //Force RankDeficientMatrixException
         try {
             result = Utils.schurcAndReturnNew(m2, pos, iA);
             fail("RankDeficientMatrixException expected but not thrown");
-        } catch (RankDeficientMatrixException e) { }
+        } catch (RankDeficientMatrixException ignore) { }
         assertNull(result);
         
         
@@ -1301,15 +1315,15 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, true, true, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, true, true, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, true, true, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test 8th schurc method
@@ -1345,15 +1359,15 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, false, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, true, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, false, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test 9th schurc method
@@ -1376,15 +1390,15 @@ public class UtilsTest {
         try {
             Utils.schurc(wrong, pos, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, size, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             Utils.schurc(m, 0, result);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         
         
         //test 10th schurc method
@@ -1443,15 +1457,15 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos, true, true);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size, true, true);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0, true, true);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         assertNull(result);
         
         
@@ -1488,15 +1502,15 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos, false);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size, true);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0, false);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         assertNull(result);
         
         
@@ -1521,15 +1535,15 @@ public class UtilsTest {
         try {
             result = Utils.schurcAndReturnNew(wrong, pos);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, size);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         try {
             result = Utils.schurcAndReturnNew(m, 0);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ignore) { }
         assertNull(result);
     }
 }

@@ -1,10 +1,17 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.algebra.InfinityNormComputer
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 22, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
@@ -14,15 +21,15 @@ package com.irurueta.algebra;
  * 
  * For the case of arrays, this library considers arrays as column matrices
  * with one column and array length rows, hence absolute value of first element
- * in array is returned as infinity norm
- * @author albertoirurueta
+ * in array is returned as infinity norm.
  */
-public class InfinityNormComputer extends NormComputer{
+@SuppressWarnings({"Duplicates", "WeakerAccess"})
+public class InfinityNormComputer extends NormComputer {
 
     /**
      * Constructor of this class.
      */
-    public InfinityNormComputer(){
+    public InfinityNormComputer() {
         super();
     }
     
@@ -40,15 +47,16 @@ public class InfinityNormComputer extends NormComputer{
      * @param m matrix being used for norm computation.
      * @return norm of provided matrix.
      */
-    public static double norm(Matrix m){
+    public static double norm(Matrix m) {
         int rows = m.getRows();
         int columns = m.getColumns();
         double rowSum, maxRowSum = 0.0;
         
-        for(int i = 0; i < rows; i++){
+        for (int i = 0; i < rows; i++) {
             rowSum = 0.0;
-            for(int j = 0; j < columns; j++) 
+            for (int j = 0; j < columns; j++) {
                 rowSum += Math.abs(m.getElementAt(i, j));
+            }
             
             maxRowSum = rowSum > maxRowSum ? rowSum : maxRowSum;
         }
@@ -67,16 +75,16 @@ public class InfinityNormComputer extends NormComputer{
      * length of array.
      */
     public static double norm(double[] array, Matrix jacobian)
-            throws WrongSizeException{
-        if(jacobian != null && (jacobian.getRows() != 1 || 
-                jacobian.getColumns() != array.length)){
+            throws WrongSizeException {
+        if (jacobian != null && (jacobian.getRows() != 1 ||
+                jacobian.getColumns() != array.length)) {
             throw new WrongSizeException("jacobian must be 1xN, where " + 
                     "N is length of array");
         }
         
         double norm = norm(array);
         
-        if(jacobian != null){
+        if (jacobian != null) {
             jacobian.fromArray(array);
             jacobian.multiplyByScalar(1.0 / norm);
         }
@@ -99,7 +107,7 @@ public class InfinityNormComputer extends NormComputer{
      * @param array array being used for norm computation.
      * @return norm of provided vector.
      */
-    public static double norm(double[] array){
+    public static double norm(double[] array) {
         return Math.abs(array[0]);
     }
 

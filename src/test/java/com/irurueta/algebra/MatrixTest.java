@@ -1,59 +1,64 @@
-/**
- * @file
- * This file contains Unit Tests for
- * com.irurueta.algebra.Matrix
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date April 9, 2012
+/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import java.security.SecureRandom;
-import java.util.Random;
-import static org.junit.Assert.*;
 import org.junit.*;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
+import static org.junit.Assert.*;
+
+@SuppressWarnings("Duplicates")
 public class MatrixTest {
     
-    public static final int MIN_ROWS = 1;
-    public static final int MAX_ROWS = 50;
-    public static final int MIN_COLUMNS = 1;
-    public static final int MAX_COLUMNS = 50;
+    private static final int MIN_ROWS = 1;
+    private static final int MAX_ROWS = 50;
+    private static final int MIN_COLUMNS = 1;
+    private static final int MAX_COLUMNS = 50;
     
-    public static final double MIN_RANDOM_VALUE = 0.0;
-    public static final double MAX_RANDOM_VALUE = 100.0;
+    private static final double MIN_RANDOM_VALUE = 0.0;
+    private static final double MAX_RANDOM_VALUE = 100.0;
     
-    public static final int TIMES = 10000;
+    private static final int TIMES = 10000;
     
-    public static final double MEAN = 5;
-    public static final double STANDARD_DEVIATION = 100.0;
+    private static final double MEAN = 5;
+    private static final double STANDARD_DEVIATION = 100.0;
     
-    public static final double ABSOLUTE_ERROR = 1e-9;
-    public static final double RELATIVE_ERROR = 0.1;
+    private static final double ABSOLUTE_ERROR = 1e-9;
+    private static final double RELATIVE_ERROR = 0.1;
     
-    public MatrixTest() {
-    }
+    public MatrixTest() { }
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() { }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() { }
     
     @Before
-    public void setUp() {
-    }
+    public void setUp() { }
     
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
     
     @Test
     public void testConstructorGetRowsAndGetColumns() 
-            throws WrongSizeException{
+            throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -65,15 +70,15 @@ public class MatrixTest {
         
         //Force WrongSizeException
         m = null;
-        try{
+        try {
             m = new Matrix(0, 0);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         assertNull(m);
     }
     
     @Test
-    public void testGetSetElementAt() throws WrongSizeException{
+    public void testGetSetElementAt() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -83,8 +88,8 @@ public class MatrixTest {
         double value;
                 
         //initialize matrix and array to random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 tmp[i][j] = value;
@@ -93,8 +98,8 @@ public class MatrixTest {
         }
         
         //check that matrix contains same values in array
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = tmp[i][j];
                 assertEquals(m.getElementAt(i, j), value, 0.0);
             }
@@ -102,7 +107,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testGetIndex() throws WrongSizeException{
+    public void testGetIndex() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -112,8 +117,8 @@ public class MatrixTest {
         double value;
                 
         //initialize matrix and array to random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 tmp[i][j] = value;
@@ -124,8 +129,8 @@ public class MatrixTest {
         //check that matrix contains same values in array and that it 
         //corresponds to computed index
         int index;
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 index = j * rows + i;
                 assertEquals(m.getIndex(i, j), index);
                 value = tmp[i][j];
@@ -136,7 +141,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testGetSetElementAtIndex() throws WrongSizeException{
+    public void testGetSetElementAtIndex() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -150,7 +155,7 @@ public class MatrixTest {
         double value;
         
         //initialize matrix and array to random value using column order
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
             tmp[i] = value;
             m1.setElementAtIndex(i, value, true);
@@ -159,8 +164,8 @@ public class MatrixTest {
         
         //check that matrices have the same values contained in array using
         //column order
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 index = j * rows + i;
                 value = tmp[index];
                 assertEquals(m1.getElementAt(i, j), value, 0.0);
@@ -174,15 +179,15 @@ public class MatrixTest {
         }
         
         //initialize matrix m1 and array to random values using row order
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
             tmp[i] = value;
             m1.setElementAtIndex(i, value, false);
         }
         
         //checks that matrix contains same values in array using row order
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 index = i * columns + j;
                 value = tmp[index];
                 assertEquals(m1.getElementAt(i, j), value, 0.0);
@@ -192,15 +197,15 @@ public class MatrixTest {
     }
     
     @Test
-    public void testClone() throws WrongSizeException{
+    public void testClone() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         //instantiate matrix and fill with random values
         Matrix m1 = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -213,23 +218,23 @@ public class MatrixTest {
         assertEquals(m2.getRows(), rows);
         assertEquals(m2.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m1.getElementAt(i, j), m2.getElementAt(i, j), 0.0);
             }
         }
     }
     
     @Test
-    public void testCopyTo() throws WrongSizeException{
+    public void testCopyTo() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         //instantiate matrix and fill with random values
         Matrix m = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -247,29 +252,29 @@ public class MatrixTest {
         assertEquals(destination.getRows(), rows);
         assertEquals(destination.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m.getElementAt(i, j), 
                         destination.getElementAt(i, j), 0.0);
             }
         }
         
         //Force NullPointerException
-        try{
+        try {
             m.copyTo(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }
     
     @Test
-    public void testCopyFrom() throws WrongSizeException{
+    public void testCopyFrom() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
 
         Matrix source = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 source.setElementAt(i, j, randomizer.nextDouble(
                         MIN_RANDOM_VALUE, MAX_RANDOM_VALUE));
             }
@@ -286,30 +291,30 @@ public class MatrixTest {
         //check correctness
         assertEquals(destination.getRows(), rows);
         assertEquals(destination.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(destination.getElementAt(i, j), 
                         source.getElementAt(i, j), 0.0);
             }
         }
         
         //Force NullPointerException
-        try{
+        try {
             destination.copyFrom(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }
     
     @Test
-    public void testAddAndReturnNew() throws WrongSizeException{
+    public void testAddAndReturnNew() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m1 = new Matrix(rows, columns);
         Matrix m2 = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE,
                         MAX_RANDOM_VALUE));
                 m2.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -322,8 +327,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m3.getRows(), rows);
         assertEquals(m3.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m3.getElementAt(i, j), m1.getElementAt(i, j) +
                         m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
@@ -332,22 +337,22 @@ public class MatrixTest {
         //Force WrongSizeException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
         m3 = null;
-        try{
+        try {
             m3 = m1.addAndReturnNew(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         assertNull(m3);
         
         //Force NullPointerException        
-        try{
+        try {
             m3 = m1.addAndReturnNew(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         assertNull(m3);
     }
     
     @Test
-    public void testAdd() throws WrongSizeException{
+    public void testAdd() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -356,8 +361,8 @@ public class MatrixTest {
         Matrix m2 = new Matrix(rows, columns);
         double[][] tmp = new double[rows][columns];
         double value;
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m1.setElementAt(i, j, value);
@@ -372,8 +377,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m1.getRows(), rows);
         assertEquals(m1.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m1.getElementAt(i, j), tmp[i][j] +
                         m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
@@ -381,28 +386,28 @@ public class MatrixTest {
         
         //Force WrongSizeException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
-        try{
+        try {
             m1.add(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force NullPointerException        
-        try{
+        try {
             m1.add(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }    
     
     @Test
-    public void testSubtractAndReturnNew() throws WrongSizeException{
+    public void testSubtractAndReturnNew() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m1 = new Matrix(rows, columns);
         Matrix m2 = new Matrix(rows, columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE,
                         MAX_RANDOM_VALUE));
                 m2.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -415,8 +420,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m3.getRows(), rows);
         assertEquals(m3.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m3.getElementAt(i, j), m1.getElementAt(i, j) -
                         m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
@@ -425,22 +430,22 @@ public class MatrixTest {
         //Force WrongSizeException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
         m3 = null;
-        try{
+        try {
             m3 = m1.subtractAndReturnNew(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         assertNull(m3);
         
         //Force NullPointerException        
-        try{
+        try {
             m3 = m1.subtractAndReturnNew(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         assertNull(m3);
     }
     
     @Test
-    public void testSubtract() throws WrongSizeException{
+    public void testSubtract() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -449,8 +454,8 @@ public class MatrixTest {
         Matrix m2 = new Matrix(rows, columns);
         double[][] tmp = new double[rows][columns];
         double value;
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m1.setElementAt(i, j, value);
@@ -465,8 +470,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m1.getRows(), rows);
         assertEquals(m1.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m1.getElementAt(i, j), tmp[i][j] -
                         m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
@@ -474,20 +479,20 @@ public class MatrixTest {
         
         //Force WrongSizeExceptionException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
-        try{
+        try {
             m1.add(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force NullPointerException        
-        try{
+        try {
             m1.add(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }    
     
     @Test
-    public void testMultiplyAndReturnNew() throws WrongSizeException{
+    public void testMultiplyAndReturnNew() throws WrongSizeException {
         int rows1 = 4, columns1 = 3, rows2 = 3, columns2 = 2;
         Matrix m1 = new Matrix(rows1, columns1);
         Matrix m2 = new Matrix(rows2, columns2);
@@ -519,7 +524,7 @@ public class MatrixTest {
         result = m1.multiplyAndReturnNew(m2);
 		
         //we know result for provided set of matrices m1 and m2, check it is
-	//correct
+	    //correct
         assertEquals(result.getRows(), rows1);
         assertEquals(result.getColumns(), columns2);
         
@@ -533,27 +538,27 @@ public class MatrixTest {
         assertEquals(result.getElementAt(3, 1), 20.0, ABSOLUTE_ERROR);
         
 		
-	//Force IllegalArgumentException
+	    //Force IllegalArgumentException
         Matrix m3 = new Matrix(columns1, rows1);
         Matrix m4 = new Matrix(columns2, rows2);
         
         result = null;
-        try{
+        try {
             result = m3.multiplyAndReturnNew(m4);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         assertNull(result);
         
         //Force NullPointerException
-        try{
+        try {
             result = m3.multiplyAndReturnNew(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         assertNull(result);
     }
     
     @Test
-    public void testMultiply() throws WrongSizeException{
+    public void testMultiply() throws WrongSizeException {
         int rows1 = 4, columns1 = 3, rows2 = 3, columns2 = 2;
         Matrix m1 = new Matrix(rows1, columns1);
         Matrix m2 = new Matrix(rows2, columns2);
@@ -583,7 +588,7 @@ public class MatrixTest {
         m1.multiply(m2);
 		
         //we know result for provided set of matrices m1 and m2, check it is
-	//correct
+	    //correct
         assertEquals(m1.getRows(), rows1);
         assertEquals(m1.getColumns(), columns2);
         
@@ -597,24 +602,24 @@ public class MatrixTest {
         assertEquals(m1.getElementAt(3, 1), 20.0, ABSOLUTE_ERROR);
         
 		
-	//Force IllegalArgumentException
+	    //Force IllegalArgumentException
         Matrix m3 = new Matrix(columns1, rows1);
         Matrix m4 = new Matrix(columns2, rows2);
         
-        try{
+        try {
             m3.multiply(m4);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force NullPointerException
-        try{
+        try {
             m3.multiply(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }    
     
     @Test
-    public void testMultiplyKroneckerAndReturnNew() throws WrongSizeException{
+    public void testMultiplyKroneckerAndReturnNew() throws WrongSizeException {
         Matrix m1 = new Matrix(2,2);
         Matrix m2 = new Matrix(2,2);
         
@@ -628,6 +633,7 @@ public class MatrixTest {
         assertEquals(m3.getColumns(), 4);
         
         Matrix m3b = new Matrix(4,4);
+        //noinspection all
         m3b.setSubmatrix(0, 0, 3, 3, new double[]{
             1*0, 1*2, 3*0, 3*2,
             1*3, 1*1, 3*3, 3*1,
@@ -639,7 +645,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testMultiplyKronecker() throws WrongSizeException{
+    public void testMultiplyKronecker() throws WrongSizeException {
         Matrix m1 = new Matrix(2,2);
         Matrix m2 = new Matrix(2,2);
         
@@ -658,6 +664,7 @@ public class MatrixTest {
         assertEquals(m1.getColumns(), 4);
         
         Matrix m3b = new Matrix(4,4);
+        //noinspection all
         m3b.setSubmatrix(0, 0, 3, 3, new double[]{
             1*0, 1*2, 3*0, 3*2,
             1*3, 1*1, 3*3, 3*1,
@@ -670,15 +677,15 @@ public class MatrixTest {
     }    
     
     @Test
-    public void testMultiplyByScalarAndReturnNew() throws WrongSizeException{
+    public void testMultiplyByScalarAndReturnNew() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m = new Matrix(rows, columns);
         //fill matrix
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -692,8 +699,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(result.getRows(), rows);
         assertEquals(result.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(result.getElementAt(i, j),
                         m.getElementAt(i, j) * scalar, ABSOLUTE_ERROR);
             }
@@ -701,7 +708,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testMultiplyByScalar() throws WrongSizeException{
+    public void testMultiplyByScalar() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -710,8 +717,8 @@ public class MatrixTest {
         double[][] tmp = new double[rows][columns];
         double value;
         //fill matrix
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m.setElementAt(i, j, value);
@@ -727,8 +734,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m.getRows(), rows);
         assertEquals(m.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m.getElementAt(i, j),
                         tmp[i][j] * scalar, ABSOLUTE_ERROR);
             }
@@ -737,7 +744,7 @@ public class MatrixTest {
     
     @Test
     @SuppressWarnings("ObjectEqualsNull")
-    public void testEqualsAndHashCode() throws WrongSizeException{
+    public void testEqualsAndHashCode() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -749,8 +756,8 @@ public class MatrixTest {
         Object different3 = new Object();
         
         double value;
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m.setElementAt(i, j, value);
@@ -765,7 +772,7 @@ public class MatrixTest {
         assertTrue(m.equals(equal));
         assertFalse(m.equals(different1));
         assertFalse(m.equals(different2));
-        assertFalse(m.equals(different3));
+        assertNotEquals(m, different3);
         assertFalse(m.equals(null));
         
         assertEquals(m.hashCode(), equal.hashCode());
@@ -780,7 +787,7 @@ public class MatrixTest {
     
     @Test
     public void testElementByElementProductAndReturnNew() 
-            throws WrongSizeException{
+            throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -789,8 +796,8 @@ public class MatrixTest {
         Matrix m2 = new Matrix(rows, columns);
         
         //fill matrices
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
                 m2.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
@@ -803,8 +810,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m3.getRows(), rows);
         assertEquals(m3.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m3.getElementAt(i, j),
                         m1.getElementAt(i, j) * m2.getElementAt(i, j),
                         ABSOLUTE_ERROR);
@@ -814,22 +821,22 @@ public class MatrixTest {
         //Force WrongSizeException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
         m3 = null;
-        try{
+        try {
             m3 = m1.elementByElementProductAndReturnNew(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         assertNull(m3);
         
         //Force NullPointerException
-        try{
+        try {
             m3 = m1.elementByElementProductAndReturnNew(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
         assertNull(m3);
     }
     
     @Test
-    public void testElementByElementProduct() throws WrongSizeException{
+    public void testElementByElementProduct() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -840,8 +847,8 @@ public class MatrixTest {
         double value;
         
         //fill matrices
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m1.setElementAt(i, j, value);
@@ -856,8 +863,8 @@ public class MatrixTest {
         //check correctness
         assertEquals(m1.getRows(), rows);
         assertEquals(m1.getColumns(), columns);
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m1.getElementAt(i, j),
                         tmp[i][j] * m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
@@ -865,28 +872,28 @@ public class MatrixTest {
         
         //Force WrongSizeException
         Matrix wrong = new Matrix(rows + 1, columns + 1);
-        try{
+        try {
             m1.elementByElementProduct(wrong);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         //Force NullPointerException
-        try{
+        try {
             m1.elementByElementProduct(null);
             fail("NullPointerException expected but not thrown");
-        }catch(NullPointerException e){}
+        } catch (NullPointerException ignore) { }
     }
     
     @Test
-    public void testTransposeAndReturnNEw() throws WrongSizeException{
+    public void testTransposeAndReturnNEw() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m1 = new Matrix(rows, columns);
         //fill matrix
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -898,15 +905,15 @@ public class MatrixTest {
         assertEquals(m2.getRows(), columns);
         assertEquals(m2.getColumns(), rows);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m1.getElementAt(i, j), m2.getElementAt(j, i), 0.0);
             }
         }
     }
     
     @Test
-    public void testTranspose() throws WrongSizeException{
+    public void testTranspose() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -916,8 +923,8 @@ public class MatrixTest {
         double value;
         
         //fill matrix
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m.setElementAt(i, j, value);
@@ -931,23 +938,23 @@ public class MatrixTest {
         assertEquals(m.getRows(), columns);
         assertEquals(m.getColumns(), rows);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(tmp[i][j], m.getElementAt(j, i), 0.0);
             }
         }
     }
     
     @Test
-    public void testInitialize() throws WrongSizeException{
+    public void testInitialize() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m = new Matrix(rows, columns);
         //fill with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -963,15 +970,15 @@ public class MatrixTest {
         assertEquals(m.getRows(), rows);
         assertEquals(m.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 assertEquals(m.getElementAt(i, j), value, 0.0);
             }
         }
     }
     
     @Test
-    public void testResetAndResize() throws WrongSizeException{
+    public void testResetAndResize() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows1 = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int rows2 = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
@@ -990,18 +997,18 @@ public class MatrixTest {
         assertEquals(m.getColumns(), columns2);
         
         //Force WrongSizeException
-        try{
+        try {
             m.resize(0, columns2);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             m.resize(rows2, 0);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             m.resize(0, 0);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         
         //reset to new size and value
@@ -1015,29 +1022,29 @@ public class MatrixTest {
         assertEquals(m.getRows(), rows1);
         assertEquals(m.getColumns(), columns1);
         
-        for(int j = 0; j < columns1; j++){
-            for(int i = 0; i < rows1; i++){
+        for (int j = 0; j < columns1; j++) {
+            for (int i = 0; i < rows1; i++) {
                 assertEquals(m.getElementAt(i, j), initValue, 0.0);
             }
         }
         
         //Force WrongSizeException
-        try{
+        try {
             m.reset(0, columns1, initValue);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             m.reset(rows1, 0, initValue);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             m.reset(0, 0, initValue);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
-    public void testToArray() throws WrongSizeException{
+    public void testToArray() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -1048,10 +1055,10 @@ public class MatrixTest {
         int counter = 0;
         
         //fill matrix
-        if(Matrix.DEFAULT_USE_COLUMN_ORDER){
+        if (Matrix.DEFAULT_USE_COLUMN_ORDER) {
             //use column order
-            for(int j = 0; j < columns; j++){
-                for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++) {
+                for (int i = 0; i < rows; i++) {
                     value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                             MAX_RANDOM_VALUE);
                     m.setElementAt(i, j, value);
@@ -1059,17 +1066,19 @@ public class MatrixTest {
                     counter++;
                 }
             }
-        }else{
+
+            //uncomment lines below if DEFAULT_USE_COLUMN_ORDER changes
+        /*} else {
             //use row order
-            for(int i = 0; i < rows; i++){
-                for(int j = 0; j < columns; j++){
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
                     value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                             MAX_RANDOM_VALUE);
                     m.setElementAt(i, j, value);
                     array[counter] = value;
                     counter++;
                 }
-            }
+            }*/
         }
         
         double[] array2 = m.toArray();
@@ -1084,7 +1093,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testToArrayWithColumnOrder() throws WrongSizeException{
+    public void testToArrayWithColumnOrder() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -1095,8 +1104,8 @@ public class MatrixTest {
         int counter = 0;
         
         //fill with column order                
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
                 m.setElementAt(i, j, value);
@@ -1110,14 +1119,14 @@ public class MatrixTest {
         m.toArray(array3, true);        
         
         //check correctness
-        for(int i = 0; i < rows * columns; i++){
+        for (int i = 0; i < rows * columns; i++) {
             assertEquals(array[i], array2[i], 0.0);
             assertEquals(array[i], array3[i], 0.0);
         }        
     }
     
     @Test
-    public void testToArrayWithRowOrder() throws WrongSizeException{
+    public void testToArrayWithRowOrder() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -1128,7 +1137,7 @@ public class MatrixTest {
         int counter = 0;
         
         //fill with row order
-        for(int i = 0; i < rows; i++){
+        for (int i = 0; i < rows; i++) {
             for(int j = 0; j < columns; j++){
                 value = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE);
@@ -1143,14 +1152,14 @@ public class MatrixTest {
         m.toArray(array3, false);
         
         //check correctness
-        for(int i = 0; i < rows * columns; i++){
+        for (int i = 0; i < rows * columns; i++) {
             assertEquals(array[i], array2[i], 0.0);
             assertEquals(array[i], array3[i], 0.0);
         }        
     }
     
     @Test
-    public void testGetSubmatrix() throws WrongSizeException{
+    public void testGetSubmatrix() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1165,8 +1174,8 @@ public class MatrixTest {
         Matrix m = new Matrix(rows, columns);
         
         //fill matrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -1180,8 +1189,8 @@ public class MatrixTest {
         assertEquals(submatrix.getColumns(), 
                 bottomRightColumn - topLeftColumn + 1);
         
-        for(int j = 0; j < submatrix.getColumns(); j++){
-            for(int i = 0; i < submatrix.getRows(); i++){
+        for (int j = 0; j < submatrix.getColumns(); j++) {
+            for (int i = 0; i < submatrix.getRows(); i++) {
                 assertEquals(submatrix.getElementAt(i, j),
                         m.getElementAt(i + topLeftRow, j + topLeftColumn), 0.0);
             }
@@ -1193,48 +1202,48 @@ public class MatrixTest {
             submatrix = m.getSubmatrix(rows, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow, columns,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow, topLeftColumn, rows, 
                     bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow, topLeftColumn,
                     bottomRightRow, columns);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow + 1, topLeftColumn, 
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow, topLeftColumn + 1,
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
-        try{
+        try {
             submatrix = m.getSubmatrix(topLeftRow + 1, topLeftColumn + 1,
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(submatrix);
     }
     
     @Test
-    public void testGetSubmatrixAsArray() throws WrongSizeException{
+    public void testGetSubmatrixAsArray() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1249,8 +1258,8 @@ public class MatrixTest {
         Matrix m = new Matrix(rows, columns);
         
         //fill matrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -1262,77 +1271,79 @@ public class MatrixTest {
                 (bottomRightColumn - topLeftColumn + 1));
         int counter = 0;
         
-        if(Matrix.DEFAULT_USE_COLUMN_ORDER){
+        if (Matrix.DEFAULT_USE_COLUMN_ORDER) {
             //column order
-            for(int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++){
-                for(int i = 0; i < (bottomRightRow - topLeftRow + 1); i++){
+            for (int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++) {
+                for (int i = 0; i < (bottomRightRow - topLeftRow + 1); i++) {
                     assertEquals(array[counter],
                             m.getElementAt(i + topLeftRow, j + topLeftColumn), 
                             0.0);
                     counter++;
                 }
             }
-        }else{
+
+            //uncoment lines below if DEFAULT_USE_COLUMN_ORDER changes
+        /*} else {
             //row order
-            for(int i = 0; i < (bottomRightRow - topLeftRow + 1); i++){
-                for(int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++){
+            for (int i = 0; i < (bottomRightRow - topLeftRow + 1); i++) {
+                for (int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++) {
                     assertEquals(array[counter],
                             m.getElementAt(i + topLeftRow, j + topLeftColumn),
                             0.0);
                     counter++;
                 }
-            }
+            }*/
         }
                 
         //Force IllegalArgumentException
         array = null;
-        try{
+        try {
             array = m.getSubmatrixAsArray(rows, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, columns,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn, rows, 
                     bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn,
                     bottomRightRow, columns);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn, 
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn + 1,
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn + 1,
                     topLeftRow, topLeftColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);        
     }
     
     @Test
     public void testGetSubmatrixAsArrayWithColumnOrder() 
-            throws WrongSizeException{
+            throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1347,8 +1358,8 @@ public class MatrixTest {
         Matrix m = new Matrix(rows, columns);
         
         //fill matrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -1361,8 +1372,8 @@ public class MatrixTest {
         int counter = 0;
         
         //column order
-        for(int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++){
-            for(int i = 0; i < (bottomRightRow - topLeftRow + 1); i++){
+        for (int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++) {
+            for (int i = 0; i < (bottomRightRow - topLeftRow + 1); i++) {
                 assertEquals(array[counter],
                         m.getElementAt(i + topLeftRow, j + topLeftColumn), 0.0);
                 counter++;
@@ -1371,52 +1382,52 @@ public class MatrixTest {
                 
         //Force IllegalArgumentException
         array = null;
-        try{
+        try {
             array = m.getSubmatrixAsArray(rows, topLeftColumn,
                     bottomRightRow, bottomRightColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, columns,
                     bottomRightRow, bottomRightColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn, rows, 
                     bottomRightColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn,
                     bottomRightRow, columns, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn, 
                     topLeftRow, topLeftColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn + 1,
                     topLeftRow, topLeftColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn + 1,
                     topLeftRow, topLeftColumn, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);        
     }
     
     @Test
-    public void testGetSubmatrixAsArrayWithRowOrder() throws WrongSizeException{
+    public void testGetSubmatrixAsArrayWithRowOrder() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1431,8 +1442,8 @@ public class MatrixTest {
         Matrix m = new Matrix(rows, columns);
         
         //fill matrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE, 
                         MAX_RANDOM_VALUE));
             }
@@ -1445,8 +1456,8 @@ public class MatrixTest {
         int counter = 0;
         
         //row order
-        for(int i = 0; i < (bottomRightRow - topLeftRow + 1); i++){
-            for(int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++){
+        for (int i = 0; i < (bottomRightRow - topLeftRow + 1); i++) {
+            for (int j = 0; j < (bottomRightColumn - topLeftColumn + 1); j++) {
                 assertEquals(array[counter],
                         m.getElementAt(i + topLeftRow, j + topLeftColumn), 0.0);
                 counter++;
@@ -1455,52 +1466,52 @@ public class MatrixTest {
                 
         //Force IllegalArgumentException
         array = null;
-        try{
+        try {
             array = m.getSubmatrixAsArray(rows, topLeftColumn,
                     bottomRightRow, bottomRightColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, columns,
                     bottomRightRow, bottomRightColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn, rows, 
                     bottomRightColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn,
                     bottomRightRow, columns, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn, 
                     topLeftRow, topLeftColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow, topLeftColumn + 1,
                     topLeftRow, topLeftColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);
-        try{
+        try {
             array = m.getSubmatrixAsArray(topLeftRow + 1, topLeftColumn + 1,
                     topLeftRow, topLeftColumn, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         assertNull(array);        
     }
     
     @Test
-    public void testSetSubmatrix() throws WrongSizeException{
+    public void testSetSubmatrix() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1518,8 +1529,8 @@ public class MatrixTest {
         Matrix submatrix = new Matrix(submatrixRows, submatrixColumns);
         
         //fill submatrix with random values
-        for(int j = 0; j < submatrixColumns; j++){
-            for(int i = 0; i < submatrixRows; i++){
+        for (int j = 0; j < submatrixColumns; j++) {
+            for (int i = 0; i < submatrixRows; i++) {
                 submatrix.setElementAt(i, j, randomizer.nextDouble(
                         MIN_RANDOM_VALUE, MAX_RANDOM_VALUE));
             }
@@ -1530,89 +1541,89 @@ public class MatrixTest {
                 bottomRightColumn, submatrix);
         
         //check correctness
-        for(int j = 0; j < submatrixColumns; j++){
-            for(int i = 0; i < submatrixRows; i++){
+        for (int j = 0; j < submatrixColumns; j++) {
+            for (int i = 0; i < submatrixRows; i++) {
                 assertEquals(m.getElementAt(i + topLeftRow, j + topLeftColumn),
                         submatrix.getElementAt(i, j), 0.0);
             }
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, submatrix);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         Matrix wrong = new Matrix(submatrixRows + 1, submatrixColumns);
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         wrong = new Matrix(submatrixRows, submatrixColumns + 1);
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         wrong = new Matrix(submatrixRows + 1, submatrixColumns + 1);
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSetSubmatrix2() throws WrongSizeException{
+    public void testSetSubmatrix2() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1625,13 +1636,11 @@ public class MatrixTest {
         
         Matrix m = new Matrix(rows, columns);
         
-        int submatrixRows = bottomRightRow - topLeftRow + 1;
-        int submatrixColumns = bottomRightColumn - topLeftColumn + 1;
         Matrix submatrix = new Matrix(rows, columns);
         
         //fill submatrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 submatrix.setElementAt(i, j, randomizer.nextDouble(
                         MIN_RANDOM_VALUE, MAX_RANDOM_VALUE));
             }
@@ -1643,161 +1652,162 @@ public class MatrixTest {
                 bottomRightRow, bottomRightColumn);
         
         //check correctness
-        for(int j = topLeftColumn; j <= bottomRightColumn; j++){
-            for(int i = topLeftRow; i < bottomRightRow; i++){
+        for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
+            for (int i = topLeftRow; i < bottomRightRow; i++) {
                 assertEquals(m.getElementAt(i, j),
                         submatrix.getElementAt(i, j), 0.0);
             }
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     submatrix, topLeftRow, topLeftColumn, bottomRightRow,
                     bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     submatrix, topLeftRow, topLeftColumn, bottomRightRow,
                     bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
                 
 
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, -topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, rows, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, -topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, columns,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     -bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn, 
                     rows, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, -bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn, 
                     bottomRightRow, columns);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, submatrix, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, m, topLeftRow, topLeftColumn,
                     bottomRightRow + 1, bottomRightColumn);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, m, topLeftRow, topLeftColumn,
                     bottomRightRow, bottomRightColumn + 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, m, topLeftRow, topLeftColumn,
                     bottomRightRow + 1, bottomRightColumn + 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}                
+        } catch (IllegalArgumentException ignore) { }
     }   
     
     @Test
-    public void testSetSubmatrixWithValue() throws WrongSizeException{
+    @SuppressWarnings("all")
+    public void testSetSubmatrixWithValue() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1814,8 +1824,8 @@ public class MatrixTest {
         Matrix m = new Matrix(rows, columns);
         
         //fil matrix with random values
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
                 m.setElementAt(i, j, value + 1.0);
             }
         }
@@ -1825,72 +1835,72 @@ public class MatrixTest {
                 bottomRightColumn, value);
         
         //check correctness
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                if(i >= topLeftRow && i <= bottomRightRow && 
-                        j >= topLeftColumn && j <= bottomRightColumn){
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i >= topLeftRow && i <= bottomRightRow &&
+                        j >= topLeftColumn && j <= bottomRightColumn) {
                     assertEquals(m.getElementAt(i, j), value, 0.0);
-                }else{
+                } else {
                     assertEquals(m.getElementAt(i, j), value + 1.0, 0.0);
                 }
             }
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, value);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSetSubmatrixWithArray() throws WrongSizeException{
+    public void testSetSubmatrixWithArray() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -1909,7 +1919,7 @@ public class MatrixTest {
         double[] array = new double[length];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -1920,90 +1930,91 @@ public class MatrixTest {
         int counter = 0;
         
         //check correctness
-        if(Matrix.DEFAULT_USE_COLUMN_ORDER){
+        if (Matrix.DEFAULT_USE_COLUMN_ORDER) {
             //column order
-            for(int j = 0; j < submatrixColumns; j++){
-                for(int i = 0; i < submatrixRows; i++){
+            for (int j = 0; j < submatrixColumns; j++) {
+                for (int i = 0; i < submatrixRows; i++) {
                     assertEquals(m.getElementAt(i + topLeftRow, 
                             j + topLeftColumn), array[counter], 0.0);
                     counter++;
                 }
             }
-            
-        }else{
+
+            //uncomment lines below if DEFAULT_USE_COLUMN_ORDER changes
+        /*} else {
             //row order
-            for(int i = 0; i < submatrixRows; i++){
-                for(int j = 0; j < submatrixColumns; j++){
+            for (int i = 0; i < submatrixRows; i++) {
+                for (int j = 0; j < submatrixColumns; j++) {
                     assertEquals(m.getElementAt(i + topLeftRow, 
                             j + topLeftColumn), array[counter], 0.0);
                     counter++;
                 }
-            }
+            }*/
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] wrong = new double[length + 1];
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
     public void testSetSubmatrixWithArrayColumnOrder() 
-            throws WrongSizeException{
+            throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -2022,7 +2033,7 @@ public class MatrixTest {
         double[] array = new double[length];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2033,8 +2044,8 @@ public class MatrixTest {
         int counter = 0;
         
         //check correctness with column order
-        for(int j = 0; j < submatrixColumns; j++){
-            for(int i = 0; i < submatrixRows; i++){
+        for (int j = 0; j < submatrixColumns; j++) {
+            for (int i = 0; i < submatrixRows; i++) {
                 assertEquals(m.getElementAt(i + topLeftRow, 
                         j + topLeftColumn), array[counter], 0.0);
                 counter++;
@@ -2042,67 +2053,67 @@ public class MatrixTest {
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] wrong = new double[length + 1];
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }
     
     @Test
-    public void testSetSubmatrixWithArrayRowOrder() throws WrongSizeException{
+    public void testSetSubmatrixWithArrayRowOrder() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -2121,7 +2132,7 @@ public class MatrixTest {
         double[] array = new double[length];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2132,8 +2143,8 @@ public class MatrixTest {
         int counter = 0;
         
         //check correctness with row order
-        for(int i = 0; i < submatrixRows; i++){
-            for(int j = 0; j < submatrixColumns; j++){
+        for (int i = 0; i < submatrixRows; i++) {
+            for (int j = 0; j < submatrixColumns; j++) {
                 assertEquals(m.getElementAt(i + topLeftRow, 
                         j + topLeftColumn), array[counter], 0.0);
                 counter++;
@@ -2141,67 +2152,67 @@ public class MatrixTest {
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
         double[] wrong = new double[length + 1];
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, wrong, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }   
     
     @Test
-    public void testSetSubmatrixWithArray2() throws WrongSizeException{
+    public void testSetSubmatrixWithArray2() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -2222,7 +2233,7 @@ public class MatrixTest {
         double[] array = new double[length + offset];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i + offset] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2233,90 +2244,90 @@ public class MatrixTest {
         int counter = offset;
         
         //check correctness
-        if(Matrix.DEFAULT_USE_COLUMN_ORDER){
+        if (Matrix.DEFAULT_USE_COLUMN_ORDER) {
             //column order
-            for(int j = 0; j < submatrixColumns; j++){
-                for(int i = 0; i < submatrixRows; i++){
+            for (int j = 0; j < submatrixColumns; j++) {
+                for (int i = 0; i < submatrixRows; i++) {
                     assertEquals(m.getElementAt(i + topLeftRow, 
                             j + topLeftColumn), array[counter], 0.0);
                     counter++;
                 }
             }
-            
-        }else{
+
+            //uncomment lines below if DEFAULT_USE_COLUMN_ORDER changes
+        /*} else {
             //row order
-            for(int i = 0; i < submatrixRows; i++){
-                for(int j = 0; j < submatrixColumns; j++){
+            for (int i = 0; i < submatrixRows; i++) {
+                for (int j = 0; j < submatrixColumns; j++) {
                     assertEquals(m.getElementAt(i + topLeftRow, 
                             j + topLeftColumn), array[counter], 0.0);
                     counter++;
                 }
-            }
+            }*/
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array, offset, offset + length - 1);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length );
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
-        
+        } catch (IllegalArgumentException ignore) { }
     }    
     
     @Test
     public void testSetSubmatrixWithArrayColumnOrder2() 
-            throws WrongSizeException{
+            throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -2337,7 +2348,7 @@ public class MatrixTest {
         double[] array = new double[length + offset];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i + offset] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2348,8 +2359,8 @@ public class MatrixTest {
         int counter = offset;
         
         //check correctness with column order
-        for(int j = 0; j < submatrixColumns; j++){
-            for(int i = 0; i < submatrixRows; i++){
+        for (int j = 0; j < submatrixColumns; j++) {
+            for (int i = 0; i < submatrixRows; i++) {
                 assertEquals(m.getElementAt(i + topLeftRow, 
                         j + topLeftColumn), array[counter], 0.0);
                 counter++;
@@ -2357,74 +2368,74 @@ public class MatrixTest {
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array, offset, offset + length - 1, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array, offset, offset + length - 1, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array, offset, offset + length - 1, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length, true);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
         
     }        
     
     @Test
-    public void testSetSubmatrixWithArrayRowOrder2() throws WrongSizeException{
+    public void testSetSubmatrixWithArrayRowOrder2() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS + 2, MAX_ROWS + 2);
         int columns = randomizer.nextInt(MIN_COLUMNS + 2, MAX_COLUMNS + 2);
@@ -2445,7 +2456,7 @@ public class MatrixTest {
         double[] array = new double[length + offset];
         
         //fill array with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             array[i + offset] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2456,8 +2467,8 @@ public class MatrixTest {
         int counter = offset;
         
         //check correctness with row order
-        for(int i = 0; i < submatrixRows; i++){
-            for(int j = 0; j < submatrixColumns; j++){
+        for (int i = 0; i < submatrixRows; i++) {
+            for (int j = 0; j < submatrixColumns; j++) {
                 assertEquals(m.getElementAt(i + topLeftRow, 
                         j + topLeftColumn), array[counter], 0.0);
                 counter++;
@@ -2465,73 +2476,73 @@ public class MatrixTest {
         }
         
         //Force IllegalArgumentException
-        try{
+        try {
             m.setSubmatrix(-topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(rows, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, -topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, columns, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, -bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, rows, bottomRightColumn, 
                     array, offset, offset + length - 1, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     -bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, columns, 
                     array, offset, offset + length - 1, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(bottomRightRow + 1, topLeftColumn, topLeftRow, 
                     bottomRightColumn, array, offset, offset + length - 1, 
                     false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        try{
+        } catch (IllegalArgumentException ignore) { }
+        try {
             m.setSubmatrix(topLeftRow, bottomRightColumn + 1, bottomRightRow, 
                     topLeftColumn, array, offset, offset + length - 1, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
-        try{
+        try {
             m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                     bottomRightColumn, array, offset, offset + length, false);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}        
+        } catch (IllegalArgumentException ignore) { }
     }        
     
     @Test
-    public void testIdentity() throws WrongSizeException{
+    public void testIdentity() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -2542,46 +2553,49 @@ public class MatrixTest {
         assertEquals(m.getRows(), rows);
         assertEquals(m.getColumns(), columns);
         
-        for(int j = 0; j < columns; j++){
-            for(int i = 0; i < rows; i++){
-                if(i == j) assertEquals(m.getElementAt(i, j), 1.0, 0.0);
-                else assertEquals(m.getElementAt(i, j), 0.0, 0.0);
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                if (i == j) {
+                    assertEquals(m.getElementAt(i, j), 1.0, 0.0);
+                } else {
+                    assertEquals(m.getElementAt(i, j), 0.0, 0.0);
+                }
             }
         }
         
         //force WrongSizeException
-        try{
+        try {
             Matrix.identity(0, columns);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.identity(rows, 0);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.identity(0, 0);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
     }
     
     @Test
-    public void testCreateWithUniformRandomValues() throws WrongSizeException{
+    public void testCreateWithUniformRandomValues() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m;
         double value, sum = 0.0, sqrSum = 0.0;
-        for(int k = 0; k < TIMES; k++){
+        for (int k = 0; k < TIMES; k++) {
             m = Matrix.createWithUniformRandomValues(rows, columns, 
                     MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
             //check correctness
             assertEquals(m.getRows(), rows);
             assertEquals(m.getColumns(), columns);
             
-            for(int j = 0; j < columns; j++){
-                for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++) {
+                for (int i = 0; i < rows; i++) {
                     value = m.getElementAt(i, j);
                     
                     assertTrue(value >= MIN_RANDOM_VALUE);
@@ -2611,42 +2625,42 @@ public class MatrixTest {
                 estimatedVariance * RELATIVE_ERROR);
         
         //Force WrongSizeException
-        try{
+        try {
             Matrix.createWithUniformRandomValues(0, columns, MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.createWithUniformRandomValues(rows, 0, MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         //Force IllegalArgumentException
-        try{
+        try {
             Matrix.createWithUniformRandomValues(rows, columns, 
                     MAX_RANDOM_VALUE, MIN_RANDOM_VALUE);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
         
     }
     
     @Test
-    public void testCreateWithUniformRandomValues2() throws WrongSizeException{
+    public void testCreateWithUniformRandomValues2() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
         
         Matrix m;
         double value, sum = 0.0, sqrSum = 0.0;
-        for(int k = 0; k < TIMES; k++){
+        for (int k = 0; k < TIMES; k++) {
             m = Matrix.createWithUniformRandomValues(rows, columns, 
                     MIN_RANDOM_VALUE, MAX_RANDOM_VALUE, new SecureRandom());
             //check correctness
             assertEquals(m.getRows(), rows);
             assertEquals(m.getColumns(), columns);
             
-            for(int j = 0; j < columns; j++){
-                for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++) {
+                for (int i = 0; i < rows; i++) {
                     value = m.getElementAt(i, j);
                     
                     assertTrue(value >= MIN_RANDOM_VALUE);
@@ -2676,27 +2690,26 @@ public class MatrixTest {
                 estimatedVariance * RELATIVE_ERROR);
         
         //Force WrongSizeException
-        try{
+        try {
             Matrix.createWithUniformRandomValues(0, columns, MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.createWithUniformRandomValues(rows, 0, MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         //Force IllegalArgumentException
-        try{
+        try {
             Matrix.createWithUniformRandomValues(rows, columns, 
                     MAX_RANDOM_VALUE, MIN_RANDOM_VALUE);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
-        
+        } catch (IllegalArgumentException ignore) { }
     }    
     
     @Test
-    public void testCreateWithGaussianRandomValues() throws WrongSizeException{
+    public void testCreateWithGaussianRandomValues() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -2704,15 +2717,15 @@ public class MatrixTest {
         Matrix m;
         double value, mean = 0.0, sqrSum = 0.0;
         int numSamples = rows * columns * TIMES;
-        for(int k = 0; k < TIMES; k++){
+        for (int k = 0; k < TIMES; k++) {
             m = Matrix.createWithGaussianRandomValues(rows, columns, 
                     MEAN, STANDARD_DEVIATION);
             //check correctness
             assertEquals(m.getRows(), rows);
             assertEquals(m.getColumns(), columns);
             
-            for(int j = 0; j < columns; j++){
-                for(int i = 0; i < rows; i++){
+            for (int j = 0; j < columns; j++) {
+                for (int i = 0; i < rows; i++) {
                     value = m.getElementAt(i, j);
                     
                     mean += value / (double)numSamples;
@@ -2730,32 +2743,32 @@ public class MatrixTest {
                 standardDeviation * RELATIVE_ERROR);
         
         //Force WrongSizeException
-        try{
+        try {
             Matrix.createWithGaussianRandomValues(0, columns, MEAN, 
                     STANDARD_DEVIATION);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.createWithGaussianRandomValues(rows, 0, MEAN, 
                     STANDARD_DEVIATION);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
-        try{
+        } catch (WrongSizeException ignore) { }
+        try {
             Matrix.createWithGaussianRandomValues(rows, columns, 
                     MEAN, -STANDARD_DEVIATION);
             fail("IllegalArgumentException expected but not thrown");
-        }catch(IllegalArgumentException e){}
+        } catch (IllegalArgumentException ignore) { }
     }    
     
     @Test
-    public void testDiagonal(){
+    public void testDiagonal() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int length = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         
         double[] diagonal = new double[length];
         
         //fill diagonal with random values
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             diagonal[i] = randomizer.nextDouble(MIN_RANDOM_VALUE, 
                     MAX_RANDOM_VALUE);
         }
@@ -2766,16 +2779,19 @@ public class MatrixTest {
         assertEquals(m.getRows(), length);
         assertEquals(m.getColumns(), length);
         
-        for(int j = 0; j < length; j++){
-            for(int i = 0; i < length; i++){
-                if(i == j) assertEquals(m.getElementAt(i, j), diagonal[i], 0.0);
-                else assertEquals(m.getElementAt(i, j), 0.0, 0.0);
+        for (int j = 0; j < length; j++) {
+            for (int i = 0; i < length; i++) {
+                if (i == j) {
+                    assertEquals(m.getElementAt(i, j), diagonal[i], 0.0);
+                } else {
+                    assertEquals(m.getElementAt(i, j), 0.0, 0.0);
+                }
             }
         }
     }
     
     @Test
-    public void testNewFromArray() throws AlgebraException{
+    public void testNewFromArray() {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int cols = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -2813,7 +2829,7 @@ public class MatrixTest {
     }
     
     @Test
-    public void testFromArray() throws AlgebraException{
+    public void testFromArray() throws AlgebraException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
         int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
         int cols = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
@@ -2834,10 +2850,10 @@ public class MatrixTest {
         assertArrayEquals(array, array2, 0.0);
         
         //Force WrongSizeException
-        try{
+        try {
             m.fromArray(new double[length + 1]);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         
         //use column order
@@ -2850,10 +2866,10 @@ public class MatrixTest {
         assertArrayEquals(array, array2, 0.0);
         
         //Force WrongSizeException
-        try{
+        try {
             m.fromArray(new double[length + 1], true);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}
+        } catch (WrongSizeException ignore) { }
         
         
         //use row order
@@ -2866,14 +2882,14 @@ public class MatrixTest {
         assertArrayEquals(array, array2, 0.0);
         
         //Force WrongSizeException
-        try{
+        try {
             m.fromArray(new double[length + 1], false);
             fail("WrongSizeException expected but not thrown");
-        }catch(WrongSizeException e){}        
+        } catch (WrongSizeException ignore) { }
     }
     
     @Test
-    public void testSymmetrize() throws AlgebraException{
+    public void testSymmetrize() throws AlgebraException {
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
             UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -2954,11 +2970,11 @@ public class MatrixTest {
             try {
                 wrong.symmetrize(wrong);
                 fail("WrongSizeException expected but not thrown");
-            } catch (WrongSizeException e) { }
+            } catch (WrongSizeException ignore) { }
             try {
                 symmetric.symmetrize(wrong);
                 fail("WrongSizeException expected but not thrown");
-            } catch (WrongSizeException e) { }
+            } catch (WrongSizeException ignore) { }
 
 
             //symmetrize and return new
@@ -2988,7 +3004,7 @@ public class MatrixTest {
             try {
                 wrong.symmetrizeAndReturnNew();
                 fail("WrongSizeException expected but not thrown");
-            } catch (WrongSizeException e) { }
+            } catch (WrongSizeException ignore) { }
 
 
             //symmetrize and update
@@ -3009,7 +3025,7 @@ public class MatrixTest {
             try {
                 wrong.symmetrize();
                 fail("WrongSizeException expected but not thrown");
-            } catch (WrongSizeException e) { }
+            } catch (WrongSizeException ignore) { }
 
             numValid++;
             break;

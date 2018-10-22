@@ -2,17 +2,78 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb7db504-a8d3-44e2-881c-4abe9778aa92" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_irurueta_irurueta_statistics_1_0_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_irurueta_irurueta_statistics_1_0_SNAPSHOT.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/irurueta-algebra.iml" beforeDir="false" afterPath="$PROJECT_DIR$/irurueta-algebra.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/ArrayUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/ArrayUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/CholeskyDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/CholeskyDecomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Complex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Decomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Decomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/EconomyQRDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/EconomyQRDecomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/FrobeniusNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/FrobeniusNormComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/GaussJordanElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/GaussJordanElimination.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/build-info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/irurueta/algebra/build-info.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/irurueta/algebra/build-info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/irurueta/algebra/build-info.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
-    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,43 +82,67 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-1028126701">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.0" value="1" />
+          <entry key="project.open.time.1" value="2" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="class" value="1" />
+          <entry key="java" value="132" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CLASS" value="1" />
+          <entry key="JAVA" value="132" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="java" value="10618" />
+          <entry key="xml" value="27" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="10618" />
+          <entry key="XML" value="27" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts" />
+      <usages-collector id="statistics.spring.boot.mvc.usages" />
+      <usages-collector id="statistics.spring.boot.run.usages" />
+      <usages-collector id="statistics.vcs.git.usages" />
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SingularValueDecomposer.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20331">
-              <caret line="1518" column="15" selection-start-line="1518" selection-start-column="15" selection-end-line="1518" selection-end-column="15" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-              <folding>
-                <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-                <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-                <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-                <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-                <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-                <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-                <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-                <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-                <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-              </folding>
+            <state relative-caret-position="210">
+              <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -67,6 +152,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>testProp</find>
+      <find>propagateThisDistribution</find>
+      <find>clone(</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -83,10 +170,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/site/apt/index.apt" />
-        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java" />
-        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" />
       </list>
     </option>
   </component>
@@ -119,18 +253,19 @@
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="318" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="65" />
     <option name="y" value="23" />
-    <option name="width" value="1122" />
-    <option name="height" value="873" />
+    <option name="width" value="1324" />
+    <option name="height" value="821" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -178,14 +313,60 @@
               <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+              <item name="statistics" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+              <item name="algebra" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="irurueta-algebra" type="b2602c69:ProjectViewProjectNode" />
+              <item name="irurueta-algebra" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="irurueta" type="462c0819:PsiDirectoryNode" />
+              <item name="statistics" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -197,6 +378,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540245230912" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -219,102 +401,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-    </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-    </configuration>
-    <configuration name="MatrixTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="irurueta-algebra" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.irurueta.algebra.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="com.irurueta.algebra" />
-      <option name="MAIN_CLASS_NAME" value="com.irurueta.algebra.MatrixTest" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <properties />
-      <listeners />
-    </configuration>
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="" />
-      <option name="DEPLOY" value="true" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="PM_INSTALL_OPTIONS" value="" />
-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="DEBUGGER_TYPE" value="Java" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <Java />
-      <Profilers>
-        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
-        <option name="GAPID_ENABLED" value="false" />
-        <option name="GAPID_DISABLE_PCS" value="false" />
-        <option name="SUPPORT_LIB_ENABLED" value="true" />
-        <option name="INSTRUMENTATION_ENABLED" value="true" />
-      </Profilers>
-      <option name="DEEP_LINK" value="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="JUnit.MultivariateGaussianRandomizerTest">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -342,58 +429,100 @@
       </Profilers>
       <method />
     </configuration>
-    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method />
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="JarApplication" factoryName="JAR Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <envs />
-      <method />
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="SCRATCH_FILE_ID" value="0" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
-      <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
+    <configuration name="InvalidCovarianceMatrixExceptionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="irurueta-algebra" />
-      <envs />
-      <method />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.irurueta.statistics.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.irurueta.statistics" />
+      <option name="MAIN_CLASS_NAME" value="com.irurueta.statistics.InvalidCovarianceMatrixExceptionTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MultivariateGaussianRandomizerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="irurueta-algebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.irurueta.statistics.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.irurueta.statistics" />
+      <option name="MAIN_CLASS_NAME" value="com.irurueta.statistics.MultivariateGaussianRandomizerTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SingularValueDecomposerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="irurueta-algebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.irurueta.algebra.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.irurueta.algebra" />
+      <option name="MAIN_CLASS_NAME" value="com.irurueta.algebra.SingularValueDecomposerTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UtilsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="irurueta-algebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.irurueta.algebra.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.irurueta.algebra" />
+      <option name="MAIN_CLASS_NAME" value="com.irurueta.algebra.UtilsTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WrongSizeExceptionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="irurueta-algebra" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.irurueta.algebra.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.irurueta.algebra" />
+      <option name="MAIN_CLASS_NAME" value="com.irurueta.algebra.WrongSizeExceptionTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="filePath" />
       <option name="vmParameters" />
       <option name="alternativeJrePath" />
@@ -401,25 +530,63 @@
       <option name="passParentEnvs" value="true" />
       <option name="workingDirectory" />
       <option name="isAlternativeJrePathEnabled" value="false" />
-      <envs />
-      <method />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <module name="" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
+    <list>
+      <item itemvalue="JUnit.SingularValueDecomposerTest" />
+      <item itemvalue="JUnit.UtilsTest" />
+      <item itemvalue="JUnit.WrongSizeExceptionTest" />
+      <item itemvalue="JUnit.InvalidCovarianceMatrixExceptionTest" />
+      <item itemvalue="JUnit.MultivariateGaussianRandomizerTest" />
+    </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MatrixTest" />
+        <item itemvalue="JUnit.MultivariateGaussianRandomizerTest" />
+        <item itemvalue="JUnit.InvalidCovarianceMatrixExceptionTest" />
+        <item itemvalue="JUnit.WrongSizeExceptionTest" />
+        <item itemvalue="JUnit.UtilsTest" />
+        <item itemvalue="JUnit.SingularValueDecomposerTest" />
       </list>
     </recent_temporary>
   </component>
@@ -450,51 +617,81 @@
       <workItem from="1533465201323" duration="1419000" />
       <workItem from="1534021270785" duration="835000" />
       <workItem from="1534200629035" duration="25000" />
+      <workItem from="1539847838273" duration="6361000" />
+      <workItem from="1539992669726" duration="1676000" />
+      <workItem from="1540203213985" duration="22631000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="MatrixTest - 2017.07.07 at 10h 04m 50s.xml">
-      <configuration name="MatrixTest" configurationId="JUnit" />
+    <history-entry file="NotReadyExceptionTest - 2018.10.22 at 22h 38m 32s.xml">
+      <configuration name="NotReadyExceptionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="OneNormComputerTest - 2018.10.22 at 22h 49m 36s.xml">
+      <configuration name="OneNormComputerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="QRDecomposerTest - 2018.10.22 at 22h 55m 27s.xml">
+      <configuration name="QRDecomposerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RankDeficientMatrixExceptionTest - 2018.10.22 at 22h 57m 13s.xml">
+      <configuration name="RankDeficientMatrixExceptionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="RQDecomposerTest - 2018.10.22 at 23h 01m 24s.xml">
+      <configuration name="RQDecomposerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SingularValueDecomposerTest - 2018.10.22 at 23h 09m 54s.xml">
+      <configuration name="SingularValueDecomposerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="UtilsTest - 2018.10.22 at 23h 22m 31s.xml">
+      <configuration name="UtilsTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="WrongSizeExceptionTest - 2018.10.22 at 23h 24m 04s.xml">
+      <configuration name="WrongSizeExceptionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="InvalidCovarianceMatrixExceptionTest - 2018.10.22 at 23h 26m 08s.xml">
+      <configuration name="InvalidCovarianceMatrixExceptionTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="MultivariateGaussianRandomizerTest - 2018.10.22 at 23h 28m 35s.xml">
+      <configuration name="MultivariateGaussianRandomizerTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14318000" />
+    <option name="totallyTimeSpent" value="44986000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="318" y="23" width="1122" height="873" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
-      <window_info id="Image Layers" order="2" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="right" id="Maven Projects" order="3" weight="0.32962963" />
-      <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32904884" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3298969" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3037037" />
-      <window_info anchor="right" id="Database" order="4" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20243205" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Messages" order="7" visible="true" weight="0.32904884" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info id="Nl-Palette" order="2" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Properties" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Nl-Palette" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3290653" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32611465" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28040972" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
+      <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" order="9" weight="0.32904884" />
+      <window_info anchor="bottom" id="Version Control" order="10" weight="0.3298969" />
+      <window_info anchor="bottom" id="Database Changes" order="11" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Properties" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Maven Projects" order="6" visible="true" weight="0.32904148" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
+      <window_info anchor="right" id="Database" order="9" weight="0.3297568" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -503,691 +700,522 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <option name="time" value="1" />
-    </breakpoint-manager>
-  </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2445">
-          <caret line="190" column="16" selection-start-line="190" selection-start-column="16" selection-end-line="190" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
-          <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="58" column="11" selection-start-line="58" selection-start-column="11" selection-end-line="58" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="n#!!doc" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2130">
-          <caret line="149" column="22" lean-forward="true" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="n#!!doc" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="24" column="5" lean-forward="true" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="31" selection-start-line="21" selection-start-column="31" selection-end-line="21" selection-end-column="31" />
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="n#!!doc" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <caret line="28" column="21" lean-forward="true" selection-start-line="28" selection-start-column="21" selection-end-line="28" selection-end-column="21" />
           <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
+            <element signature="e#1487#1488#0" expanded="true" />
+            <element signature="e#1515#1516#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7230">
-          <caret line="513" column="4" selection-start-line="513" selection-start-column="4" selection-end-line="513" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7050">
-          <caret line="501" column="41" selection-start-line="501" selection-start-column="41" selection-end-line="501" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2490">
-          <caret line="183" column="24" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44640">
-          <caret line="2987" column="17" selection-start-line="2987" selection-start-column="17" selection-end-line="2987" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2490">
-          <caret line="183" column="24" selection-start-line="183" selection-start-column="24" selection-end-line="183" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="20" column="20" selection-start-line="20" selection-start-column="20" selection-end-line="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/s3-settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/site/apt/index.apt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/site/apt/index.apt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="15" selection-start-line="19" selection-start-column="15" selection-end-line="19" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/s3-settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="11" selection-start-line="10" selection-start-column="11" selection-end-line="10" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="2987" column="17" selection-start-line="2987" selection-start-column="17" selection-end-line="2987" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="53">
-          <caret line="40" column="8" lean-forward="true" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="181" column="36" lean-forward="true" selection-start-line="181" selection-start-column="36" selection-end-line="181" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-          <folding>
-            <element signature="n#!!doc" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="28" column="37" lean-forward="true" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="195">
+          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+        <state relative-caret-position="45">
+          <caret line="18" column="14" lean-forward="true" selection-start-line="18" selection-start-column="14" selection-end-line="18" selection-end-column="14" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="696">
-          <caret line="798" column="24" selection-start-line="798" selection-start-column="16" selection-end-line="798" selection-end-column="24" />
+        <state relative-caret-position="105">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding>
+            <element signature="e#914#915#0" expanded="true" />
+            <element signature="e#937#938#0" expanded="true" />
+            <element signature="e#1126#1127#0" expanded="true" />
+            <element signature="e#1156#1157#0" expanded="true" />
+            <element signature="e#1422#1423#0" expanded="true" />
+            <element signature="e#1459#1460#0" expanded="true" />
+            <element signature="e#1628#1629#0" expanded="true" />
+            <element signature="e#1656#1657#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#1803#0" expanded="true" />
+            <element signature="e#969#970#0" expanded="true" />
+            <element signature="e#992#993#0" expanded="true" />
+            <element signature="e#1759#1760#0" expanded="true" />
+            <element signature="e#1787#1788#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="27" column="22" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+          <folding>
+            <element signature="e#3856#3857#0" expanded="true" />
+            <element signature="e#3904#3905#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="21" column="12" selection-start-line="21" selection-start-column="12" selection-end-line="21" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding>
+            <element signature="e#897#898#0" expanded="true" />
+            <element signature="e#920#921#0" expanded="true" />
+            <element signature="e#1108#1109#0" expanded="true" />
+            <element signature="e#1138#1139#0" expanded="true" />
+            <element signature="e#1403#1404#0" expanded="true" />
+            <element signature="e#1440#1441#0" expanded="true" />
+            <element signature="e#1608#1609#0" expanded="true" />
+            <element signature="e#1636#1637#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
+          <folding>
+            <element signature="e#887#888#0" expanded="true" />
+            <element signature="e#910#911#0" expanded="true" />
+            <element signature="e#1094#1095#0" expanded="true" />
+            <element signature="e#1124#1125#0" expanded="true" />
+            <element signature="e#1385#1386#0" expanded="true" />
+            <element signature="e#1422#1423#0" expanded="true" />
+            <element signature="e#1586#1587#0" expanded="true" />
+            <element signature="e#1614#1615#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="2" lean-forward="true" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2257">
-          <caret line="44" column="4" lean-forward="true" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
+        <state relative-caret-position="45">
+          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-22674">
-          <caret line="149" column="22" selection-start-line="149" selection-start-column="22" selection-end-line="149" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/CholeskyDecomposer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <caret line="11" column="19" lean-forward="true" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
           <folding>
-            <marker date="1534022056843" expanded="false" signature="7512:7782" ph="..." />
-            <marker date="1534022056843" expanded="true" signature="8807:8849" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8807:8938" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="8900:8938" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="8993:9035" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="8993:9113" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9075:9113" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="9168:9210" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="9168:9288" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="9250:9288" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10362:10404" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10362:10489" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10451:10489" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10544:10586" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10544:10660" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10622:10660" ph="}" />
-            <marker date="1534022056843" expanded="true" signature="10715:10757" ph="{" />
-            <marker date="1534022056843" expanded="true" signature="10715:10831" ph="{...}" />
-            <marker date="1534022056843" expanded="true" signature="10793:10831" ph="}" />
+            <element signature="e#881#882#0" expanded="true" />
+            <element signature="e#904#905#0" expanded="true" />
+            <element signature="e#1626#1627#0" expanded="true" />
+            <element signature="e#1654#1655#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding>
+            <element signature="e#1076#1077#0" expanded="true" />
+            <element signature="e#1106#1107#0" expanded="true" />
+            <element signature="e#1373#1374#0" expanded="true" />
+            <element signature="e#1410#1411#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20331">
-          <caret line="1518" column="15" selection-start-line="1518" selection-start-column="15" selection-end-line="1518" selection-end-column="15" />
+        <state relative-caret-position="141">
+          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="3" lean-forward="true" selection-start-line="17" selection-start-column="3" selection-end-line="17" selection-end-column="3" />
+          <folding>
+            <element signature="e#1045#1046#0" expanded="true" />
+            <element signature="e#1068#1069#0" expanded="true" />
+            <element signature="e#1271#1272#0" expanded="true" />
+            <element signature="e#1301#1302#0" expanded="true" />
+            <element signature="e#1581#1582#0" expanded="true" />
+            <element signature="e#1618#1619#0" expanded="true" />
+            <element signature="e#1801#1802#0" expanded="true" />
+            <element signature="e#1829#1830#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="33" lean-forward="true" selection-start-line="13" selection-start-column="33" selection-end-line="13" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="e#0#43363#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#825#858#0" expanded="true" />
+            <element signature="e#4832#4833#0" expanded="true" />
+            <element signature="e#4858#4859#0" expanded="true" />
+            <element signature="e#5663#5664#0" expanded="true" />
+            <element signature="e#5698#5699#0" expanded="true" />
+            <element signature="e#5999#6000#0" expanded="true" />
+            <element signature="e#6034#6035#0" expanded="true" />
+            <element signature="e#11788#11789#0" expanded="true" />
+            <element signature="e#11820#11821#0" expanded="true" />
+            <element signature="e#12175#12176#0" expanded="true" />
+            <element signature="e#12208#12209#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret lean-forward="true" />
+          <folding>
+            <element signature="e#0#1409#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="87">
+          <caret line="20" column="24" lean-forward="true" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="16" lean-forward="true" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="18" lean-forward="true" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="14" lean-forward="true" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="19" column="37" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="18" column="11" lean-forward="true" selection-start-line="18" selection-start-column="11" selection-end-line="18" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="13" lean-forward="true" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="19" column="16" lean-forward="true" selection-start-line="19" selection-start-column="16" selection-end-line="19" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="17" column="28" lean-forward="true" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="1411" column="24" lean-forward="true" selection-start-line="1411" selection-start-column="24" selection-end-line="1411" selection-end-column="24" />
+          <folding>
+            <element signature="e#12337#12338#0" expanded="true" />
+            <element signature="e#12389#12390#0" expanded="true" />
+            <element signature="e#12573#12574#0" expanded="true" />
+            <element signature="e#12629#12630#0" expanded="true" />
+            <element signature="e#12812#12813#0" expanded="true" />
+            <element signature="e#12863#12864#0" expanded="true" />
+            <element signature="e#13054#13055#0" expanded="true" />
+            <element signature="e#13109#13110#0" expanded="true" />
+            <element signature="e#14576#14577#0" expanded="true" />
+            <element signature="e#14622#14623#0" expanded="true" />
+            <element signature="e#14801#14802#0" expanded="true" />
+            <element signature="e#14851#14852#0" expanded="true" />
+            <element signature="e#45797#45798#0" expanded="true" />
+            <element signature="e#45863#45864#0" expanded="true" />
+            <element signature="e#47768#47769#0" expanded="true" />
+            <element signature="e#47836#47837#0" expanded="true" />
+            <element signature="e#48792#48793#0" expanded="true" />
+            <element signature="e#48861#48862#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="37" column="41" lean-forward="true" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
         </state>
       </provider>
     </entry>

@@ -1,31 +1,29 @@
-/**
- * @file
- * This file contains implementation of
- * com.irurueta.statistics.MultivariateNormalDist
- * 
- * @author Alberto Irurueta (alberto@irurueta.com)
- * @date December 30, 2015
+/*
+ * Copyright (C) 2015 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.irurueta.statistics;
 
-import com.irurueta.algebra.AlgebraException;
-import com.irurueta.algebra.ArrayUtils;
-import com.irurueta.algebra.CholeskyDecomposer;
-import com.irurueta.algebra.DecomposerException;
-import com.irurueta.algebra.LockedException;
-import com.irurueta.algebra.Matrix;
-import com.irurueta.algebra.NotAvailableException;
-import com.irurueta.algebra.NotReadyException;
-import com.irurueta.algebra.RankDeficientMatrixException;
-import com.irurueta.algebra.SingularValueDecomposer;
-import com.irurueta.algebra.Utils;
-import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.algebra.*;
+
 import java.util.Arrays;
 
 /**
  * Contains methods to work with multivariate normal (i.e. Gaussian) 
  * distributions.
  */
+@SuppressWarnings("WeakerAccess")
 public class MultivariateNormalDist {
     
     /**
@@ -65,16 +63,16 @@ public class MultivariateNormalDist {
      * @throws IllegalArgumentException if provided number of dimensions is 
      * zero or less.
      */
-    public MultivariateNormalDist(int dims) throws IllegalArgumentException{
-        if(dims <= 0){
+    public MultivariateNormalDist(int dims) throws IllegalArgumentException {
+        if (dims <= 0) {
             throw new IllegalArgumentException(
                     "number of dimensions must be greater than zero");
         }
 
         mMu = new double[dims];
-        try{
+        try {
             mCov = Matrix.identity(dims, dims);
-        }catch(WrongSizeException e){
+        } catch (WrongSizeException e) {
             throw new IllegalArgumentException(
                     "number of dimensions must be greater than zero", e);
         }
@@ -96,7 +94,7 @@ public class MultivariateNormalDist {
      * not square, symmetric and positive definite (i.e. non singular).
      */
     public MultivariateNormalDist(double[] mean, Matrix covariance)
-            throws IllegalArgumentException, InvalidCovarianceMatrixException{
+            throws IllegalArgumentException, InvalidCovarianceMatrixException {
         setMeanAndCovariance(mean, covariance);
     }
     
@@ -141,8 +139,8 @@ public class MultivariateNormalDist {
      * @throws IllegalArgumentException if provided array has a length smaller
      * than 1.
      */
-    public void setMean(double[] mu) throws IllegalArgumentException{
-        if(mu.length == 0){
+    public void setMean(double[] mu) throws IllegalArgumentException {
+        if (mu.length == 0) {
             throw new IllegalArgumentException(
                     "length of mean array must be greater than zero");
         }
@@ -154,7 +152,7 @@ public class MultivariateNormalDist {
      * distribution.
      * @return covariance of multivariate Gaussian distribution.
      */
-    public Matrix getCovariance(){
+    public Matrix getCovariance() {
         return mCov.clone();
     }  
     
@@ -175,7 +173,7 @@ public class MultivariateNormalDist {
      * (not square or symmetric positive definite).
      */    
     public void setCovariance(Matrix cov) 
-            throws InvalidCovarianceMatrixException{
+            throws InvalidCovarianceMatrixException {
         setCovariance(cov, true);
     }
     
@@ -190,17 +188,17 @@ public class MultivariateNormalDist {
      */
     public void setCovariance(Matrix cov, 
             boolean validateSymmetricPositiveDefinite) 
-            throws InvalidCovarianceMatrixException{
-        if(cov.getRows() != cov.getColumns()){
+            throws InvalidCovarianceMatrixException {
+        if (cov.getRows() != cov.getColumns()) {
             throw new InvalidCovarianceMatrixException(
                     "covariance matrix must be square");            
         }
         
-        try{
-            if(validateSymmetricPositiveDefinite) {
+        try {
+            if (validateSymmetricPositiveDefinite) {
                 CholeskyDecomposer decomposer = new CholeskyDecomposer(cov);
                 decomposer.decompose();
-                if(!decomposer.isSPD()){
+                if (!decomposer.isSPD()) {
                     throw new InvalidCovarianceMatrixException(
                             "covariance matrix must be symmetric positive " + 
                             "definite (non singular)");
@@ -210,7 +208,7 @@ public class MultivariateNormalDist {
             mCov = cov.clone();
             mCovBasis = null;
             mVariances = null;
-        }catch(AlgebraException e){
+        } catch (AlgebraException e) {
             throw new InvalidCovarianceMatrixException(
                     "covariance matrix must be square", e);
         }
@@ -230,7 +228,7 @@ public class MultivariateNormalDist {
      * not square, symmetric and positive definite (i.e. non singular).
      */
     public final void setMeanAndCovariance(double[] mu, Matrix cov) 
-            throws IllegalArgumentException, InvalidCovarianceMatrixException{
+            throws IllegalArgumentException, InvalidCovarianceMatrixException {
         setMeanAndCovariance(mu, cov, true);
     }
     
@@ -251,8 +249,8 @@ public class MultivariateNormalDist {
      */
     public final void setMeanAndCovariance(double[] mu, Matrix cov, 
             boolean validateSymmetricPositiveDefinite) 
-            throws IllegalArgumentException, InvalidCovarianceMatrixException{
-        if(mu.length != cov.getRows()){
+            throws IllegalArgumentException, InvalidCovarianceMatrixException {
+        if (mu.length != cov.getRows()) {
             throw new IllegalArgumentException("mean array length must be " + 
                     "equal to covariance number of rows");
         }
@@ -268,16 +266,16 @@ public class MultivariateNormalDist {
      * @param cov matrix to be checked.
      * @return true if matrix is a valid covariance matrix, false otherwise.
      */
-    public static boolean isValidCovariance(Matrix cov){
-        if(cov.getRows() != cov.getColumns()){
+    public static boolean isValidCovariance(Matrix cov) {
+        if (cov.getRows() != cov.getColumns()) {
             return false;
         }
         
-        try{
+        try {
             CholeskyDecomposer decomposer = new CholeskyDecomposer(cov);
             decomposer.decompose();
             return decomposer.isSPD();            
-        }catch(AlgebraException e){
+        } catch (AlgebraException e) {
             return false;
         }
     }
@@ -287,7 +285,7 @@ public class MultivariateNormalDist {
      * otherwise.
      * @return true if instance is ready, false otherwise.
      */
-    public boolean isReady(){
+    public boolean isReady() {
         return mMu != null && mCov != null && 
                 mMu.length == mCov.getRows();
     }
@@ -300,7 +298,7 @@ public class MultivariateNormalDist {
      * @return basis containing on each column the direction of each variance
      * in the multidimensional Gaussian distribution.
      */
-    public Matrix getCovarianceBasis(){
+    public Matrix getCovarianceBasis() {
         return mCovBasis;
     }
     
@@ -310,7 +308,7 @@ public class MultivariateNormalDist {
      * This value is available only after the p.d.f. has been evaluated.
      * @return variance on each direction of the basis of the covariance.
      */
-    public double[] getVariances(){
+    public double[] getVariances() {
         return mVariances;
     }
     
@@ -328,22 +326,22 @@ public class MultivariateNormalDist {
      */
     public double p(double[] x) throws NotReadyException, 
             IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException{        
-        if(!isReady()){
+            RankDeficientMatrixException {
+        if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");
         }
         
         int k = x.length;
-        if(k != mMu.length){
+        if (k != mMu.length) {
             throw new IllegalArgumentException(
                     "length of point must be equal to the length of mean");
         }
                 
         double detCov = 0.0;
-        try{
+        try {
             detCov = Utils.det(mCov);            
-        }catch(WrongSizeException ignore){ /* never thrown */ }
+        } catch (WrongSizeException ignore) { /* never thrown */ }
         
         double factor = 1.0 / (Math.sqrt(Math.pow(2.0 * Math.PI, k) * 
                 detCov));
@@ -371,27 +369,27 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public double cdf(double[] x, Matrix basis) throws IllegalArgumentException,
-            NotReadyException, DecomposerException{
-        if(!isReady()){
+            NotReadyException, DecomposerException {
+        if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");
         }        
         
         int k = x.length;
-        if(k != mMu.length){
+        if (k != mMu.length) {
             throw new IllegalArgumentException(
                     "length of point must be equal to the length of mean");            
         }
                 
         double p = 1.0;
-        try{
+        try {
             processCovariance();
             
-            if(basis != null){
+            if (basis != null) {
                 basis.copyFrom(mCovBasis);            
             }
             
-            for(int i = 0; i < k; i++){
+            for (int i = 0; i < k; i++) {
                 double[] singleBasis = 
                         mCovBasis.getSubmatrixAsArray(0, i, k - 1, i);
                 double coordX = ArrayUtils.dotProduct(x, singleBasis);
@@ -400,9 +398,9 @@ public class MultivariateNormalDist {
                         Math.sqrt(mVariances[i]));
             }
             
-        }catch(DecomposerException e){
+        } catch (DecomposerException e) {
             throw e;
-        }catch(AlgebraException ignore){ /* never thrown */ }
+        } catch (AlgebraException ignore) { /* never thrown */ }
         
         return p;
     }
@@ -425,7 +423,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */    
     public double cdf(double[] x) throws IllegalArgumentException, 
-            NotReadyException, DecomposerException{
+            NotReadyException, DecomposerException {
         return cdf(x, null);
     }
     
@@ -437,12 +435,10 @@ public class MultivariateNormalDist {
      * direction that can be obtained from provided covariance matrix.
      * @return joint probability.
      */
-    public static double jointProbability(double[] p){
-        int k = p.length;
-        
+    public static double jointProbability(double[] p) {
         double jointP = 1.0;
-        for(int i = 0; i < k ; i++){
-            jointP *= p[i];
+        for (double aP : p) {
+            jointP *= aP;
         }
         return jointP;        
     }
@@ -470,33 +466,33 @@ public class MultivariateNormalDist {
      */
     public void invcdf(double[] p, double[] result, Matrix basis)
             throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{
-        if(!isReady()){
+            DecomposerException {
+        if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");
         }        
         
         int k = p.length;
-        if(k != mMu.length){
+        if (k != mMu.length) {
             throw new IllegalArgumentException(
                     "length of probabilities must be equal to the length of "
                             + "mean");            
         }
-        if(k != result.length){
+        if (k != result.length) {
             throw new IllegalArgumentException("length of result must be equal "
                     + "to the length of mean");
         }
                 
-        try{
+        try {
             processCovariance();
             
-            if(basis != null){
+            if (basis != null) {
                 basis.copyFrom(mCovBasis);            
             }
             
             //initialize to mean
             System.arraycopy(mMu, 0, result, 0, k);
-            for(int i = 0; i < k; i++){
+            for (int i = 0; i < k; i++) {
                 double[] singleBasis = 
                         mCovBasis.getSubmatrixAsArray(0, i, k - 1, i);                
                 double coord = NormalDist.internalInvcdf(p[i], mMu[i], 
@@ -507,9 +503,9 @@ public class MultivariateNormalDist {
                 //result = mean + coord*singleBasis
                 ArrayUtils.sum(result, singleBasis, result);
             }            
-        }catch(DecomposerException e){
+        } catch (DecomposerException e) {
             throw e;
-        }catch(AlgebraException ignore){ /* never thrown */ }        
+        } catch (AlgebraException ignore) { /* never thrown */ }
     }
     
     /**
@@ -534,8 +530,10 @@ public class MultivariateNormalDist {
      */
     public double[] invcdf(double[] p, Matrix basis) 
             throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{
-        if(mMu == null) throw new NotReadyException("mean not defined");
+            DecomposerException {
+        if (mMu == null) {
+            throw new NotReadyException("mean not defined");
+        }
         
         double[] result = new double[mMu.length];
         invcdf(p, result, basis);
@@ -562,12 +560,30 @@ public class MultivariateNormalDist {
      */
     public void invcdf(double[] p, double[] result) 
             throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{
+            DecomposerException {
         invcdf(p, result, null);
     }
-    
+
+    /**
+     * Evaluates the inverse cumulative distribution function of a multivariate
+     * Gaussian distribution for current mean and covariance values and provided
+     * probability values for each dimension of the multivariate Gaussian
+     * distribution.
+     * @param p array containing probability values to evaluate the inverse
+     * c.d.f. on each dimension. Values in the array must be between 0.0 and
+     * 1.0.
+     * @return coordinates of the value x for which the c.d.f. has values
+     *      * p.
+     * @throws IllegalArgumentException if length of probabilities is not equal
+     * to mean length, or if result and length of probabilities are not equal,
+     * or if provided probabilities are not between 0.0 and 1.0.
+     * @throws NotReadyException if this instance is not ready (mean and
+     * covariance have not been provided or are not valid).
+     * @throws DecomposerException if covariance is numerically unstable (i.e.
+     * contains NaNs or very large numbers).
+     */
     public double[] invcdf(double[] p) throws IllegalArgumentException,
-            NotReadyException, DecomposerException{
+            NotReadyException, DecomposerException {
         return invcdf(p, (Matrix)null);
     }
         
@@ -597,19 +613,19 @@ public class MultivariateNormalDist {
      */
     public void invcdf(double p, double[] result, Matrix basis) 
             throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{        
-	if (p <= 0.0 || p >= 1.0){
+            DecomposerException {
+	    if (p <= 0.0 || p >= 1.0) {
             throw new IllegalArgumentException(
                     "probability value must be between 0.0 and 1.0");
         }       
         
-        if(!isReady()){
+        if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");
         }                
         
         int k = result.length;
-        if(k != mMu.length){
+        if (k != mMu.length) {
             throw new IllegalArgumentException(
                     "length of result must be equal to mean length");
         }
@@ -645,7 +661,9 @@ public class MultivariateNormalDist {
     public double[] invcdf(double p, Matrix basis) 
             throws IllegalArgumentException, NotReadyException, 
             DecomposerException{
-        if(mMu == null) throw new NotReadyException("mean not defined");
+        if (mMu == null) {
+            throw new NotReadyException("mean not defined");
+        }
         
         double[] result = new double[mMu.length];
         invcdf(p, result, basis);
@@ -675,7 +693,7 @@ public class MultivariateNormalDist {
      */
     public void invcdf(double p, double[] result) 
             throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{
+            DecomposerException {
         invcdf(p, result, null);
     }
     
@@ -700,7 +718,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public double[] invcdf(double p) throws IllegalArgumentException, 
-            NotReadyException, DecomposerException{
+            NotReadyException, DecomposerException {
         return invcdf(p, (Matrix)null);
     }
     
@@ -714,7 +732,7 @@ public class MultivariateNormalDist {
      * @throws RankDeficientMatrixException happens if covariance is singular.
      */    
     public double mahalanobisDistance(double[] x) throws DecomposerException,
-            RankDeficientMatrixException{
+            RankDeficientMatrixException {
         return Math.sqrt(squaredMahalanobisDistance(x));
     }
     
@@ -728,17 +746,17 @@ public class MultivariateNormalDist {
      * @throws RankDeficientMatrixException happens if covariance is singular.
      */
     public double squaredMahalanobisDistance(double[] x) throws DecomposerException, 
-            RankDeficientMatrixException{
+            RankDeficientMatrixException {
         double[] diff = ArrayUtils.subtractAndReturnNew(x, mMu);
         Matrix diffMatrix = Matrix.newFromArray(diff, true);
         Matrix transDiffMatrix = diffMatrix.transposeAndReturnNew();
         
-        try{
+        try {
             Matrix invCov = Utils.inverse(mCov);
             transDiffMatrix.multiply(invCov);
             transDiffMatrix.multiply(diffMatrix);
                         
-        }catch(WrongSizeException ignore){ /* never thrown */ }
+        } catch (WrongSizeException ignore) { /* never thrown */ }
         
         return transDiffMatrix.getElementAtIndex(0);
     }
@@ -757,12 +775,12 @@ public class MultivariateNormalDist {
      * singular values.
      */
     public void processCovariance() throws DecomposerException, 
-            NotReadyException, LockedException, NotAvailableException{
-        if(mCov == null){
+            NotReadyException, LockedException, NotAvailableException {
+        if (mCov == null) {
             throw new NotReadyException("covariance must be defined");
         }
         
-        if(mCovBasis == null || mVariances == null){
+        if (mCovBasis == null || mVariances == null) {
             SingularValueDecomposer decomposer = 
                     new SingularValueDecomposer(mCov);
             decomposer.decompose();
@@ -809,6 +827,7 @@ public class MultivariateNormalDist {
     public static void propagate(JacobianEvaluator evaluator, double[] mean, 
             Matrix covariance, MultivariateNormalDist result) 
             throws WrongSizeException, InvalidCovarianceMatrixException {
+
         int ndims = mean.length;
         int nvars = evaluator.getNumberOfVariables();
         double[] evaluation = new double[nvars];
@@ -818,15 +837,14 @@ public class MultivariateNormalDist {
         //[y, Y_x] = f(x)
         //Y = Y_x * X * Y_x'        
         Matrix jacobianTrans = jacobian.transposeAndReturnNew();
-        Matrix newCovariance = jacobian;
-        newCovariance.multiply(covariance);
-        newCovariance.multiply(jacobianTrans);
+        jacobian.multiply(covariance);
+        jacobian.multiply(jacobianTrans);
         
         //ensure that new covariance is symmetric positive definite
-        newCovariance.symmetrize();
+        jacobian.symmetrize();
         
         result.setMean(evaluation);
-        result.setCovariance(newCovariance, false);
+        result.setCovariance(jacobian, false);
     }
     
     /**
@@ -874,7 +892,7 @@ public class MultivariateNormalDist {
             throws WrongSizeException {
         try {
             propagate(evaluator, dist.getMean(), dist.getCovariance(), result);
-        } catch(InvalidCovarianceMatrixException ignore) { /* never thrown */ }
+        } catch (InvalidCovarianceMatrixException ignore) { /* never thrown */ }
     }
     
     /**
@@ -943,13 +961,13 @@ public class MultivariateNormalDist {
          * @param y result of evaluating multivariate point.
          * @param jacobian jacobian of multivariate function at point x.
          */
-        public void evaluate(double[] x, double[] y, Matrix jacobian);
+        void evaluate(double[] x, double[] y, Matrix jacobian);
         
         /**
          * Number of variables in output of evaluated function. This is equal
          * to the length of the array y obtained as function evaluations.
          * @return number of variables of the function.
          */
-        public int getNumberOfVariables();
+        int getNumberOfVariables();
     }
 }
