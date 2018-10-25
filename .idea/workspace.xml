@@ -2,75 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb7db504-a8d3-44e2-881c-4abe9778aa92" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_11.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_irurueta_irurueta_statistics_1_0_SNAPSHOT.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_irurueta_irurueta_statistics_1_0_SNAPSHOT.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/irurueta-algebra.iml" beforeDir="false" afterPath="$PROJECT_DIR$/irurueta-algebra.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/AlgebraException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/ArrayUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/ArrayUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/BuildInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/CholeskyDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/CholeskyDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Complex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Complex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Decomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Decomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/DecomposerType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/EconomyQRDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/EconomyQRDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/FrobeniusNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/FrobeniusNormComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/GaussJordanElimination.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/GaussJordanElimination.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Matrix.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NormType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotAvailableException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NotReadyException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/OneNormComputer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/QRDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RQDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/RankDeficientMatrixException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularMatrixException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/SingularValueDecomposer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/WrongSizeException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/package-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/InvalidCovarianceMatrixException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateGaussianRandomizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/MultivariateNormalDist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/irurueta/statistics/package-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/irurueta/algebra/build-info.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/irurueta/algebra/build-info.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/AlgebraExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ArrayUtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/BuildInfoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/CholeskyDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/ComplexTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/DecomposerHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/EconomyQRDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/FrobeniusNormComputerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/GaussJordanEliminationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/InfinityNormComputerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LUDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/LockedExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/MatrixTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NoConvergenceExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotAvailableExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/NotReadyExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/OneNormComputerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/QRDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RankDeficientMatrixExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/SingularValueDecomposerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/WrongSizeExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/InvalidCovarianceMatrixExceptionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateGaussianRandomizerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/irurueta/statistics/MultivariateNormalDistTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -100,10 +34,10 @@
     <session id="-1028126701">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
-          <entry key="project.open.time.0" value="1" />
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.0" value="2" />
           <entry key="project.open.time.1" value="2" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -121,13 +55,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="java" value="10618" />
-          <entry key="xml" value="27" />
+          <entry key="xml" value="57" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JAVA" value="10618" />
-          <entry key="XML" value="27" />
+          <entry key="XML" value="57" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -141,8 +75,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+            <state relative-caret-position="316">
+              <caret line="209" column="51" selection-start-line="209" selection-start-column="51" selection-end-line="209" selection-end-column="51" />
+              <folding>
+                <element signature="e#37#58#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -170,7 +107,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/InfinityNormComputer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LockedException.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/LUDecomposer.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/NoConvergenceException.java" />
@@ -221,6 +157,7 @@
         <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/RQDecomposerTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/com/irurueta/algebra/UtilsTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/irurueta/algebra/Utils.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
   </component>
@@ -239,25 +176,14 @@
   </component>
   <component name="MavenProjectNavigator">
     <treeState>
-      <expand>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="com.irurueta:irurueta-algebra" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-        </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="com.irurueta:irurueta-algebra" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
-        </path>
-      </expand>
+      <expand />
       <select />
     </treeState>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="65" />
+  <component name="ProjectFrameBounds">
     <option name="y" value="23" />
-    <option name="width" value="1324" />
-    <option name="height" value="821" />
+    <option name="width" value="1440" />
+    <option name="height" value="877" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -265,7 +191,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -367,6 +292,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -378,7 +304,7 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540245230912" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540245238828" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
@@ -619,7 +545,8 @@
       <workItem from="1534200629035" duration="25000" />
       <workItem from="1539847838273" duration="6361000" />
       <workItem from="1539992669726" duration="1676000" />
-      <workItem from="1540203213985" duration="22631000" />
+      <workItem from="1540203213985" duration="22669000" />
+      <workItem from="1540477882070" duration="85000" />
     </task>
     <servers />
   </component>
@@ -656,13 +583,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44986000" />
+    <option name="totallyTimeSpent" value="45109000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="877" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20243205" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20529328" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -672,7 +599,7 @@
       <window_info id="Nl-Palette" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3290653" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32611465" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32611465" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.28040972" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -688,7 +615,7 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Properties" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="right" id="Maven Projects" order="6" visible="true" weight="0.32904148" />
+      <window_info anchor="right" id="Maven Projects" order="6" weight="0.32904148" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
       <window_info anchor="right" id="Theme Preview" order="8" />
       <window_info anchor="right" id="Database" order="9" weight="0.3297568" />
@@ -969,9 +896,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -989,9 +913,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1009,9 +930,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1026,9 +944,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1036,9 +951,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1073,9 +985,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1083,9 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1093,9 +999,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="17" column="7" lean-forward="true" selection-start-line="17" selection-start-column="7" selection-end-line="17" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1206,16 +1109,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="333">
           <caret line="37" column="41" lean-forward="true" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="11" selection-start-line="14" selection-start-column="11" selection-end-line="14" selection-end-column="11" />
+        <state relative-caret-position="316">
+          <caret line="209" column="51" selection-start-line="209" selection-start-column="51" selection-end-line="209" selection-end-column="51" />
+          <folding>
+            <element signature="e#37#58#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
