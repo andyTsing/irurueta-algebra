@@ -701,7 +701,7 @@ public class UtilsTest {
     @Test
     public void testDotProduct() throws WrongSizeException {
         UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
+        int length = randomizer.nextInt(MIN_LENGTH + 1, MAX_LENGTH);
         
         double[] input1 = new double[length];
         double[] input2 = new double[length];
