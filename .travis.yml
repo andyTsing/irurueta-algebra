@@ -35,6 +35,15 @@ cache:
   directories:
   - ~/.m2/repository
 
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_OAUTH_TOKEN
+  keep-history: true
+  local-dir: ./target/site
+  on:
+    branch: master
+
 after_success:
 - ./cd/before-deploy.sh
 - ./cd/deploy.sh

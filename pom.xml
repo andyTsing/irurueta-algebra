@@ -84,25 +84,6 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
             </activation>
             <build>
                 <plugins>
-                    <!-- publishes site report to github gh-pages branch -->
-                    <plugin>
-                        <groupId>com.github.github</groupId>
-                        <artifactId>site-maven-plugin</artifactId>
-                        <version>0.12</version>
-                        <configuration>
-                            <message>Creating site for ${project.version}</message>
-                            <noJekyll>true</noJekyll>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>site</goal>
-                                </goals>
-                                <phase>site</phase>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- publishes coverage info to coveralls -->
                     <plugin>
                         <groupId>org.eluder.coveralls</groupId>
