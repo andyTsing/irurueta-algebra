@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-NOTE: to deploy we can use the following command:
-mvn -s ./s3-settings.xml clean test site deploy
-to also deploy site use command:
-mvn -s s3-settings.xml clean test site deploy site-deploy
--->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.irurueta</groupId>
@@ -13,7 +7,7 @@ mvn -s s3-settings.xml clean test site deploy site-deploy
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>A small algebra library</description>
-    <url>https://bitbucket.org/alberto_irurueta/irurueta-algebra</url>
+    <url>https://github.com/albertoirurueta/irurueta-algebra</url>
     <inceptionYear>2017</inceptionYear>
     <licenses>
         <license>
