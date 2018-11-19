@@ -2,7 +2,6 @@
 A small algebra library
 
 [![Build Status](https://travis-ci.org/albertoirurueta/irurueta-algebra.svg?branch=master)](https://travis-ci.org/albertoirurueta/irurueta-algebra)
-[![Coverage Status](https://coveralls.io/repos/github/albertoirurueta/irurueta-algebra/badge.svg?branch=master)](https://coveralls.io/github/albertoirurueta/irurueta-algebra?branch=master)
 
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-algebra&metric=bugs)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-algebra)
@@ -21,3 +20,8 @@ A small algebra library
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-algebra&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-algebra)
 
 [Maven Site Report](http://albertoirurueta.github.io/irurueta-algebra)
+
+Donations are welcome :)
+Contribute to the maintenance of this project by clicking on the following link:
+
+[![paypal](https://www.paypalobjects.com/webstatic/en_US/i/buttons/PP_logo_h_100x26.png)](https://paypal.me/albertoirurueta)
