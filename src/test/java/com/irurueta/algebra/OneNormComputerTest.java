@@ -164,5 +164,17 @@ public class OneNormComputerTest {
             normComputer.getNorm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
         } catch (WrongSizeException ignore) { }
+
+        //test zero norm
+        v = new double[length];
+        assertEquals(OneNormComputer.norm(v, jacobian),
+                0.0, 0.0);
+        for (int i = 0; i < 1; i++) {
+            for (int j = 0; j < length; j++) {
+                assertEquals(jacobian.getElementAt(i, j),
+                        Double.MAX_VALUE, 0.0);
+            }
+        }
+
     }
 }

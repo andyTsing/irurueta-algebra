@@ -124,7 +124,7 @@ public class CholeskyDecomposer extends Decomposer {
      */
     @Override
     public void decompose() throws NotReadyException, LockedException,
-        DecomposerException {
+            DecomposerException {
 
         if (isLocked()) {
             throw new LockedException();
@@ -151,7 +151,8 @@ public class CholeskyDecomposer extends Decomposer {
         }
 
         boolean localSpd = true;
-        double d, s;
+        double d;
+        double s;
         
         //Main loop
         for(int j = 0; j < columns; j++){

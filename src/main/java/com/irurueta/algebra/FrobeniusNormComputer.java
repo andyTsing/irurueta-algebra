@@ -46,7 +46,8 @@ public class FrobeniusNormComputer extends NormComputer {
         int rows = m.getRows();
         int columns = m.getColumns();
         int length = rows * columns;
-        double sum = 0.0, value;
+        double sum = 0.0;
+        double value;
         for (int i = 0; i < length; i++) {
             value = m.getElementAtIndex(i);
             sum += value * value;
@@ -64,6 +65,7 @@ public class FrobeniusNormComputer extends NormComputer {
      * @throws WrongSizeException if provided jacobian is not 1xN, where N is
      * length of array.
      */
+    @SuppressWarnings("Duplicates")
     public static double norm(double[] array, Matrix jacobian)
             throws WrongSizeException{
         if (jacobian != null && (jacobian.getRows() != 1 ||

@@ -1153,28 +1153,30 @@ public class Utils {
         if (length != m.getColumns()) {
             return false;
         }
-        
-        Matrix tmp = null;        
-        try{
-            //to get faster coputation it is better to try m' * m
-            tmp = m.transposeAndReturnNew();
+
+        try {
+            //to get faster computation it is better to try m' * m
+            Matrix tmp = m.transposeAndReturnNew();
             tmp.multiply(m);
-        } catch (WrongSizeException ignore) { }
-        
-        for (int j = 0; j < length; j++) {
-            for (int i = j + 1; i < length; i++) {
-                if (i == j) {
-                    if (Math.abs(tmp.getElementAt(i, j) - 1.0) > threshold) {
-                        return false;
-                    }
-                } else {
-                    if(Math.abs(tmp.getElementAt(i, j)) > threshold) {
-                        return false;
+
+            for (int j = 0; j < length; j++) {
+                for (int i = j + 1; i < length; i++) {
+                    if (i == j) {
+                        if (Math.abs(tmp.getElementAt(i, j) - 1.0) > threshold) {
+                            return false;
+                        }
+                    } else {
+                        if(Math.abs(tmp.getElementAt(i, j)) > threshold) {
+                            return false;
+                        }
                     }
                 }
             }
+            return true;
+
+        } catch (WrongSizeException e) {
+            return false;
         }
-        return true;        
     }
     
     /**

@@ -15,6 +15,8 @@
  */
 package com.irurueta.algebra;
 
+import java.util.Arrays;
+
 /**
  * Class containing utility methods for common operations with arrays of values.
  */
@@ -51,7 +53,7 @@ public class ArrayUtils {
      * array length are not equal.
      */
     public static void multiplyByScalar(double[] inputArray, double scalar, 
-            double[] result) throws IllegalArgumentException {
+            double[] result) {
         
         if (inputArray.length != result.length) {
             throw new IllegalArgumentException();
@@ -105,7 +107,7 @@ public class ArrayUtils {
      * length.
      */
     public static void sum(double[] firstOperand, double[] secondOperand,
-            double[] result) throws IllegalArgumentException {
+            double[] result) {
         if (firstOperand.length != secondOperand.length ||
                 firstOperand.length != result.length) {
             throw new IllegalArgumentException();
@@ -123,7 +125,7 @@ public class ArrayUtils {
      * arrays don't have the same length.
      */
     public static double[] sumAndReturnNew(double[] firstOperand, 
-            double[] secondOperand) throws IllegalArgumentException {
+            double[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException();
         }
@@ -164,7 +166,7 @@ public class ArrayUtils {
      * length.
      */
     public static void subtract(double[] firstOperand, double[] secondOperand,
-            double[] result) throws IllegalArgumentException {
+            double[] result) {
         if (firstOperand.length != secondOperand.length ||
                 firstOperand.length != result.length) {
             throw new IllegalArgumentException();
@@ -183,7 +185,7 @@ public class ArrayUtils {
      * arrays don't have the same length
      */
     public static double[] subtractAndReturnNew(double[] firstOperand, 
-            double[] secondOperand) throws IllegalArgumentException {
+            double[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException();
         }
@@ -203,7 +205,7 @@ public class ArrayUtils {
      * arrays don't have the same length.
      */
     public static double dotProduct(double[] firstOperand, 
-            double[] secondOperand) throws IllegalArgumentException {
+            double[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException(
                     "both operands must have same length");
@@ -233,8 +235,7 @@ public class ArrayUtils {
      * the same length as their respective operands.
      */
     public static double dotProduct(double[] firstOperand, 
-            double[] secondOperand, Matrix jacobianFirst, Matrix jacobianSecond)
-            throws IllegalArgumentException {
+            double[] secondOperand, Matrix jacobianFirst, Matrix jacobianSecond) {
         if (jacobianFirst != null &&
                 (jacobianFirst.getRows() != 1 ||
                 jacobianFirst.getColumns() != firstOperand.length)) {
@@ -271,8 +272,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if first and second operands don't have
      * the same length.
      */
-    public static double angle(double[] firstOperand, double[] secondOperand) 
-            throws IllegalArgumentException {
+    public static double angle(double[] firstOperand, double[] secondOperand) {
         double angle = Math.acos(dotProduct(firstOperand, secondOperand));
         return angle > Math.PI/2.0 ? Math.PI - angle : angle;
     }
@@ -305,7 +305,7 @@ public class ArrayUtils {
      * array length are not equal.
      */
     public static void multiplyByScalar(Complex[] inputArray, double scalar, 
-            Complex[] result) throws IllegalArgumentException {
+            Complex[] result) {
         
         if (inputArray.length != result.length) {
             throw new IllegalArgumentException();
@@ -367,7 +367,7 @@ public class ArrayUtils {
      * length.
      */
     public static void sum(Complex[] firstOperand, Complex[] secondOperand,
-            Complex[] result) throws IllegalArgumentException {
+            Complex[] result) {
         if (firstOperand.length != secondOperand.length ||
                 firstOperand.length != result.length) {
             throw new IllegalArgumentException();
@@ -385,7 +385,7 @@ public class ArrayUtils {
      * arrays don't have the same length
      */
     public static Complex[] sumAndReturnNew(Complex[] firstOperand, 
-            Complex[] secondOperand) throws IllegalArgumentException {
+            Complex[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException();
         }
@@ -431,7 +431,7 @@ public class ArrayUtils {
      * length
      */
     public static void subtract(Complex[] firstOperand, Complex[] secondOperand,
-            Complex[] result) throws IllegalArgumentException {
+            Complex[] result) {
         if (firstOperand.length != secondOperand.length ||
                 firstOperand.length != result.length) {
             throw new IllegalArgumentException();
@@ -450,7 +450,7 @@ public class ArrayUtils {
      * arrays don't have the same length
      */
     public static Complex[] subtractAndReturnNew(Complex[] firstOperand, 
-            Complex[] secondOperand) throws IllegalArgumentException {
+            Complex[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException();
         }
@@ -473,7 +473,7 @@ public class ArrayUtils {
      * arrays don't have the same length
      */
     public static Complex dotProduct(Complex[] firstOperand, 
-            Complex[] secondOperand) throws IllegalArgumentException {
+            Complex[] secondOperand) {
         if (firstOperand.length != secondOperand.length) {
             throw new IllegalArgumentException();
         }
@@ -493,8 +493,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided arrays don't have the same 
      * length or if provided jacobian is not NxN, where N is length of arrays.
      */
-    public static void normalize(double[] v, double[] result, Matrix jacobian) 
-            throws IllegalArgumentException {
+    public static void normalize(double[] v, double[] result, Matrix jacobian) {
         double s = v.length;        
         
         if (s != result.length) {
@@ -521,11 +520,19 @@ public class ArrayUtils {
                 jacobian.multiplyByScalar(n2);
                 jacobian.subtract(Matrix.newFromArray(v, true).
                         multiplyAndReturnNew(Matrix.newFromArray(v, false)));
-                jacobian.multiplyByScalar(1.0 / n3);            
+                if (n3 != 0.0) {
+                    jacobian.multiplyByScalar(1.0 / n3);
+                } else {
+                    jacobian.initialize(Double.MAX_VALUE);
+                }
             } catch (WrongSizeException ignore){ /* never thrown */ }
         }  
-        
-        internalMultiplyByScalar(v, 1.0 / n, result);        
+
+        if (n != 0.0) {
+            internalMultiplyByScalar(v, 1.0 / n, result);
+        } else {
+            Arrays.fill(result, Double.MAX_VALUE);
+        }
     }
     
     /**
@@ -536,8 +543,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided jacobian is not NxN, where N
      * is length of arrays.
      */
-    public static double[] normalizeAndReturnNew(double[] v, Matrix jacobian) 
-            throws IllegalArgumentException {
+    public static double[] normalizeAndReturnNew(double[] v, Matrix jacobian) {
         double[] result = new double[v.length];
         normalize(v, result, jacobian);
         return result;
@@ -551,8 +557,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided jacobian is not NxN, where N
      * is length of arrays.
      */
-    public static void normalize(double[] v, Matrix jacobian) 
-            throws IllegalArgumentException {
+    public static void normalize(double[] v, Matrix jacobian) {
         normalize(v, v, jacobian);
     }
     
@@ -563,8 +568,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided arrays don't have the same 
      * length.
      */
-    public static void normalize(double[] v, double[] result) 
-            throws IllegalArgumentException {
+    public static void normalize(double[] v, double[] result) {
         normalize(v, result, null);
     }
     
@@ -592,13 +596,13 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided arrays don't have the same
      * length.
      */
-    public static void reverse(double[] v, double[] result)
-            throws IllegalArgumentException {
+    @SuppressWarnings("Duplicates")
+    public static void reverse(double[] v, double[] result) {
         
         int length = v.length;
         
         if (result.length != length) {
-            throw new IllegalArgumentException("lengths must be equal");
+            throw new IllegalArgumentException();
         }
         
         int halfLength = length / 2;
@@ -643,13 +647,13 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided arrays don't have the same
      * length.
      */
-    public static void reverse(Complex[] v, Complex[] result)
-            throws IllegalArgumentException {
+    @SuppressWarnings("Duplicates")
+    public static void reverse(Complex[] v, Complex[] result) {
         
         int length = v.length;
         
         if (result.length != length) {
-            throw new IllegalArgumentException("lengths must be equal");
+            throw new IllegalArgumentException();
         }
         
         int halfLength = length / 2;
@@ -710,12 +714,11 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided arrays don't have the same 
      * length.
      */
-    public static void sqrt(double[] v, double[] result) 
-            throws IllegalArgumentException {
+    public static void sqrt(double[] v, double[] result) {
         int length = v.length;
         
         if (result.length != length) {
-            throw new IllegalArgumentException("lengths must be equal");
+            throw new IllegalArgumentException();
         }
 
         for (int i = 0; i < length; i++) {
@@ -824,8 +827,7 @@ public class ArrayUtils {
      * @throws IllegalArgumentException if provided result or pos array don't
      * have length 2.
      */
-    public static void minMax(double[] v, double[] result, int[] pos) 
-            throws IllegalArgumentException {
+    public static void minMax(double[] v, double[] result, int[] pos) {
         if (result.length != 2) {
             throw new IllegalArgumentException("result must have length 2");
         }

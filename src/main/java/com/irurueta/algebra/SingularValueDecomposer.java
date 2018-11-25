@@ -1350,8 +1350,8 @@ public class SingularValueDecomposer extends Decomposer {
             }
             anorm = Math.max(anorm, Math.abs(w[i]) + Math.abs(rv1[i]));			
 	    }
-		
-	    //Accumulation of right-hand transformations
+
+        //Accumulation of right-hand transformations
         for (i = n - 1; i >= 0; i--) {
             if (i < (n - 1)) {
                 if (g != 0.0) {
@@ -1440,7 +1440,11 @@ public class SingularValueDecomposer extends Decomposer {
 			            g = w[i];
 			            h = pythag(f, g);
 			            w[i] = h;
-                        h = 1.0 / h;
+			            if (h != 0.0) {
+                            h = 1.0 / h;
+                        } else {
+			                h = Double.MAX_VALUE;
+                        }
 			            c = g * h;
 			            s = -f * h;
 			            for (j = 0; j < m; j++) {
@@ -1486,8 +1490,13 @@ public class SingularValueDecomposer extends Decomposer {
                     g = c * g;
                     z = pythag(f, h);
                     rv1[j] = z;
-                    c = f / z;
-                    s = h / z;
+                    if (z != 0.0) {
+                        c = f / z;
+                        s = h / z;
+                    } else {
+                        c = Math.signum(f) * Double.MAX_VALUE;
+                        s = Math.signum(h) * Double.MAX_VALUE;
+                    }
                     f = x * c + g * s;
                     g = g * c - x * s;
                     h = y * s;

@@ -24,6 +24,12 @@ package com.irurueta.algebra;
  */
 @SuppressWarnings("WeakerAccess")
 public class GaussJordanElimination {
+
+    /**
+     * Constructor.
+     * Prevents instantiation.
+     */
+    private GaussJordanElimination() { }
     
     /**
      * Computes Gauss-Jordan elimination by attempting to solve linear system
@@ -52,10 +58,20 @@ public class GaussJordanElimination {
             throw new WrongSizeException();
         }
         
-        int i, icol = 0, irow = 0, j, k, l, ll, n = a.getRows();
+        int i;
+        int icol = 0;
+        int irow = 0;
+        int j;
+        int k;
+        int l;
+        int ll;
+        int n = a.getRows();
         int m = b != null ? b.getColumns() : 0;
         
-        double big, dum, pivinv, value;
+        double big;
+        double dum;
+        double pivinv;
+        double value;
         int[] indxc = new int[n];
         int[] indxr = new int[n];
         int[] ipiv = new int[n];

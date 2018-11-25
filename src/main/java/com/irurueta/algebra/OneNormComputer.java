@@ -109,7 +109,11 @@ public class OneNormComputer extends NormComputer {
         
         if (jacobian != null) {
             jacobian.fromArray(array);
-            jacobian.multiplyByScalar(1.0 / norm);
+            if (norm != 0.0) {
+                jacobian.multiplyByScalar(1.0 / norm);
+            } else {
+                jacobian.initialize(Double.MAX_VALUE);
+            }
         }
         
         return norm;        

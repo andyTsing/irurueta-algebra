@@ -554,7 +554,26 @@ public class ArrayUtilsTest {
         ArrayUtils.normalize(v2);
         
         //check correctness
-        assertArrayEquals(result, v2, ABSOLUTE_ERROR);        
+        assertArrayEquals(result, v2, ABSOLUTE_ERROR);
+
+
+        //test for zero norm
+        v = new double[length];
+        result = new double[length];
+        jacobian = new Matrix(length, length);
+
+        ArrayUtils.normalize(v, result, jacobian);
+
+        //check
+        Arrays.fill(result2, Double.MAX_VALUE);
+        assertArrayEquals(result, result2, 0.0);
+
+        for (int i = 0; i < length; i++) {
+            for (int j = 0; j < length; j++) {
+                assertEquals(jacobian.getElementAt(i, j),
+                        Double.MAX_VALUE, 0.0);
+            }
+        }
     }
     
     @Test

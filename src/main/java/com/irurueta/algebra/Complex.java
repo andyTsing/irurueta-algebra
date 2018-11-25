@@ -437,8 +437,10 @@ public class Complex implements Serializable {
      * equal.
      */
     public boolean equals(Complex other, double tolerance) {
-        if(Math.abs(real - other.real) > tolerance) return false;
-        return !(Math.abs(imaginary - other.imaginary) > tolerance);
+        if(Math.abs(real - other.real) > tolerance) {
+            return false;
+        }
+        return Math.abs(imaginary - other.imaginary) <= tolerance;
     }
     
     /**

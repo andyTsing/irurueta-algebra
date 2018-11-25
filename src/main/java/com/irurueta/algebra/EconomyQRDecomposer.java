@@ -133,7 +133,8 @@ public class EconomyQRDecomposer extends Decomposer {
         qr = inputMatrix.clone();
         
         rDiag = new double[columns];
-        double nrm, s;
+        double nrm;
+        double s;
 
         //Main loop
         for (int k = 0; k < columns; k++) {
@@ -224,8 +225,7 @@ public class EconomyQRDecomposer extends Decomposer {
      * @see #decompose()
      */
     public boolean isFullRank(double roundingError) 
-            throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException {
+            throws NotAvailableException, WrongSizeException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
@@ -268,7 +268,9 @@ public class EconomyQRDecomposer extends Decomposer {
         if (h.getRows() != rows || h.getColumns() != columns) {
             try {
                 h.resize(rows, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         
         for (int i = 0; i < rows; i++) {
@@ -296,7 +298,9 @@ public class EconomyQRDecomposer extends Decomposer {
         Matrix out = null;
         try {
             out = new Matrix(rows, columns);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         getH(out);
         return out;
     }
@@ -322,7 +326,9 @@ public class EconomyQRDecomposer extends Decomposer {
         if (r.getRows() != columns || r.getColumns() != columns) {
             try {
                 r.resize(columns, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         
         for (int i = 0; i < columns; i++) {
@@ -359,7 +365,9 @@ public class EconomyQRDecomposer extends Decomposer {
         Matrix out = null;
         try {
             out = new Matrix(columns, columns);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         getR(out);
         return out;
     }
@@ -391,7 +399,9 @@ public class EconomyQRDecomposer extends Decomposer {
         if (q.getRows() != rows || q.getColumns() != columns) {
             try {
                 q.resize(rows, columns);
-            } catch (WrongSizeException ignore){}
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
                 
         for (int k = columns - 1; k >= 0; k--) {
@@ -477,10 +487,50 @@ public class EconomyQRDecomposer extends Decomposer {
             WrongSizeException, RankDeficientMatrixException {
         solve(b, DEFAULT_ROUND_ERROR, result);
     }
-    
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B, where A is the input matrix provided for QR decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vector/matrices without
+     * having to recompute QR decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must have at least as many rows as columns,
+     * otherwise a WrongSizeException will be raised as well. For input matrices
+     * having a higher number of rows than columns, the system of equations will
+     * be overdetermined and a least squares solution will be found.
+     * Note: If provided input matrix A is rank deficient, a
+     * RankDeficientMatrixException will be thrown.
+     * Note: In order to execute this method, a QR decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order to
+     * avoid this exception call decompose() method first.
+     * @param b Parameters matrix that determine a linear system of equations.
+     * Provided matrix must have the same number of rows as provided input
+     * matrix for QR decomposition. Besides, each column on parameters matrix
+     * will represent a new system of equations, whose solution will be returned
+     * on appropriate column as an output of this method.
+     * @param roundingError threshold to determine whether matrix b has full rank or not.
+     *                      By default this is typically a tiny value close to zero.
+     * @param result Matrix containing solution of linear system of equations on
+     * each column for each column of provided matrix of parameters b. Provided
+     * matrix will be resized if needed
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     * method before computing QR decomposition. To avoid this exception call
+     * decompose() method first.
+     * @throws WrongSizeException Exception thrown if attempting to call this
+     * method using an input matrix with less rows than columns; or if provided
+     * parameters matrix (b) does not have the same number of rows as input
+     * matrix being QR decomposed.
+     * @throws RankDeficientMatrixException Exception thrown if provided input
+     * matrix to be QR decomposed is rank deficient. In this case linear system
+     * of equations cannot be solved.
+     * @throws IllegalArgumentException if provided rounding error is negative.
+     */
     public void solve(Matrix b, double roundingError, Matrix result) 
             throws NotAvailableException, WrongSizeException, 
-            RankDeficientMatrixException, IllegalArgumentException {
+            RankDeficientMatrixException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
@@ -634,7 +684,7 @@ public class EconomyQRDecomposer extends Decomposer {
      */    
     public Matrix solve(Matrix b, double roundingError) 
             throws NotAvailableException, WrongSizeException, 
-            RankDeficientMatrixException, IllegalArgumentException {
+            RankDeficientMatrixException {
         
         int columns = inputMatrix.getColumns();
         int colsB = b.getColumns();
