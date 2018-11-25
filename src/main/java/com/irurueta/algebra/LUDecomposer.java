@@ -256,8 +256,7 @@ public class LUDecomposer extends Decomposer {
      * @see #decompose()
      */
     public boolean isSingular(double roundingError) 
-            throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException {
+            throws NotAvailableException, WrongSizeException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
@@ -313,7 +312,9 @@ public class LUDecomposer extends Decomposer {
         if (pivottedL.getRows() != rows || pivottedL.getColumns() != columns) {
             try {
                 pivottedL.resize(rows, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         
         for (int i = 0; i < rows; i++) {
@@ -356,7 +357,9 @@ public class LUDecomposer extends Decomposer {
         Matrix out = null;
         try {
             out = new Matrix(rows, columns);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         getPivottedL(out);
         return out;
     }
@@ -388,7 +391,9 @@ public class LUDecomposer extends Decomposer {
         if (l.getRows() != rows || l.getColumns() != columns) {
             try {
                 l.resize(rows, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         
         for (int i = 0; i < rows; i++) {
@@ -430,7 +435,9 @@ public class LUDecomposer extends Decomposer {
         Matrix out = null;
         try {
             out = new Matrix(rows, columns);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         getL(out);        
         return out;
     }
@@ -458,7 +465,9 @@ public class LUDecomposer extends Decomposer {
         if (u.getRows() != columns || u.getColumns() != columns) {
             try {
                 u.resize(columns, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         for (int i = 0; i < columns; i++) {
             for (int j = 0; j < columns; j++) {
@@ -493,7 +502,9 @@ public class LUDecomposer extends Decomposer {
         Matrix out = null;
         try {
             out = new Matrix(columns, columns);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         getU(out);
         return out;
     }
@@ -804,7 +815,7 @@ public class LUDecomposer extends Decomposer {
      */
     public Matrix solve(Matrix b, double roundingError) 
             throws NotAvailableException, WrongSizeException, 
-            SingularMatrixException, IllegalArgumentException {
+            SingularMatrixException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();

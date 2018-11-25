@@ -70,11 +70,10 @@ public class FrobeniusNormComputer extends NormComputer {
             throws WrongSizeException{
         if (jacobian != null && (jacobian.getRows() != 1 ||
                 jacobian.getColumns() != array.length)) {
-            throw new WrongSizeException("jacobian must be 1xN, where " + 
-                    "N is length of array");
+            throw new WrongSizeException();
         }
         
-        double norm = norm(array);
+        double norm = FrobeniusNormComputer.norm(array);
         
         if (jacobian != null) {
             jacobian.fromArray(array);

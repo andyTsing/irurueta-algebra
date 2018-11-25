@@ -50,7 +50,8 @@ public class InfinityNormComputer extends NormComputer {
     public static double norm(Matrix m) {
         int rows = m.getRows();
         int columns = m.getColumns();
-        double rowSum, maxRowSum = 0.0;
+        double rowSum;
+        double maxRowSum = 0.0;
         
         for (int i = 0; i < rows; i++) {
             rowSum = 0.0;
@@ -78,11 +79,10 @@ public class InfinityNormComputer extends NormComputer {
             throws WrongSizeException {
         if (jacobian != null && (jacobian.getRows() != 1 ||
                 jacobian.getColumns() != array.length)) {
-            throw new WrongSizeException("jacobian must be 1xN, where " + 
-                    "N is length of array");
+            throw new WrongSizeException();
         }
         
-        double norm = norm(array);
+        double norm = InfinityNormComputer.norm(array);
         
         if (jacobian != null) {
             jacobian.fromArray(array);
