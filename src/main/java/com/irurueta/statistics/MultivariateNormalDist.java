@@ -63,7 +63,7 @@ public class MultivariateNormalDist {
      * @throws IllegalArgumentException if provided number of dimensions is 
      * zero or less.
      */
-    public MultivariateNormalDist(int dims) throws IllegalArgumentException {
+    public MultivariateNormalDist(int dims) {
         if (dims <= 0) {
             throw new IllegalArgumentException(
                     "number of dimensions must be greater than zero");
@@ -94,7 +94,7 @@ public class MultivariateNormalDist {
      * not square, symmetric and positive definite (i.e. non singular).
      */
     public MultivariateNormalDist(double[] mean, Matrix covariance)
-            throws IllegalArgumentException, InvalidCovarianceMatrixException {
+            throws InvalidCovarianceMatrixException {
         setMeanAndCovariance(mean, covariance);
     }
     
@@ -118,7 +118,7 @@ public class MultivariateNormalDist {
      */
     public MultivariateNormalDist(double[] mean, Matrix covariance, 
             boolean validateSymmetricPositiveDefinite) 
-            throws IllegalArgumentException, InvalidCovarianceMatrixException {
+            throws InvalidCovarianceMatrixException {
         setMeanAndCovariance(mean, covariance, 
                 validateSymmetricPositiveDefinite);
     }
@@ -139,7 +139,7 @@ public class MultivariateNormalDist {
      * @throws IllegalArgumentException if provided array has a length smaller
      * than 1.
      */
-    public void setMean(double[] mu) throws IllegalArgumentException {
+    public void setMean(double[] mu) {
         if (mu.length == 0) {
             throw new IllegalArgumentException(
                     "length of mean array must be greater than zero");
@@ -228,7 +228,7 @@ public class MultivariateNormalDist {
      * not square, symmetric and positive definite (i.e. non singular).
      */
     public final void setMeanAndCovariance(double[] mu, Matrix cov) 
-            throws IllegalArgumentException, InvalidCovarianceMatrixException {
+            throws InvalidCovarianceMatrixException {
         setMeanAndCovariance(mu, cov, true);
     }
     
@@ -249,7 +249,7 @@ public class MultivariateNormalDist {
      */
     public final void setMeanAndCovariance(double[] mu, Matrix cov, 
             boolean validateSymmetricPositiveDefinite) 
-            throws IllegalArgumentException, InvalidCovarianceMatrixException {
+            throws InvalidCovarianceMatrixException {
         if (mu.length != cov.getRows()) {
             throw new IllegalArgumentException("mean array length must be " + 
                     "equal to covariance number of rows");
@@ -326,11 +326,9 @@ public class MultivariateNormalDist {
      */
     @SuppressWarnings("Duplicates")
     public double p(double[] x) throws NotReadyException, 
-            IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException {
+            DecomposerException, RankDeficientMatrixException {
         if (!isReady()) {
-            throw new NotReadyException(
-                    "mean and covariance not provided or invalid");
+            throw new NotReadyException();
         }
         
         int k = x.length;
@@ -370,8 +368,8 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     @SuppressWarnings("Duplicates")
-    public double cdf(double[] x, Matrix basis) throws IllegalArgumentException,
-            NotReadyException, DecomposerException {
+    public double cdf(double[] x, Matrix basis) throws NotReadyException,
+            DecomposerException {
         if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");

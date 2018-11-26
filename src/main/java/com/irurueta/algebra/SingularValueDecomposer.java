@@ -649,8 +649,7 @@ public class SingularValueDecomposer extends Decomposer {
      * are always positive, and hence, provided threshols should be a positive
      * near to zero value.
      */        
-    public void getRange(Matrix range) throws NotAvailableException,
-            IllegalArgumentException {
+    public void getRange(Matrix range) throws NotAvailableException {
         getRange(getNegligibleSingularValueThreshold(), range);
     }
     
@@ -672,7 +671,7 @@ public class SingularValueDecomposer extends Decomposer {
      * near to zero value.
      */
     public Matrix getRange(double singularValueThreshold) 
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -727,7 +726,7 @@ public class SingularValueDecomposer extends Decomposer {
      * near to zero value.
      */    
     public void getNullspace(double singularValueThreshold, Matrix nullspace)
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -755,8 +754,7 @@ public class SingularValueDecomposer extends Decomposer {
      * are always positive, and hence, provided threshold should be a positive 
      * near to zero value.
      */        
-    public void getNullspace(Matrix nullspace) throws NotAvailableException,
-            IllegalArgumentException {
+    public void getNullspace(Matrix nullspace) throws NotAvailableException {
         getNullspace(getNegligibleSingularValueThreshold(), nullspace);
     }
     
@@ -778,7 +776,7 @@ public class SingularValueDecomposer extends Decomposer {
      * near to zero value.
      */
     public Matrix getNullspace(double singularValueThreshold) 
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -852,8 +850,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */    
     public void solve(Matrix b, double singularValueThreshold, Matrix result)
-            throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException {
+            throws NotAvailableException, WrongSizeException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -927,7 +924,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */    
     public void solve(Matrix b, Matrix result) throws NotAvailableException,
-            WrongSizeException, IllegalArgumentException {
+            WrongSizeException {
         solve(b, getNegligibleSingularValueThreshold(), result);
     }
     
@@ -965,8 +962,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */
     public Matrix solve(Matrix b, double singularValueThreshold)
-            throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException {
+            throws NotAvailableException, WrongSizeException {
         int n = inputMatrix.getColumns();
         int p = b.getColumns();
         Matrix x = new Matrix(n, p);
@@ -1046,8 +1042,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */    
     public void solve(double[] b, double singularValueThreshold, 
-            double[] result) throws NotAvailableException, WrongSizeException,
-            IllegalArgumentException {
+            double[] result) throws NotAvailableException, WrongSizeException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -1122,7 +1117,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */        
     public void solve(double[] b, double[] result) throws NotAvailableException,
-            WrongSizeException, IllegalArgumentException {
+            WrongSizeException {
         solve(b, getNegligibleSingularValueThreshold(), result);
     }
     
@@ -1158,8 +1153,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */
     public double[] solve(double[] b, double singularValueThreshold)
-            throws NotAvailableException, WrongSizeException, 
-            IllegalArgumentException {
+            throws NotAvailableException, WrongSizeException {
         int n = inputMatrix.getColumns();
         
         double[] x = new double[n];
@@ -1221,8 +1215,23 @@ public class SingularValueDecomposer extends Decomposer {
 		
 		
 	    boolean flag;
-	    int i, its, j, jj, k, l = 0, nm = 0;
-	    double anorm, c, f, g, h, s, scale, x, y, z;
+	    int i;
+	    int its;
+	    int j;
+	    int jj;
+	    int k;
+	    int l = 0;
+	    int nm = 0;
+	    double anorm;
+	    double c;
+	    double f;
+	    double g;
+	    double h;
+	    double s;
+	    double scale;
+	    double x;
+	    double y;
+	    double z;
 	    double[] rv1 = new double[n];
 		
 	    //Householder reduction to bidiagonal form
@@ -1364,9 +1373,9 @@ public class SingularValueDecomposer extends Decomposer {
                     nm = l - 1;
                     if (l == 0 || Math.abs(rv1[l]) <= eps * anorm) {
 			            flag = false;
-			            break;
                     }
-                    if (Math.abs(w[nm]) <= eps * anorm) {
+
+                    if (!flag || Math.abs(w[nm]) <= eps * anorm) {
                         break;
                     }
 		        }
@@ -1483,7 +1492,11 @@ public class SingularValueDecomposer extends Decomposer {
         int m = inputMatrix.getRows();
 	    int n = inputMatrix.getColumns();
 		
-	    int i, j, k, s, inc = 1;
+	    int i;
+	    int j;
+	    int k;
+	    int s;
+	    int inc = 1;
 	    double sw;
 	    double[] su = new double[m];
 	    double[] sv = new double[n];
@@ -1576,7 +1589,8 @@ public class SingularValueDecomposer extends Decomposer {
      * @return Norm of (a, b).
      */
     private double pythag(double a, double b) {
-        double absa, absb;
+        double absa;
+        double absb;
 	    absa = Math.abs(a);
 	    absb = Math.abs(b);
 		
@@ -1596,7 +1610,11 @@ public class SingularValueDecomposer extends Decomposer {
      * @return a or -a depending on b sign.
      */
     private double sign(double a, double b) {
-        return (b >= 0.0 ? (a >= 0.0 ? a : -a) : (a >= 0.0 ? -a : a));
+        if (b >= 0.0) {
+            return a >= 0.0 ? a : -a;
+        } else {
+            return a >= 0.0 ? -a : a;
+        }
     }
 
     /**
@@ -1645,7 +1663,9 @@ public class SingularValueDecomposer extends Decomposer {
         if (nullspace.getRows() != columns || nullspace.getColumns() != nullity){
             try {
                 nullspace.resize(columns, nullity);
-            } catch (WrongSizeException ignore){ }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
 
         int nn = 0;

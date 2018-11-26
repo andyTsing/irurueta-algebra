@@ -1100,8 +1100,7 @@ public class Utils {
      * @return Boolean relation whether the matrix is symmetric or not.
      * @throws IllegalArgumentException Raised if provided threshold is negative
      */
-    public static boolean isSymmetric(Matrix m, double threshold)
-            throws IllegalArgumentException {
+    public static boolean isSymmetric(Matrix m, double threshold) {
         
         if (threshold < MIN_THRESHOLD) {
             throw new IllegalArgumentException();
@@ -1142,8 +1141,7 @@ public class Utils {
      * @return True if matrix is orthogonal, false otherwise.
      * @throws IllegalArgumentException Raised if provided threshold is negative
      */
-    public static boolean isOrthogonal(Matrix m, double threshold)
-        throws IllegalArgumentException {
+    public static boolean isOrthogonal(Matrix m, double threshold) {
         
         if (threshold < MIN_THRESHOLD) {
             throw new IllegalArgumentException();
@@ -1199,8 +1197,7 @@ public class Utils {
      * @return True if matrix is orthonormal, false otherwise.
      * @throws IllegalArgumentException Raised if provided threshold is negative
      */
-    public static boolean isOrthonormal(Matrix m, double threshold)
-            throws IllegalArgumentException {
+    public static boolean isOrthonormal(Matrix m, double threshold) {
         return isOrthogonal(m, threshold) && 
                 (Math.abs(Utils.normF(m) - 1.0) < threshold);
     }
@@ -1225,7 +1222,7 @@ public class Utils {
      * don't have the same length.
      */
     public static double dotProduct(double[] firstOperand, 
-            double[] secondOperand) throws IllegalArgumentException {
+            double[] secondOperand) {
         return ArrayUtils.dotProduct(firstOperand, secondOperand);
     }
     
@@ -1246,8 +1243,7 @@ public class Utils {
      * same length as their respective operands.
      */
     public static double dotProduct(double[] firstOperand, 
-            double[] secondOperand, Matrix jacobianFirst, Matrix jacobianSecond)
-            throws IllegalArgumentException {
+            double[] secondOperand, Matrix jacobianFirst, Matrix jacobianSecond) {
         return ArrayUtils.dotProduct(firstOperand, secondOperand, jacobianFirst,
                 jacobianSecond);
     }
@@ -1295,7 +1291,7 @@ public class Utils {
      */
     public static double dotProduct(Matrix firstOperand, Matrix secondOperand,
             Matrix jacobianFirst, Matrix jacobianSecond) 
-            throws WrongSizeException, IllegalArgumentException {
+            throws WrongSizeException {
         if (firstOperand.getColumns() != secondOperand.getRows() ||
                 firstOperand.getRows() != 1 || secondOperand.getColumns() != 1) {
                 throw new WrongSizeException("first operand must be 1xN, and "
@@ -1356,8 +1352,7 @@ public class Utils {
      */
     public static void schurc(Matrix m, int pos, boolean fromStart, 
             boolean sqrt, Matrix result, Matrix iA) 
-            throws IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException {
+            throws DecomposerException, RankDeficientMatrixException {
         int rows = m.getRows();
         int cols = m.getColumns();
         if (rows != cols) {
@@ -1456,8 +1451,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static void schurc(Matrix m, int pos, boolean fromStart, 
-            Matrix result, Matrix iA) throws IllegalArgumentException, 
-            DecomposerException, RankDeficientMatrixException {
+            Matrix result, Matrix iA) throws DecomposerException, RankDeficientMatrixException {
         schurc(m, pos, fromStart, false, result, iA);
     }
     
@@ -1478,8 +1472,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static void schurc(Matrix m, int pos, Matrix result, Matrix iA) 
-            throws IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException {
+            throws DecomposerException, RankDeficientMatrixException {
         schurc(m, pos, true, result, iA);
     }
     
@@ -1504,8 +1497,7 @@ public class Utils {
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos, 
             boolean fromStart, boolean sqrt, Matrix iA) 
-            throws IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException {
+            throws DecomposerException, RankDeficientMatrixException {
         int rows = m.getRows();
         int cols = m.getColumns();
         if (rows != cols) {
@@ -1522,7 +1514,9 @@ public class Utils {
         Matrix result = null;
         try {
             result = new Matrix(size,size);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         
         schurc(m, pos, fromStart, sqrt, result, iA);
         return result;
@@ -1546,8 +1540,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrice">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos, 
-            boolean fromStart, Matrix iA) throws IllegalArgumentException, 
-            DecomposerException, RankDeficientMatrixException {
+            boolean fromStart, Matrix iA) throws DecomposerException, RankDeficientMatrixException {
         return schurcAndReturnNew(m, pos, fromStart, false, iA);
     }
     
@@ -1567,8 +1560,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos, Matrix iA) 
-            throws IllegalArgumentException, DecomposerException, 
-            RankDeficientMatrixException {
+            throws DecomposerException, RankDeficientMatrixException {
         return schurcAndReturnNew(m, pos, true, iA);
     }
     
@@ -1590,8 +1582,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static void schurc(Matrix m, int pos, boolean fromStart, 
-            boolean sqrt, Matrix result) throws IllegalArgumentException, 
-            DecomposerException {
+            boolean sqrt, Matrix result) throws DecomposerException {
         try {
             schurc(m, pos, fromStart, sqrt, result, null);
         } catch (RankDeficientMatrixException ignore) {
@@ -1615,8 +1606,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static void schurc(Matrix m, int pos, boolean fromStart, 
-            Matrix result) throws IllegalArgumentException, 
-            DecomposerException {
+            Matrix result) throws DecomposerException {
         try {
             schurc(m, pos, fromStart, result, null);
         } catch (RankDeficientMatrixException ignore) {
@@ -1638,7 +1628,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static void schurc(Matrix m, int pos, Matrix result) 
-            throws IllegalArgumentException, DecomposerException {
+            throws DecomposerException {
         try {
             schurc(m, pos, result, null);
         } catch (RankDeficientMatrixException ignore) {
@@ -1663,8 +1653,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos, 
-            boolean fromStart, boolean sqrt) throws IllegalArgumentException, 
-            DecomposerException {
+            boolean fromStart, boolean sqrt) throws DecomposerException {
         Matrix result = null;
         try {
             result = schurcAndReturnNew(m, pos, fromStart, sqrt, null);
@@ -1690,8 +1679,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos, 
-            boolean fromStart) throws IllegalArgumentException, 
-            DecomposerException {
+            boolean fromStart) throws DecomposerException {
         Matrix result = null;
         try {
             result = schurcAndReturnNew(m, pos, fromStart, null);
@@ -1715,7 +1703,7 @@ public class Utils {
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
     public static Matrix schurcAndReturnNew(Matrix m, int pos) 
-            throws IllegalArgumentException, DecomposerException {
+            throws DecomposerException {
         Matrix result = null;
         try {
             result = schurcAndReturnNew(m, pos, null);

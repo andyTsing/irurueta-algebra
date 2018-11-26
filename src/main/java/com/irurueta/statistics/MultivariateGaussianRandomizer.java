@@ -68,8 +68,7 @@ public class MultivariateGaussianRandomizer {
      * pseudo-random values.
      * @throws NullPointerException thrown if provided internal random is null.
      */
-    public MultivariateGaussianRandomizer(Random internalRandom) 
-            throws NullPointerException {
+    public MultivariateGaussianRandomizer(Random internalRandom) {
         if (internalRandom == null) {
             throw new NullPointerException();
         }
@@ -111,7 +110,7 @@ public class MultivariateGaussianRandomizer {
      */
     public MultivariateGaussianRandomizer(Random internalRandom, double[] mean,
             Matrix covariance) throws WrongSizeException, 
-            InvalidCovarianceMatrixException, NullPointerException {
+            InvalidCovarianceMatrixException {
         if (internalRandom == null) {
             throw new NullPointerException();
         }
@@ -177,6 +176,8 @@ public class MultivariateGaussianRandomizer {
      * Generate next set of multivariate Gaussian random values having current
      * mean and covariance of this instance.
      * @param values array where generated random values will be stored.
+     * @throws IllegalArgumentException if provided array length does not have the same length
+     * as provided mean array.
      */
     public void next(double[] values) throws IllegalArgumentException {  
         int n = values.length;

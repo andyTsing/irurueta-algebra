@@ -78,7 +78,9 @@ public class Matrix implements Serializable{
     public Matrix(Matrix m) {
         try {
             internalResize(m.getRows(), m.getColumns());
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
         System.arraycopy(m.getBuffer(), 0, buffer, 0, buffer.length);
     }
@@ -230,6 +232,7 @@ public class Matrix implements Serializable{
      * @return A copy of this matrix instance.
      */
     @Override
+    @SuppressWarnings("all")
     public Matrix clone() {
         Matrix out = null;
         try {
@@ -1209,7 +1212,7 @@ public class Matrix implements Serializable{
      * top-left corners are indeed located below or at right side of 
      * bottom-right corners.
      */
-    @SuppressWarnings("Duplicates")
+    @SuppressWarnings("all")
     public void setSubmatrix(int topLeftRow, int topLeftColumn, 
             int bottomRightRow, int bottomRightColumn, Matrix submatrix,
             int submatrixTopLeftRow, int submatrixTopLeftColumn,
@@ -1382,7 +1385,7 @@ public class Matrix implements Serializable{
      * or if valuesStart and valuesEnd lie outside of valid array positions or
      * start is greater than end position.
      */
-    @SuppressWarnings("Duplicates")
+    @SuppressWarnings("all")
     public void setSubmatrix(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, double[] values,
             int valuesStart, int valuesEnd, boolean isColumnOrder) {
