@@ -179,7 +179,7 @@ public class MultivariateGaussianRandomizer {
      * @throws IllegalArgumentException if provided array length does not have the same length
      * as provided mean array.
      */
-    public void next(double[] values) throws IllegalArgumentException {  
+    public void next(double[] values) {
         int n = values.length;
         
         if (n != mMean.length) {

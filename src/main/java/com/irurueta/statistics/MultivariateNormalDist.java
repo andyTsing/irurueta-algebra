@@ -371,8 +371,7 @@ public class MultivariateNormalDist {
     public double cdf(double[] x, Matrix basis) throws NotReadyException,
             DecomposerException {
         if (!isReady()) {
-            throw new NotReadyException(
-                    "mean and covariance not provided or invalid");
+            throw new NotReadyException();
         }        
         
         int k = x.length;
