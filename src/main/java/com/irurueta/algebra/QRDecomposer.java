@@ -148,7 +148,8 @@ public class QRDecomposer extends Decomposer {
             throw new DecomposerException();
         }
         
-        double norm, prod;
+        double norm;
+        double prod;
         try {
             //initialize Q with some random values (within range of 1 to keep
             //high accuracy
@@ -156,7 +157,9 @@ public class QRDecomposer extends Decomposer {
             r = new Matrix(rows, columns);
             //initialize factor R to zero (because it will be diagonal)
             r.initialize(0.0);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         
         //Copy contents of input matrix to Q matrix (which is bigger than input
         //matrix) on top-left area.
@@ -258,7 +261,7 @@ public class QRDecomposer extends Decomposer {
      * @see #decompose()
      */
     public boolean isFullRank(double roundingError) 
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
@@ -432,7 +435,7 @@ public class QRDecomposer extends Decomposer {
         }
         
         //Compute Y = Q' * B
-        Matrix Y = q.transposeAndReturnNew().multiplyAndReturnNew(b);
+        Matrix y = q.transposeAndReturnNew().multiplyAndReturnNew(b);
         
         //resize result matrix if needed
         if (result.getRows() != columns || result.getColumns() != colsB) {
@@ -447,7 +450,7 @@ public class QRDecomposer extends Decomposer {
             //first columns rows, which contain upper diagonal data of R, the
             //remaining rows of R are just zero.
             for (int i = columns - 1; i >= 0; i--) {
-                sum = Y.getElementAt(i, j2);
+                sum = y.getElementAt(i, j2);
                 for (int j = i + 1; j < columns; j++) {
                     sum -= r.getElementAt(i, j) * result.getElementAt(j, j2);
                 }
@@ -544,7 +547,7 @@ public class QRDecomposer extends Decomposer {
      */
     public Matrix solve(Matrix b, double roundingError) 
             throws NotAvailableException, WrongSizeException, 
-            RankDeficientMatrixException, IllegalArgumentException {
+            RankDeficientMatrixException {
         
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();

@@ -70,6 +70,18 @@ public class Matrix implements Serializable{
     public Matrix(int rows, int columns) throws WrongSizeException {
         internalResize(rows, columns);
     }
+
+    /**
+     * Copy constructor.
+     * @param m matrix to copy from.
+     */
+    public Matrix(Matrix m) {
+        try {
+            internalResize(m.getRows(), m.getColumns());
+        } catch (WrongSizeException ignore) { }
+
+        System.arraycopy(m.getBuffer(), 0, buffer, 0, buffer.length);
+    }
     
     /**
      * Returns number of rows in matrix.
@@ -101,8 +113,7 @@ public class Matrix implements Serializable{
      * however, if the column value exceeds the number of columns, it will
      * always raise the exception.
      */
-    public double getElementAt(int row, int column) 
-            throws ArrayIndexOutOfBoundsException {
+    public double getElementAt(int row, int column) {
         return buffer[columnIndex[column] + row];
     }
     
@@ -130,8 +141,7 @@ public class Matrix implements Serializable{
      * outside of valid values, which range from zero (inclusive) to 
      * rows * columns (exclusive)
      */
-    public double getElementAtIndex(int index) 
-            throws ArrayIndexOutOfBoundsException {
+    public double getElementAtIndex(int index) {
         return getElementAtIndex(index, DEFAULT_USE_COLUMN_ORDER);
     }
     
@@ -146,8 +156,7 @@ public class Matrix implements Serializable{
      * outside of valid values, which range from zero (inclusive) to
      * rows * columns (exclusive)
      */
-    public double getElementAtIndex(int index, boolean isColumnOrder)
-            throws ArrayIndexOutOfBoundsException {
+    public double getElementAtIndex(int index, boolean isColumnOrder) {
         
         if (isColumnOrder) {
             return buffer[index];
@@ -171,8 +180,7 @@ public class Matrix implements Serializable{
      * however, if the column value exceeds the number of columns, it will
      * always raise the exception.
      */
-    public void setElementAt(int row, int column, double value)
-            throws ArrayIndexOutOfBoundsException {
+    public void setElementAt(int row, int column, double value) {
         
         buffer[columnIndex[column] + row] = value;
     }
@@ -190,8 +198,7 @@ public class Matrix implements Serializable{
      * outside of valid values, which range from zero (inclusive) to 
      * rows * columns (exclusive)
      */
-    public void setElementAtIndex(int index, double value)
-            throws ArrayIndexOutOfBoundsException {
+    public void setElementAtIndex(int index, double value) {
         
         setElementAtIndex(index, value, DEFAULT_USE_COLUMN_ORDER);
     }
@@ -208,7 +215,7 @@ public class Matrix implements Serializable{
      * rows * columns (exclusive).
      */
     public void setElementAtIndex(int index, double value, 
-            boolean isColumnOrder) throws ArrayIndexOutOfBoundsException {
+            boolean isColumnOrder) {
         if (isColumnOrder) {
             buffer[index] = value;
         } else {
@@ -228,7 +235,9 @@ public class Matrix implements Serializable{
         try {
             out = new Matrix(rows, columns);
             out.copyFrom(this);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         return out;
     }
     
@@ -239,14 +248,16 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided output matrix
      * is null.
      */
-    public void copyTo(Matrix output) throws NullPointerException {
+    public void copyTo(Matrix output) {
         //reset output size if not equal, otherwise reuse buffer and column 
         //index
         if (output.getRows() != rows || output.getColumns() != columns) {
             //resets size and column index
             try {
                 output.resize(rows, columns);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         //copies content
         System.arraycopy(buffer, 0, output.buffer, 0, buffer.length);
@@ -259,30 +270,20 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided input matrix is
      * null.
      */
-    public void copyFrom(Matrix input) throws NullPointerException {
+    public void copyFrom(Matrix input) {
         //reset size if not equal, otherwise reuse buffer and column index
         if (input.getRows() != rows || input.getColumns() != columns) {
             //resets size and column index
             try {
                 resize(input.getRows(), input.getColumns());
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         //copies content
         System.arraycopy(input.buffer, 0, buffer, 0, buffer.length);
     }
-    
-    /**
-     * Method to internally add two matrices.
-     * @param other Matrix to be added to current matrix
-     * @param result Matrix where result will be stored.
-     */
-    private void internalAdd(Matrix other, Matrix result) {
-        int length = rows * columns;
-        for (int i = 0; i < length; i++) {
-            result.buffer[i] = buffer[i] + other.buffer[i];
-        }        
-    }
-    
+
     /**
      * Adds another matrix to this matrix instance and stores the result in
      * provided result matrix. If provided result matrix doesn't have proper 
@@ -294,8 +295,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrices are
      * null.
      */
-    public void add(Matrix other, Matrix result) throws WrongSizeException,
-            NullPointerException {
+    public void add(Matrix other, Matrix result) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -318,8 +318,7 @@ public class Matrix implements Serializable{
      * not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
      */
-    public Matrix addAndReturnNew(Matrix other) throws WrongSizeException,
-            NullPointerException {
+    public Matrix addAndReturnNew(Matrix other) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -336,27 +335,14 @@ public class Matrix implements Serializable{
      * not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
      */
-    public void add(Matrix other) throws WrongSizeException, 
-            NullPointerException {
+    public void add(Matrix other) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
         
         internalAdd(other, this);
     }
-    
-    /**
-     * Method to internally subtract two matrices.
-     * @param other Matrix to be subtracted from current matrix.
-     * @param result Matrix where result will be stored.
-     */    
-    private void internalSubtract(Matrix other, Matrix result) {
-        int length = rows * columns;
-        for (int i = 0; i < length; i++) {
-            result.buffer[i] = buffer[i] - other.buffer[i];
-        }        
-    }
-    
+
     /**
      * Subtracts another matrix from this matrix instance and stores the result 
      * in provided result matrix. If provided result matrix doesn't have proper 
@@ -368,8 +354,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrices are
      * null.
      */    
-    public void subtract(Matrix other, Matrix result) throws WrongSizeException,
-            NullPointerException {
+    public void subtract(Matrix other, Matrix result) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -393,7 +378,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrix is null.
      */    
     public Matrix subtractAndReturnNew(Matrix other) 
-            throws WrongSizeException, NullPointerException {
+            throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -419,38 +404,6 @@ public class Matrix implements Serializable{
     }
 
     /**
-     * Method to internally multiply two matrices.
-     * @param other Matrix to be multiplied to current matrix
-     * @param resultBuffer Matrix buffer of data where result will be stored.
-     * @param resultColumnIndex Array of matrix column indices where result will
-     * be stored.
-     */        
-    private void internalMultiply(Matrix other, double[] resultBuffer, 
-            int[] resultColumnIndex) {
-        int columns2 = other.columns;
-        double value;
-        for (int k = 0; k < columns2; k++) {
-            for (int j = 0; j < rows; j++) {
-                value = 0.0;
-                for (int i = 0; i < columns; i++) {
-                    value += buffer[columnIndex[i] + j] *
-                            other.buffer[other.columnIndex[k] + i];
-                }
-                resultBuffer[resultColumnIndex[k] + j] = value;
-            }
-        }      
-    }
-    
-    /**
-     * Method to internally multiply two matrices.
-     * @param other Matrix to be multiplied to current matrix.
-     * @param result Matrix where result will be stored.
-     */            
-    private void internalMultiply(Matrix other, Matrix result) {
-        internalMultiply(other, result.buffer, result.columnIndex);
-    }
-    
-    /**
      * Multiplies another matrix to this matrix instance and stores the result 
      * in provided result matrix. If provided result matrix doesn't have proper 
      * size, it will be resized.
@@ -461,8 +414,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrices are
      * null.
      */        
-    public void multiply(Matrix other, Matrix result) throws WrongSizeException,
-            NullPointerException {
+    public void multiply(Matrix other, Matrix result) throws WrongSizeException {
         if (columns != other.rows) {
             throw new WrongSizeException();
         }
@@ -489,7 +441,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception thrown if provided matrix is null
      */
     public Matrix multiplyAndReturnNew(Matrix other) 
-            throws WrongSizeException, NullPointerException {
+            throws WrongSizeException {
         
         if (columns != other.rows) {
             throw new WrongSizeException();
@@ -511,8 +463,7 @@ public class Matrix implements Serializable{
      * provided matrices have incompatible sizes for product computation.
      * @throws NullPointerException Exception thrown if provided matrix is null
      */
-    public void multiply(Matrix other) throws WrongSizeException,
-            NullPointerException {
+    public void multiply(Matrix other) throws WrongSizeException {
         
         if (columns != other.rows) {
             throw new WrongSizeException();
@@ -533,49 +484,7 @@ public class Matrix implements Serializable{
         columnIndex = resultColumnIndex;
         buffer = resultBuffer;
     }
-    
-    /**
-     * Method to internally compute the Kronecker product between two matrices.
-     * @param other other matrix to be Kronecker multiplied to current matrix.
-     * @param resultBuffer matrix buffer of data where result will be stored.
-     * @param resultColumnIndex array of matrix column indices where result will 
-     * be stored.
-     */
-    private void internalMultiplyKronecker(Matrix other, double[] resultBuffer,
-            int[] resultColumnIndex) {
-        int rows2 = other.rows;
-        int columns2 = other.columns;
-        
-        for (int j1 = 0; j1 < rows; j1++) {
-            int startJ3 = j1*other.rows;
-            for (int i1 = 0; i1 < columns; i1++) {
-                int startI3 = i1*other.columns;
-                double value1 = buffer[columnIndex[i1] + j1];
-                
-                for (int j2 = 0; j2 < rows2; j2++) {
-                    int j3 = startJ3 + j2;
-                    for (int i2 = 0; i2 < columns2; i2++) {
-                        int i3 = startI3 + i2;
-                        double value2 = 
-                                other.buffer[other.columnIndex[i2] + j2];
-                        
-                        double value3 = value1*value2;
-                        resultBuffer[resultColumnIndex[i3] + j3] = value3;
-                    }
-                }
-            }
-        }
-    }
-    
-    /**
-     * Method to internally compute the Kronecker product between two matrices.
-     * @param other other matrix to be Kronecker multiplied to current matrix.
-     * @param result matrix where result will be stored.
-     */
-    private void internalMultiplyKronecker(Matrix other, Matrix result) {
-        internalMultiplyKronecker(other, result.buffer, result.columnIndex);
-    }
-    
+
     /**
      * Computes the Kronecker product with provided matrix and stores the
      * result in provided result matrix. If provided result matrix doesn't
@@ -620,6 +529,7 @@ public class Matrix implements Serializable{
      * the resulting matrix will be resized to m*pxn*q.
      * @param other other matrix to be Kronecker multiplied to current matrix.
      */
+    @SuppressWarnings("Duplicates")
     public void multiplyKronecker(Matrix other) {
         
         //instantiate new buffer and column index
@@ -668,7 +578,9 @@ public class Matrix implements Serializable{
         try {
             out = new Matrix(rows, columns);
             multiplyByScalar(scalar, out);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         return out;
     }
     
@@ -756,19 +668,7 @@ public class Matrix implements Serializable{
         }
         return true;
     }
-    
-    /**
-     * Method to internally compute element by element product of two matrices.
-     * @param other Matrix to be element by element multiplied to current matrix
-     * @param result Matrix where result will be stored.
-     */                
-    private void internalElementByElementProduct(Matrix other, Matrix result) {
-        int length = rows * columns;
-        for (int i = 0; i < length; i++) {
-            result.buffer[i] = buffer[i] * other.buffer[i];
-        }        
-    }
-    
+
     /**
      * Computes element by element product (i.e. Hadamard product) between 
      * current and provided (i.e. other) matrix, and stores the result in 
@@ -781,7 +681,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrix is null
      */
     public void elementByElementProduct(Matrix other, Matrix result) 
-            throws WrongSizeException, NullPointerException {
+            throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -817,7 +717,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception raised if provided matrix is null
      */
     public Matrix elementByElementProductAndReturnNew(Matrix other) 
-            throws WrongSizeException, NullPointerException {
+            throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
@@ -856,31 +756,7 @@ public class Matrix implements Serializable{
         
         internalElementByElementProduct(other, this);
     }
-    
-    /**
-     * Method to internally compute matrix transposition.
-     * @param resultBuffer Buffer where transposed matrix data is stored.
-     * @param resultColumnIndex Buffer where indices of transposed matrix data 
-     * is stored.
-     */                    
-    private void internalTranspose(double[] resultBuffer, 
-            int[] resultColumnIndex) {
-        for (int j = 0; j < rows; j++) {
-            for (int i = 0; i < columns; i++) {
-                resultBuffer[resultColumnIndex[j] + i] =
-                        buffer[columnIndex[i] + j];
-            }
-        }                
-    }
-    
-    /**
-     * Method to internally compute matrix transposition.
-     * @param result Matrix where transposed data is stored.
-     */
-    private void internalTranspose(Matrix result) {
-        internalTranspose(result.buffer, result.columnIndex);
-    }
-    
+
     /**
      * Transposes current matrix and stores result in provided matrix. If 
      * provided matrix doesn't have proper size, it will be resized.
@@ -891,7 +767,9 @@ public class Matrix implements Serializable{
         if (result.getRows() != columns || result.getColumns() != rows) {
             try {
                 result.resize(columns, rows);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         internalTranspose(result);
     }
@@ -909,7 +787,9 @@ public class Matrix implements Serializable{
         try {
             out = new Matrix(columns, rows);
             internalTranspose(out);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         return out;
     }
     
@@ -920,6 +800,7 @@ public class Matrix implements Serializable{
      * is the row index and j is the column index, then it follows that its
      * transposed matrix m2 has the following property m2(i,j) = m1(j, i).
      */
+    @SuppressWarnings("Duplicates")
     public void transpose() {
         
         double[] newBuffer = new double[rows * columns];
@@ -962,35 +843,7 @@ public class Matrix implements Serializable{
     public void resize(int rows, int columns) throws WrongSizeException {
         internalResize(rows, columns);
     }
-    
-    /**
-     * Method used internally to remove matrix contents and resizing it.
-     * @param rows Number of rows to be set
-     * @param columns Number of columns to be set.
-     * @throws WrongSizeException Exception raised if either rows or
-     * columns is zero.
-     */
-    private void internalResize(int rows, int columns) 
-            throws WrongSizeException {
-        if (rows == 0 || columns == 0) {
-            throw new WrongSizeException();
-        }
-        
-        this.rows = rows;
-        this.columns = columns;
-                
-        //instantiate buffers of data
-        buffer = new double[rows * columns];
-        columnIndex = new int[columns];
-        
-        //initialize column index;
-        int counter = 0;
-        for (int i = 0; i < columns; i++) {
-            columnIndex[i] = counter;
-            counter += rows;
-        }
-    }
-    
+
     /**
      * Resets current instance by removing its contents, resizing it to provided
      * size and setting all its elements to provided value.
@@ -1022,6 +875,7 @@ public class Matrix implements Serializable{
      * order, otherwise row order is used.
      * @return Contents of matrix as an array,
      */
+    @SuppressWarnings("Duplicates")
     public double[] toArray(boolean isColumnOrder) {
         int length = rows * columns;               
         
@@ -1064,6 +918,7 @@ public class Matrix implements Serializable{
      * @throws WrongSizeException if provided result array does not have the
      * same number of elements as the matrix (i.e. rows x columns).
      */
+    @SuppressWarnings("Duplicates")
     public void toArray(double[] result, boolean isColumnOrder) 
             throws WrongSizeException {
         if (result.length != buffer.length) {
@@ -1094,32 +949,7 @@ public class Matrix implements Serializable{
     public double[] getBuffer() {
         return buffer;
     }
-    
-    /**
-     * Internal method to retrieve a submatrix of current matrix instance. 
-     * Submatrix is obtained by copying all elements contained within provided 
-     * coordinates (both top-left and bottom-right points are included within 
-     * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts.
-     * @param topLeftColumn Top-left column index where submatrix starts.
-     * @param bottomRightRow Bottom-right row index where submatrix ends.
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param result Instance where submatrix data is stored.
-     */
-    private void internalGetSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, Matrix result) {
-        int i2 = 0, j2 = 0;
-        for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
-            for (int i = topLeftRow; i <= bottomRightRow; i++) {
-                result.buffer[result.columnIndex[j2] + i2] =
-                        buffer[columnIndex[j] + i];
-                i2++;
-            }
-            i2 = 0;
-            j2++;
-        }
-    }
-    
+
     /**
      * Obtains a submatrix of current matrix instance. Submatrix is obtained by
      * copying all elements contained within provided coordinates (both top-left
@@ -1134,9 +964,9 @@ public class Matrix implements Serializable{
      * corner is indeed located below or at right side of bottom-right corner.
      * @throws NullPointerException If provided result matrix is null.
      */
+    @SuppressWarnings("Duplicates")
     public void getSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, Matrix result)
-            throws IllegalArgumentException, NullPointerException {
+            int bottomRightRow, int bottomRightColumn, Matrix result) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1152,7 +982,9 @@ public class Matrix implements Serializable{
             //resize result
             try {
                 result.resize(subRows, subCols);
-            } catch (WrongSizeException ignore) { }
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
         }
         internalGetSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, result);
@@ -1171,9 +1003,9 @@ public class Matrix implements Serializable{
      * bottom-right corners lie outside current matrix instance, or if top-left
      * corner is indeed located belo or at right side of bottom-right corner.
      */
+    @SuppressWarnings("Duplicates")
     public Matrix getSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn) 
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1194,43 +1026,7 @@ public class Matrix implements Serializable{
                 bottomRightColumn, out);
         return out;
     }
-    
-    /**
-     * Internal method to retrieve a submatrix of current matrix instance as an 
-     * array of values using provided column order and storing the result in
-     * provided array. 
-     * Submatrix is obtained by copying all elements contained within provided 
-     * coordinates (both top-left and bottom-right points are included within 
-     * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param isColumnOrder If true, picks elements from matrix using column
-     * order, otherwise row order is used.
-     * @param result Array where submatrix data is stored.
-     */    
-    private void internalGetSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, boolean isColumnOrder, 
-            double[] result) {
-        int counter = 0;        
-        if (isColumnOrder) {
-            for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
-                for (int i = topLeftRow; i <= bottomRightRow; i++) {
-                    result[counter] = buffer[columnIndex[j] + i];
-                    counter++;
-                }
-            }            
-        } else {
-            for (int i = topLeftRow; i <= bottomRightRow; i++) {
-                for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
-                    result[counter] = buffer[columnIndex[j] + i];
-                    counter++;
-                }
-            }
-        }        
-    }
-    
+
     /**
      * Retrieves a submatrix of current matrix instance as an array of values 
      * using column order and storing the result in provided array. 
@@ -1248,9 +1044,10 @@ public class Matrix implements Serializable{
      * @throws WrongSizeException thrown if length of provided array does not
      * match the number of elements to be extracted from this matrix
      */
+    @SuppressWarnings("Duplicates")
     public void getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, double[] array)
-            throws IllegalArgumentException, WrongSizeException {
+            throws WrongSizeException {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1288,10 +1085,11 @@ public class Matrix implements Serializable{
      * corner is indeed located below or at right side of bottom-right corner.
      * @throws WrongSizeException If provided array doesn't have proper length,
      * which must be equal to the amount of elements in desired submatrix.
-     */        
+     */
+    @SuppressWarnings("Duplicates")
     public void getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, boolean isColumnOrder,
-            double[] array) throws IllegalArgumentException, WrongSizeException {
+            double[] array) throws WrongSizeException {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1326,8 +1124,7 @@ public class Matrix implements Serializable{
      * corner is indeed located belo or at right side of bottom-right corner.
      */    
     public double[] getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn)
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn) {
         return getSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, DEFAULT_USE_COLUMN_ORDER);
     }
@@ -1347,10 +1144,10 @@ public class Matrix implements Serializable{
      * @throws IllegalArgumentException Exception raised whenever top-left or
      * bottom-right corners lie outside current matrix instance, or if top-left
      * corner is indeed located below or at right side of bottom-right corner.
-     */        
+     */
+    @SuppressWarnings("Duplicates")
     public double[] getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, boolean isColumnOrder)
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn, boolean isColumnOrder) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1383,10 +1180,10 @@ public class Matrix implements Serializable{
      * corner is indeed located below or at right side of bottom-right corner.
      */
     public void setSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, Matrix submatrix)
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn, Matrix submatrix) {
         setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
-                bottomRightColumn, submatrix, 0, 0, submatrix.getRows() - 1,
+                bottomRightColumn, submatrix, 0, 0,
+                submatrix.getRows() - 1,
                 submatrix.getColumns() - 1);
     }
     
@@ -1412,11 +1209,11 @@ public class Matrix implements Serializable{
      * top-left corners are indeed located below or at right side of 
      * bottom-right corners.
      */
+    @SuppressWarnings("Duplicates")
     public void setSubmatrix(int topLeftRow, int topLeftColumn, 
             int bottomRightRow, int bottomRightColumn, Matrix submatrix,
             int submatrixTopLeftRow, int submatrixTopLeftColumn,
-            int submatrixBottomRightRow, int submatrixBottomRightColumn)
-            throws IllegalArgumentException {
+            int submatrixBottomRightRow, int submatrixBottomRightColumn) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1446,23 +1243,19 @@ public class Matrix implements Serializable{
         if (matrixRows != submatrixRows || matrixColumns != submatrixColumns) {
             throw new IllegalArgumentException();
         }
-        
-        //int i2 = submatrixTopLeftRow;
+
         int j2 = submatrixTopLeftColumn;
-        int destPos, sourcePos;
+        int destPos;
+        int sourcePos;
         for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
             destPos = columnIndex[j] + topLeftRow;
-            sourcePos = submatrix.columnIndex[j2] + submatrixTopLeftRow; //i2;
+            sourcePos = submatrix.columnIndex[j2] + submatrixTopLeftRow;
             for(int i = topLeftRow; i <= bottomRightRow; i++){
                 //Lines below are equivalent to commented code
                 buffer[destPos] = submatrix.buffer[sourcePos];
                 destPos++;
                 sourcePos++;
-                //buffer[columnIndex[j] + i] = 
-                //submatrix.buffer[submatrix.columnIndex[j2] + i2];
-                //i2++;
             }
-            //i2 = submatrixTopLeftRow;
             j2++;
         }
     }
@@ -1478,9 +1271,9 @@ public class Matrix implements Serializable{
      * bottom-right corners lie outside current matrix instance, or if top-left
      * corner is indeed located below or at right side of bottom-right corner.
      */
+    @SuppressWarnings("Duplicates")
     public void setSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, double value)
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn, double value) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
                 bottomRightRow < 0 || bottomRightRow >= rows || 
@@ -1512,8 +1305,7 @@ public class Matrix implements Serializable{
      * corner is indeed located below or at right side of bottom-right corner.
      */    
     public void setSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] values)
-            throws IllegalArgumentException {
+            int bottomRightRow, int bottomRightColumn, double[] values) {
         setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                 bottomRightColumn, values, DEFAULT_USE_COLUMN_ORDER);
     }
@@ -1536,7 +1328,7 @@ public class Matrix implements Serializable{
      */
     public void setSubmatrix(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, double[] values,
-            boolean isColumnOrder) throws IllegalArgumentException {
+            boolean isColumnOrder) {
         setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                 bottomRightColumn, values, 0, values.length - 1, isColumnOrder);
     }
@@ -1562,7 +1354,7 @@ public class Matrix implements Serializable{
      */        
     public void setSubmatrix(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, double[] values,
-            int valuesStart, int valuesEnd) throws IllegalArgumentException {
+            int valuesStart, int valuesEnd) {
         setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
                 bottomRightColumn, values, valuesStart, valuesEnd, 
                 DEFAULT_USE_COLUMN_ORDER);
@@ -1589,11 +1381,11 @@ public class Matrix implements Serializable{
      * corner is indeed located below or at right side of bottom-right corner, 
      * or if valuesStart and valuesEnd lie outside of valid array positions or
      * start is greater than end position.
-     */            
+     */
+    @SuppressWarnings("Duplicates")
     public void setSubmatrix(int topLeftRow, int topLeftColumn,
             int bottomRightRow, int bottomRightColumn, double[] values,
-            int valuesStart, int valuesEnd, boolean isColumnOrder) 
-            throws IllegalArgumentException {
+            int valuesStart, int valuesEnd, boolean isColumnOrder) {
         
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
@@ -1625,8 +1417,8 @@ public class Matrix implements Serializable{
             for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
                 destPos = columnIndex[j] + topLeftRow;
                 for(int i = topLeftRow; i <= bottomRightRow; i++){
-                    //Two Lines belo are equivalent to:
-                    //buffer[columnIndex[j] + i] = values[counter];                    
+                    //Two Lines below are equivalent to:
+                    //buffer[columnIndex[j] + i] = values[counter]
                     buffer[destPos] = values[counter];
                     destPos++;
                     counter++;
@@ -1686,8 +1478,7 @@ public class Matrix implements Serializable{
      * instances are null
      */
     public static void fillWithUniformRandomValues(double minValue, 
-            double maxValue, Random random, Matrix result) 
-            throws IllegalArgumentException, NullPointerException {
+            double maxValue, Random random, Matrix result) {
         UniformRandomizer randomizer = new UniformRandomizer(random);
         
         int length = result.rows * result.columns;
@@ -1707,8 +1498,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException if provided result matrix is null
      */
     public static void fillWithUniformRandomValues(double minValue, 
-            double maxValue, Matrix result) throws IllegalArgumentException,
-            NullPointerException {
+            double maxValue, Matrix result) {
         fillWithUniformRandomValues(minValue, maxValue, new Random(), result);
     }
     
@@ -1726,8 +1516,7 @@ public class Matrix implements Serializable{
      * @throws IllegalArgumentException if minValue &lt;= maxValue
      */
     public static Matrix createWithUniformRandomValues(int rows, int columns,
-            double minValue, double maxValue) throws WrongSizeException,
-            IllegalArgumentException {
+            double minValue, double maxValue) throws WrongSizeException {
         return createWithUniformRandomValues(rows, columns, minValue, maxValue,
                 new Random());
     }
@@ -1749,7 +1538,7 @@ public class Matrix implements Serializable{
      */    
     public static Matrix createWithUniformRandomValues(int rows, int columns,
             double minValue, double maxValue, Random random) 
-            throws WrongSizeException, IllegalArgumentException {
+            throws WrongSizeException {
         
         Matrix out = new Matrix(rows, columns);
         fillWithUniformRandomValues(minValue, maxValue, random, out);
@@ -1768,8 +1557,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException if provided result matrix is null
      */    
     public static void fillWithGaussianRandomValues(double mean, 
-            double standardDeviation, Random random, Matrix result)
-            throws IllegalArgumentException, NullPointerException {
+            double standardDeviation, Random random, Matrix result) {
         
         GaussianRandomizer randomizer = new GaussianRandomizer(random, mean, 
                 standardDeviation);
@@ -1792,8 +1580,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException if provided result matrix is null
      */
     public static void fillWithGaussianRandomValues(double mean, 
-            double standardDeviation, Matrix result) 
-            throws IllegalArgumentException, NullPointerException {
+            double standardDeviation, Matrix result) {
         fillWithGaussianRandomValues(mean, standardDeviation, new Random(), 
                 result);
     }
@@ -1815,7 +1602,7 @@ public class Matrix implements Serializable{
      */
     public static Matrix createWithGaussianRandomValues(int rows, int columns,
             double mean, double standardDeviation) 
-            throws WrongSizeException, IllegalArgumentException {
+            throws WrongSizeException {
         return createWithGaussianRandomValues(rows, columns, mean, 
                 standardDeviation, new Random());
     }
@@ -1838,7 +1625,7 @@ public class Matrix implements Serializable{
      */    
     public static Matrix createWithGaussianRandomValues(int rows, int columns,
             double mean, double standardDeviation, Random random) 
-            throws WrongSizeException, IllegalArgumentException {
+            throws WrongSizeException {
         
         Matrix out = new Matrix(rows, columns);
         fillWithGaussianRandomValues(mean, standardDeviation, random, out);
@@ -1854,8 +1641,7 @@ public class Matrix implements Serializable{
      * @throws NullPointerException Exception thrown if provided parameters are
      * null
      */
-    public static void diagonal(double[] diagonal, Matrix result)
-            throws NullPointerException {
+    public static void diagonal(double[] diagonal, Matrix result) {
         
         result.initialize(0.0);
         //set diagonal elements
@@ -1873,14 +1659,15 @@ public class Matrix implements Serializable{
      * @return A diagonal matrix
      * @throws NullPointerException Raised if provided diagonal array is null
      */
-    public static Matrix diagonal(double[] diagonal) 
-            throws NullPointerException {
+    public static Matrix diagonal(double[] diagonal) {
         
         Matrix out = null;
         try {
             out = new Matrix(diagonal.length, diagonal.length);
             diagonal(diagonal, out);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
         return out;
     }
@@ -1910,7 +1697,9 @@ public class Matrix implements Serializable{
                 m = new Matrix(1, array.length);
                 m.setSubmatrix(0, 0, 0, array.length - 1, array);
             }
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         return m;        
     }
     
@@ -1971,8 +1760,11 @@ public class Matrix implements Serializable{
         }
         
         //S = (M+M')/2
-        double value1, value2, avg;
-        int pos1, pos2;
+        double value1;
+        double value2;
+        double avg;
+        int pos1;
+        int pos2;
         for (int i = 0; i < columns; i++) {
             for (int j = i; j < rows; j++) {
                 //value at (i, j)
@@ -2011,5 +1803,231 @@ public class Matrix implements Serializable{
      */
     public void symmetrize() throws WrongSizeException {
         symmetrize(this);
+    }
+
+    /**
+     * Method to internally add two matrices.
+     * @param other Matrix to be added to current matrix
+     * @param result Matrix where result will be stored.
+     */
+    private void internalAdd(Matrix other, Matrix result) {
+        int length = rows * columns;
+        for (int i = 0; i < length; i++) {
+            result.buffer[i] = buffer[i] + other.buffer[i];
+        }
+    }
+
+    /**
+     * Method to internally subtract two matrices.
+     * @param other Matrix to be subtracted from current matrix.
+     * @param result Matrix where result will be stored.
+     */
+    private void internalSubtract(Matrix other, Matrix result) {
+        int length = rows * columns;
+        for (int i = 0; i < length; i++) {
+            result.buffer[i] = buffer[i] - other.buffer[i];
+        }
+    }
+
+    /**
+     * Method to internally multiply two matrices.
+     * @param other Matrix to be multiplied to current matrix
+     * @param resultBuffer Matrix buffer of data where result will be stored.
+     * @param resultColumnIndex Array of matrix column indices where result will
+     * be stored.
+     */
+    private void internalMultiply(Matrix other, double[] resultBuffer,
+                                  int[] resultColumnIndex) {
+        int columns2 = other.columns;
+        double value;
+        for (int k = 0; k < columns2; k++) {
+            for (int j = 0; j < rows; j++) {
+                value = 0.0;
+                for (int i = 0; i < columns; i++) {
+                    value += buffer[columnIndex[i] + j] *
+                            other.buffer[other.columnIndex[k] + i];
+                }
+                resultBuffer[resultColumnIndex[k] + j] = value;
+            }
+        }
+    }
+
+    /**
+     * Method to internally multiply two matrices.
+     * @param other Matrix to be multiplied to current matrix.
+     * @param result Matrix where result will be stored.
+     */
+    private void internalMultiply(Matrix other, Matrix result) {
+        internalMultiply(other, result.buffer, result.columnIndex);
+    }
+
+    /**
+     * Method to internally compute the Kronecker product between two matrices.
+     * @param other other matrix to be Kronecker multiplied to current matrix.
+     * @param resultBuffer matrix buffer of data where result will be stored.
+     * @param resultColumnIndex array of matrix column indices where result will
+     * be stored.
+     */
+    private void internalMultiplyKronecker(Matrix other, double[] resultBuffer,
+                                           int[] resultColumnIndex) {
+        int rows2 = other.rows;
+        int columns2 = other.columns;
+
+        for (int j1 = 0; j1 < rows; j1++) {
+            int startJ3 = j1*other.rows;
+            for (int i1 = 0; i1 < columns; i1++) {
+                int startI3 = i1*other.columns;
+                double value1 = buffer[columnIndex[i1] + j1];
+
+                for (int j2 = 0; j2 < rows2; j2++) {
+                    int j3 = startJ3 + j2;
+                    for (int i2 = 0; i2 < columns2; i2++) {
+                        int i3 = startI3 + i2;
+                        double value2 =
+                                other.buffer[other.columnIndex[i2] + j2];
+
+                        double value3 = value1*value2;
+                        resultBuffer[resultColumnIndex[i3] + j3] = value3;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Method to internally compute the Kronecker product between two matrices.
+     * @param other other matrix to be Kronecker multiplied to current matrix.
+     * @param result matrix where result will be stored.
+     */
+    private void internalMultiplyKronecker(Matrix other, Matrix result) {
+        internalMultiplyKronecker(other, result.buffer, result.columnIndex);
+    }
+
+    /**
+     * Method to internally compute element by element product of two matrices.
+     * @param other Matrix to be element by element multiplied to current matrix
+     * @param result Matrix where result will be stored.
+     */
+    private void internalElementByElementProduct(Matrix other, Matrix result) {
+        int length = rows * columns;
+        for (int i = 0; i < length; i++) {
+            result.buffer[i] = buffer[i] * other.buffer[i];
+        }
+    }
+
+    /**
+     * Method to internally compute matrix transposition.
+     * @param resultBuffer Buffer where transposed matrix data is stored.
+     * @param resultColumnIndex Buffer where indices of transposed matrix data
+     * is stored.
+     */
+    private void internalTranspose(double[] resultBuffer,
+                                   int[] resultColumnIndex) {
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < columns; i++) {
+                resultBuffer[resultColumnIndex[j] + i] =
+                        buffer[columnIndex[i] + j];
+            }
+        }
+    }
+
+    /**
+     * Method to internally compute matrix transposition.
+     * @param result Matrix where transposed data is stored.
+     */
+    private void internalTranspose(Matrix result) {
+        internalTranspose(result.buffer, result.columnIndex);
+    }
+
+    /**
+     * Method used internally to remove matrix contents and resizing it.
+     * @param rows Number of rows to be set
+     * @param columns Number of columns to be set.
+     * @throws WrongSizeException Exception raised if either rows or
+     * columns is zero.
+     */
+    @SuppressWarnings("Duplicates")
+    private void internalResize(int rows, int columns)
+            throws WrongSizeException {
+        if (rows == 0 || columns == 0) {
+            throw new WrongSizeException();
+        }
+
+        this.rows = rows;
+        this.columns = columns;
+
+        //instantiate buffers of data
+        buffer = new double[rows * columns];
+        columnIndex = new int[columns];
+
+        //initialize column index
+        int counter = 0;
+        for (int i = 0; i < columns; i++) {
+            columnIndex[i] = counter;
+            counter += rows;
+        }
+    }
+
+    /**
+     * Internal method to retrieve a submatrix of current matrix instance.
+     * Submatrix is obtained by copying all elements contained within provided
+     * coordinates (both top-left and bottom-right points are included within
+     * submatrix).
+     * @param topLeftRow Top-left row index where submatrix starts.
+     * @param topLeftColumn Top-left column index where submatrix starts.
+     * @param bottomRightRow Bottom-right row index where submatrix ends.
+     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param result Instance where submatrix data is stored.
+     */
+    private void internalGetSubmatrix(int topLeftRow, int topLeftColumn,
+                                      int bottomRightRow, int bottomRightColumn, Matrix result) {
+        int i2 = 0;
+        int j2 = 0;
+        for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
+            for (int i = topLeftRow; i <= bottomRightRow; i++) {
+                result.buffer[result.columnIndex[j2] + i2] =
+                        buffer[columnIndex[j] + i];
+                i2++;
+            }
+            i2 = 0;
+            j2++;
+        }
+    }
+
+    /**
+     * Internal method to retrieve a submatrix of current matrix instance as an
+     * array of values using provided column order and storing the result in
+     * provided array.
+     * Submatrix is obtained by copying all elements contained within provided
+     * coordinates (both top-left and bottom-right points are included within
+     * submatrix).
+     * @param topLeftRow Top-left row index where submatrix starts
+     * @param topLeftColumn Top-left column index where submatrix starts
+     * @param bottomRightRow Bottom-right row index where submatrix ends
+     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param isColumnOrder If true, picks elements from matrix using column
+     * order, otherwise row order is used.
+     * @param result Array where submatrix data is stored.
+     */
+    @SuppressWarnings("Duplicates")
+    private void internalGetSubmatrixAsArray(int topLeftRow, int topLeftColumn,
+                                             int bottomRightRow, int bottomRightColumn, boolean isColumnOrder,
+                                             double[] result) {
+        int counter = 0;
+        if (isColumnOrder) {
+            for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
+                for (int i = topLeftRow; i <= bottomRightRow; i++) {
+                    result[counter] = buffer[columnIndex[j] + i];
+                    counter++;
+                }
+            }
+        } else {
+            for (int i = topLeftRow; i <= bottomRightRow; i++) {
+                for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
+                    result[counter] = buffer[columnIndex[j] + i];
+                    counter++;
+                }
+            }
+        }
     }
 }

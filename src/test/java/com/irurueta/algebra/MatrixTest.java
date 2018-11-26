@@ -76,6 +76,27 @@ public class MatrixTest {
         } catch (WrongSizeException ignore) { }
         assertNull(m);
     }
+
+    @Test
+    public void testCopyConstructor() throws WrongSizeException {
+        UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+        int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
+
+        Matrix m1 = new Matrix(rows, columns);
+        assertNotNull(m1);
+        assertEquals(m1.getRows(), rows);
+        assertEquals(m1.getColumns(), columns);
+
+        randomizer.fill(m1.getBuffer(), MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+
+        Matrix m2 = new Matrix(m1);
+
+        //check
+        assertEquals(m2.getRows(), rows);
+        assertEquals(m2.getColumns(), columns);
+        assertArrayEquals(m1.getBuffer(), m2.getBuffer(), 0.0);
+    }
     
     @Test
     public void testGetSetElementAt() throws WrongSizeException {

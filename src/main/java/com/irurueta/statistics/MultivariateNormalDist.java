@@ -324,6 +324,7 @@ public class MultivariateNormalDist {
      * unstable (i.e. contains NaNs or very large numbers).
      * @throws RankDeficientMatrixException happens if covariance is singular.
      */
+    @SuppressWarnings("Duplicates")
     public double p(double[] x) throws NotReadyException, 
             IllegalArgumentException, DecomposerException, 
             RankDeficientMatrixException {
@@ -368,6 +369,7 @@ public class MultivariateNormalDist {
      * @throws DecomposerException if covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */
+    @SuppressWarnings("Duplicates")
     public double cdf(double[] x, Matrix basis) throws IllegalArgumentException,
             NotReadyException, DecomposerException {
         if (!isReady()) {
@@ -422,8 +424,7 @@ public class MultivariateNormalDist {
      * @throws DecomposerException if covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */    
-    public double cdf(double[] x) throws IllegalArgumentException, 
-            NotReadyException, DecomposerException {
+    public double cdf(double[] x) throws NotReadyException, DecomposerException {
         return cdf(x, null);
     }
     
@@ -465,8 +466,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public void invcdf(double[] p, double[] result, Matrix basis)
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException {
+            throws NotReadyException, DecomposerException {
         if (!isReady()) {
             throw new NotReadyException(
                     "mean and covariance not provided or invalid");
@@ -528,9 +528,9 @@ public class MultivariateNormalDist {
      * @throws DecomposerException if covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */
+    @SuppressWarnings("Duplicates")
     public double[] invcdf(double[] p, Matrix basis) 
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException {
+            throws NotReadyException, DecomposerException {
         if (mMu == null) {
             throw new NotReadyException("mean not defined");
         }
@@ -559,8 +559,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public void invcdf(double[] p, double[] result) 
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException {
+            throws NotReadyException, DecomposerException {
         invcdf(p, result, null);
     }
 
@@ -582,8 +581,7 @@ public class MultivariateNormalDist {
      * @throws DecomposerException if covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */
-    public double[] invcdf(double[] p) throws IllegalArgumentException,
-            NotReadyException, DecomposerException {
+    public double[] invcdf(double[] p) throws NotReadyException, DecomposerException {
         return invcdf(p, (Matrix)null);
     }
         
@@ -612,8 +610,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public void invcdf(double p, double[] result, Matrix basis) 
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException {
+            throws NotReadyException, DecomposerException {
 	    if (p <= 0.0 || p >= 1.0) {
             throw new IllegalArgumentException(
                     "probability value must be between 0.0 and 1.0");
@@ -658,9 +655,9 @@ public class MultivariateNormalDist {
      * @throws DecomposerException f covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */
+    @SuppressWarnings("Duplicates")
     public double[] invcdf(double p, Matrix basis) 
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException{
+            throws NotReadyException, DecomposerException {
         if (mMu == null) {
             throw new NotReadyException("mean not defined");
         }
@@ -692,8 +689,7 @@ public class MultivariateNormalDist {
      * contains NaNs or very large numbers).
      */
     public void invcdf(double p, double[] result) 
-            throws IllegalArgumentException, NotReadyException, 
-            DecomposerException {
+            throws NotReadyException, DecomposerException {
         invcdf(p, result, null);
     }
     
@@ -717,8 +713,7 @@ public class MultivariateNormalDist {
      * @throws DecomposerException f covariance is numerically unstable (i.e.
      * contains NaNs or very large numbers).
      */
-    public double[] invcdf(double p) throws IllegalArgumentException, 
-            NotReadyException, DecomposerException {
+    public double[] invcdf(double p) throws NotReadyException, DecomposerException {
         return invcdf(p, (Matrix)null);
     }
     

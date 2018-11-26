@@ -223,7 +223,9 @@ public class SingularValueDecomposer extends Decomposer {
         w = new double[n];
         try {
             v = new Matrix(n, n);
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         try {
             internalDecompose();
             reorder();
@@ -266,8 +268,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @throws IllegalArgumentException Exception thrown if provided value
      * for maxIters is out of valid range of values.
      */
-    public void setMaxIterations(int maxIters) throws LockedException,
-            IllegalArgumentException {
+    public void setMaxIterations(int maxIters) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -505,7 +506,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */
     public int getRank(double singularValueThreshold) 
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -571,7 +572,7 @@ public class SingularValueDecomposer extends Decomposer {
      * @see #decompose()
      */
     public int getNullity(double singularValueThreshold) 
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         int n = inputMatrix.getColumns();
         return n - getRank(singularValueThreshold);
     }
@@ -601,36 +602,7 @@ public class SingularValueDecomposer extends Decomposer {
     public int getNullity() throws NotAvailableException {
         return getNullity(getNegligibleSingularValueThreshold());
     }
-    
-    /**
-     * Internal method to copy range space vector values into provided matrix.
-     * Provided matrix will be resized if needed
-     * @param rank Rank of range space
-     * @param singularValueThreshold Threshold to determine whether a singular
-     * value is null
-     * @param range Matrix where range space vector values are stored.
-     */
-    private void internalGetRange(int rank, double singularValueThreshold,
-            Matrix range) {
-        int rows = inputMatrix.getRows();
-        int columns = inputMatrix.getColumns();
-        
-        if (range.getRows() != rows || range.getColumns() != rank) {
-            try {
-                range.resize(rows, rank);
-            } catch (WrongSizeException ignore) { }
-        }
-        
-        int nr = 0;
-        for (int j = 0; j < columns; j++) {
-            if (w[j] > singularValueThreshold) {
-                //copy column j of U matrix into column nr of out matrix
-                range.setSubmatrix(0, nr, rows - 1, nr, u, 0, j, rows - 1, j);
-                nr++;
-            }
-        }        
-    }
-    
+
     /**
      * Sets into provided range matrix the Range space of provided input matrix, 
      * which spans a subspace of dimension equal to the rank of input matrix.
@@ -649,7 +621,7 @@ public class SingularValueDecomposer extends Decomposer {
      * near to zero value.
      */    
     public void getRange(double singularValueThreshold, Matrix range)
-            throws NotAvailableException, IllegalArgumentException {
+            throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
         }
@@ -736,36 +708,7 @@ public class SingularValueDecomposer extends Decomposer {
     public Matrix getRange() throws NotAvailableException {
         return getRange(getNegligibleSingularValueThreshold());
     }
-    
-    /**
-     * Internal method to copy nullspace vector values into provided matrix.
-     * Provided matrix will be resized if needed
-     * @param nullity Nullity of nullspace
-     * @param singularValueThreshold Threshold to determine whether a singular
-     * value is null
-     * @param nullspace Matrix where nullspace vector values are stored.
-     */
-    public void internalGetNullspace(int nullity, double singularValueThreshold,
-            Matrix nullspace) {
-        int columns = inputMatrix.getColumns();
-        
-        if (nullspace.getRows() != columns || nullspace.getColumns() != nullity){
-            try {
-                nullspace.resize(columns, nullity);
-            } catch (WrongSizeException ignore){ }
-        }
-        
-        int nn = 0;
-        for (int j = 0; j < columns; j++) {
-            if (w[j] <= singularValueThreshold) {
-                //copy column j of U matrix into column nn of out matrix
-                nullspace.setSubmatrix(0, nn, columns - 1, nn, v, 0, j, 
-                        columns - 1, j);
-                nn++;
-            }
-        }
-    }
-    
+
     /**
      * Sets into provided matrix Nullspace of provided input matrix, which spans
      * a subspace of dimension equal to the nullity of input matrix. Nullspace 
@@ -1654,5 +1597,65 @@ public class SingularValueDecomposer extends Decomposer {
      */
     private double sign(double a, double b) {
         return (b >= 0.0 ? (a >= 0.0 ? a : -a) : (a >= 0.0 ? -a : a));
+    }
+
+    /**
+     * Internal method to copy range space vector values into provided matrix.
+     * Provided matrix will be resized if needed
+     * @param rank Rank of range space
+     * @param singularValueThreshold Threshold to determine whether a singular
+     * value is null
+     * @param range Matrix where range space vector values are stored.
+     */
+    private void internalGetRange(int rank, double singularValueThreshold,
+                                  Matrix range) {
+        int rows = inputMatrix.getRows();
+        int columns = inputMatrix.getColumns();
+
+        if (range.getRows() != rows || range.getColumns() != rank) {
+            try {
+                range.resize(rows, rank);
+            } catch (WrongSizeException ignore) {
+                //never happens
+            }
+        }
+
+        int nr = 0;
+        for (int j = 0; j < columns; j++) {
+            if (w[j] > singularValueThreshold) {
+                //copy column j of U matrix into column nr of out matrix
+                range.setSubmatrix(0, nr, rows - 1, nr, u, 0, j, rows - 1, j);
+                nr++;
+            }
+        }
+    }
+
+    /**
+     * Internal method to copy nullspace vector values into provided matrix.
+     * Provided matrix will be resized if needed
+     * @param nullity Nullity of nullspace
+     * @param singularValueThreshold Threshold to determine whether a singular
+     * value is null
+     * @param nullspace Matrix where nullspace vector values are stored.
+     */
+    private void internalGetNullspace(int nullity, double singularValueThreshold,
+                                      Matrix nullspace) {
+        int columns = inputMatrix.getColumns();
+
+        if (nullspace.getRows() != columns || nullspace.getColumns() != nullity){
+            try {
+                nullspace.resize(columns, nullity);
+            } catch (WrongSizeException ignore){ }
+        }
+
+        int nn = 0;
+        for (int j = 0; j < columns; j++) {
+            if (w[j] <= singularValueThreshold) {
+                //copy column j of U matrix into column nn of out matrix
+                nullspace.setSubmatrix(0, nn, columns - 1, nn, v, 0, j,
+                        columns - 1, j);
+                nn++;
+            }
+        }
     }
 }

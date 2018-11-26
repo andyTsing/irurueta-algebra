@@ -131,7 +131,9 @@ public class RQDecomposer extends Decomposer {
                             inputMatrix.getElementAt(i, j));
                 }
             }
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
         internalDecomposer.setInputMatrix(tmp);        
         internalDecomposer.decompose();
@@ -149,6 +151,7 @@ public class RQDecomposer extends Decomposer {
      * decompose() method first.
      * @see #decompose()
      */
+    @SuppressWarnings("Duplicates")
     public Matrix getR() throws NotAvailableException {
         
         if (!isDecompositionAvailable()) {
@@ -173,7 +176,9 @@ public class RQDecomposer extends Decomposer {
                     if(i == rows - j - 1) flipI.setElementAt(i, j, 1.0);
                 }
             }
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
 
         //Big permutation
@@ -189,7 +194,9 @@ public class RQDecomposer extends Decomposer {
             perm.multiply(flipI); //perm * r2 * flipI
             perm.transpose();
 
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
         return perm;
     }
@@ -204,6 +211,7 @@ public class RQDecomposer extends Decomposer {
      * decompose() method first.
      * @see #decompose()
      */
+    @SuppressWarnings("Duplicates")
     public Matrix getQ() throws NotAvailableException {
         if (!isDecompositionAvailable()) {
             throw new NotAvailableException();
@@ -229,7 +237,9 @@ public class RQDecomposer extends Decomposer {
                     }
                 }
             }
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
 
         //Big permutation
@@ -241,16 +251,19 @@ public class RQDecomposer extends Decomposer {
             perm.setSubmatrix(0, 0,
                     rows - 1, rows - 1, flipI);
 
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
 
 
         Matrix q = null;
         try {
             q = q2.multiplyAndReturnNew(perm); //qTrans = q2 * perm
             q.transpose();
-        } catch (WrongSizeException ignore) { }
+        } catch (WrongSizeException ignore) {
+            //never happens
+        }
         
         return q;
     }
-    
 }

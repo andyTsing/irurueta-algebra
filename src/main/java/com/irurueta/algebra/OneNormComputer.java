@@ -48,7 +48,8 @@ public class OneNormComputer extends NormComputer {
     public static double norm(Matrix m) {
         int rows = m.getRows();
         int columns = m.getColumns();
-        double colSum, maxColSum = 0.0;
+        double colSum;
+        double maxColSum = 0.0;
         
         for (int j = 0; j < columns; j++) {
             colSum = 0.0;
