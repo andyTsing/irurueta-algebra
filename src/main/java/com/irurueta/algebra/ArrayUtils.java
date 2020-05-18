@@ -265,7 +265,7 @@ public class ArrayUtils {
     
     /**
      * Computes the angle between two vectors.
-     * The angle is defined between -PI/2 and PI/2.
+     * The angle is defined between 0 and PI.
      * @param firstOperand first operand.
      * @param secondOperand second operand.
      * @return angle between arrays.
@@ -273,8 +273,9 @@ public class ArrayUtils {
      * the same length.
      */
     public static double angle(double[] firstOperand, double[] secondOperand) {
-        double angle = Math.acos(dotProduct(firstOperand, secondOperand));
-        return angle > Math.PI/2.0 ? Math.PI - angle : angle;
+        final double norm1 = Utils.normF(firstOperand);
+        final double norm2 = Utils.normF(secondOperand);
+        return Math.acos(Math.min(dotProduct(firstOperand, secondOperand) / norm1 / norm2, 1.0));
     }
     
     //The same for Complex arrays

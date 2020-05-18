@@ -1159,14 +1159,8 @@ public class Utils {
 
             for (int j = 0; j < length; j++) {
                 for (int i = j + 1; i < length; i++) {
-                    if (i == j) {
-                        if (Math.abs(tmp.getElementAt(i, j) - 1.0) > threshold) {
-                            return false;
-                        }
-                    } else {
-                        if(Math.abs(tmp.getElementAt(i, j)) > threshold) {
-                            return false;
-                        }
+                    if(Math.abs(tmp.getElementAt(i, j)) > threshold) {
+                        return false;
                     }
                 }
             }

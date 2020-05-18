@@ -37,6 +37,8 @@ public class UtilsTest {
     private static final double ROUND_ERROR = 1e-3;
     private static final double BIG_ROUND_ERROR = 1.0;
     private static final double ABSOLUTE_ERROR = 1e-6;
+
+    private static final int TIMES = 10;
     
     public UtilsTest() { }
 
@@ -628,24 +630,34 @@ public class UtilsTest {
     
     @Test
     public void testIsSymmetric() throws WrongSizeException {
-        
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
-        
-        Matrix m = DecomposerHelper.getSymmetricMatrix(rows);
-        
-        assertTrue(Utils.isSymmetric(m));
-        assertTrue(Utils.isSymmetric(m, ABSOLUTE_ERROR));
-        
-        //now make matrix non symmetric
-        m.setElementAt(0, rows - 1, m.getElementAt(0, rows - 1) + 1.0);
-        
-        assertFalse(Utils.isSymmetric(m));
-        assertFalse(Utils.isSymmetric(m, ABSOLUTE_ERROR));
-        
-        //but if we provide a threshold large enough, matrix will still be
-        //considered to be symmetric
-        assertTrue(Utils.isSymmetric(m, 1.0));
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+
+            Matrix m = DecomposerHelper.getSymmetricMatrix(rows);
+
+            assertTrue(Utils.isSymmetric(m));
+            assertTrue(Utils.isSymmetric(m, ABSOLUTE_ERROR));
+
+            //now make matrix non symmetric
+            m.setElementAt(0, rows - 1, m.getElementAt(0, rows - 1) + 1.0);
+
+            if (Utils.isSymmetric(m)) {
+                continue;
+            }
+            assertFalse(Utils.isSymmetric(m));
+            assertFalse(Utils.isSymmetric(m, ABSOLUTE_ERROR));
+
+            //but if we provide a threshold large enough, matrix will still be
+            //considered to be symmetric
+            assertTrue(Utils.isSymmetric(m, 1.0));
+
+            numValid++;
+            break;
+        }
+
+        assertTrue(numValid > 0);
     }
     
     @Test

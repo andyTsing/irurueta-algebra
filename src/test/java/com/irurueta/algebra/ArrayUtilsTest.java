@@ -32,6 +32,8 @@ public class ArrayUtilsTest {
     private static final double MAX_RANDOM_VALUE = 100.0;
     
     private static final double ABSOLUTE_ERROR = 1e-6;
+
+    private static final int TIMES = 100;
     
     public ArrayUtilsTest() { }
 
@@ -227,29 +229,43 @@ public class ArrayUtilsTest {
     
     @Test
     public void testAngle() {
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
-        
-        double[] input1 = new double[length];
-        double[] input2 = new double[length];
-        randomizer.fill(input1, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-        randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
-        
-        double dotProduct = 0.0;
-        for (int i = 0; i < length; i++) {
-            dotProduct += input1[i] * input2[i];
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
+
+            final double[] input1 = new double[length];
+            final double[] input2 = new double[length];
+            randomizer.fill(input1, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+            randomizer.fill(input2, MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+
+            final double norm1 = Utils.normF(input1);
+            final double norm2 = Utils.normF(input2);
+
+            if (norm1 < ABSOLUTE_ERROR || norm2 < ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            double dotProduct = 0.0;
+            for (int i = 0; i < length; i++) {
+                dotProduct += input1[i] * input2[i];
+            }
+
+            double expectedResult = Math.acos(dotProduct / norm1 / norm2);
+
+            double result = ArrayUtils.angle(input1, input2);
+
+            //check correctness
+            assertEquals(result, expectedResult, ABSOLUTE_ERROR);
+            assertEquals(ArrayUtils.angle(input2, input1), expectedResult, ABSOLUTE_ERROR);
+            assertEquals(ArrayUtils.angle(input1, input1), 0.0, ABSOLUTE_ERROR);
+            assertEquals(ArrayUtils.angle(input2, input2), 0.0, ABSOLUTE_ERROR);
+
+            numValid++;
+            break;
         }
-        
-        double expectedResult = Math.acos(dotProduct);
-        if (expectedResult > (Math.PI/2.0)) {
-            expectedResult = Math.PI - expectedResult;
-        }
-        
-        
-        double result = ArrayUtils.angle(input2, input2);
-        
-        //check correctness
-        assertEquals(result, expectedResult, 0.0);
+
+        assertTrue(numValid > 0);
     }
     
     @Test
