@@ -288,9 +288,7 @@
                 <configuration>
                     <show>private</show>
                     <nohelp>true</nohelp>
-                    <links>
-                        <link>http://docs.oracle.com/javase/7/docs/api/</link>
-                    </links>
+                    <detectJavaApiLink>true</detectJavaApiLink>
                 </configuration>
             </plugin>
             <!-- adds unit tests report into site -->
