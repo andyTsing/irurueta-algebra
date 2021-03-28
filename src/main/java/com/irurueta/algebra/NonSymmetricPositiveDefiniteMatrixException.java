@@ -18,8 +18,7 @@ package com.irurueta.algebra;
 /**
  * Exception thrown when requiring symmetric positive definite matrices.
  */
-@SuppressWarnings("WeakerAccess")
-public class NonSymmetricPositiveDefiniteMatrixException extends 
+public class NonSymmetricPositiveDefiniteMatrixException extends
         AlgebraException {
     /**
      * Constructor.
@@ -30,27 +29,30 @@ public class NonSymmetricPositiveDefiniteMatrixException extends
 
     /**
      * Constructor with String containing message.
+     *
      * @param message Message indicating the cause of the exception.
      */
-    public NonSymmetricPositiveDefiniteMatrixException(String message) {
+    public NonSymmetricPositiveDefiniteMatrixException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause.
+     *
      * @param message Message describing the cause of the exception.
-     * @param cause Instance containing the cause of the exception.
+     * @param cause   Instance containing the cause of the exception.
      */
-    public NonSymmetricPositiveDefiniteMatrixException(String message, 
-            Throwable cause) {
+    public NonSymmetricPositiveDefiniteMatrixException(final String message,
+                                                       final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause.
+     *
      * @param cause Instance containing the cause of the exception.
      */
-    public NonSymmetricPositiveDefiniteMatrixException(Throwable cause) {
+    public NonSymmetricPositiveDefiniteMatrixException(final Throwable cause) {
         super(cause);
-    }            
+    }
 }

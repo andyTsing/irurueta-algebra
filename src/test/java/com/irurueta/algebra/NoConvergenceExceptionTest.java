@@ -15,26 +15,12 @@
  */
 package com.irurueta.algebra;
 
-import org.junit.*;
+import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
 public class NoConvergenceExceptionTest {
-    
-    public NoConvergenceExceptionTest() { }
 
-    @BeforeClass
-    public static void setUpClass() { }
-
-    @AfterClass
-    public static void tearDownClass() { }
-    
-    @Before
-    public void setUp() { }
-    
-    @After
-    public void tearDown() { }
-    
     @Test
     public void testConstructor() {
         NoConvergenceException ex = new NoConvergenceException();
@@ -49,5 +35,5 @@ public class NoConvergenceExceptionTest {
         ex = new NoConvergenceException("message",
                 new Exception());
         assertNotNull(ex);
-    }    
+    }
 }

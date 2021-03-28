@@ -21,7 +21,6 @@ package com.irurueta.algebra;
  * For the case of arrays, this library considers arrays as column matrices
  * with one column and array length rows.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class OneNormComputer extends NormComputer {
 
     /**
@@ -30,84 +29,89 @@ public class OneNormComputer extends NormComputer {
     public OneNormComputer() {
         super();
     }
-    
+
     /**
      * Returns norm type being used by this class.
+     *
      * @return Norm type being used by this class.
-     */    
+     */
     @Override
     public NormType getNormType() {
         return NormType.ONE_NORM;
     }
-    
+
     /**
      * Computes norm of provided matrix.
+     *
      * @param m matrix being used for norm computation.
      * @return norm of provided matrix.
      */
-    public static double norm(Matrix m) {
-        int rows = m.getRows();
-        int columns = m.getColumns();
+    public static double norm(final Matrix m) {
+        final int rows = m.getRows();
+        final int columns = m.getColumns();
         double colSum;
         double maxColSum = 0.0;
-        
+
         for (int j = 0; j < columns; j++) {
             colSum = 0.0;
             for (int i = 0; i < rows; i++) {
                 colSum += Math.abs(m.getElementAt(i, j));
             }
-            
-            maxColSum = colSum > maxColSum ? colSum : maxColSum;
+
+            maxColSum = Math.max(colSum, maxColSum);
         }
-        
-        return maxColSum;        
+
+        return maxColSum;
     }
 
     /**
      * Computes norm of provided matrix.
+     *
      * @param m Matrix being used for norm computation.
      * @return Norm of provided matrix.
-     */    
+     */
     @Override
-    public double getNorm(Matrix m) {
+    public double getNorm(final Matrix m) {
         return norm(m);
     }
-    
+
     /**
      * Computes norm of provided array.
+     *
      * @param array array being used for norm computation.
      * @return norm of provided vector.
      */
-    public static double norm(double[] array) {
+    public static double norm(final double[] array) {
         double colSum = 0.0;
 
-        for (double value : array) {
+        for (final double value : array) {
             colSum += Math.abs(value);
         }
-        
-        return colSum;        
+
+        return colSum;
     }
-    
+
     /**
      * Computes norm of provided array and stores the jacobian into provided
      * instance.
-     * @param array array being used for norm computation.
+     *
+     * @param array    array being used for norm computation.
      * @param jacobian instance where jacobian will be stored. Must be 1xN,
-     * where N is length of array.
+     *                 where N is length of array.
      * @return norm of provided vector.
      * @throws WrongSizeException if provided jacobian is not 1xN, where N is
-     * length of array.
+     *                            length of array.
      */
-    public static double norm(double[] array, Matrix jacobian)
+    public static double norm(final double[] array, final Matrix jacobian)
             throws WrongSizeException {
         if (jacobian != null && (jacobian.getRows() != 1 ||
                 jacobian.getColumns() != array.length)) {
-            throw new WrongSizeException("jacobian must be 1xN, where " + 
+            throw new WrongSizeException("jacobian must be 1xN, where " +
                     "N is length of array");
         }
-        
-        double norm = norm(array);
-        
+
+        final double norm = norm(array);
+
         if (jacobian != null) {
             jacobian.fromArray(array);
             if (norm != 0.0) {
@@ -116,17 +120,18 @@ public class OneNormComputer extends NormComputer {
                 jacobian.initialize(Double.MAX_VALUE);
             }
         }
-        
-        return norm;        
+
+        return norm;
     }
 
     /**
      * Computes norm of provided array.
+     *
      * @param array Array being used for norm computation.
      * @return Norm of provided vector.
-     */    
+     */
     @Override
-    public double getNorm(double[] array) {
+    public double getNorm(final double[] array) {
         return norm(array);
     }
 }

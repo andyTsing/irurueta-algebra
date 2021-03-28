@@ -15,7 +15,7 @@
  */
 package com.irurueta.algebra;
 
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -25,37 +25,23 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
 public class BuildInfoTest {
-    
-    public BuildInfoTest() { }
-    
-    @BeforeClass
-    public static void setUpClass() { }
-    
-    @AfterClass
-    public static void tearDownClass() { }
-    
-    @Before
-    public void setUp() { }
-    
-    @After
-    public void tearDown() { }
 
     @Test
     public void testGetInstance() {
-        BuildInfo info1 = BuildInfo.getInstance();
-        BuildInfo info2 = BuildInfo.getInstance();
-        
+        final BuildInfo info1 = BuildInfo.getInstance();
+        final BuildInfo info2 = BuildInfo.getInstance();
+
         assertSame(info1, info2);
     }
-    
+
     @Test
     public void testGetters() {
-        BuildInfo info = BuildInfo.getInstance();
-        
-        String buildNumber = info.getBuildNumber();
-        String commit = info.getCommit();
-        String branch = info.getBranch();
-        
+        final BuildInfo info = BuildInfo.getInstance();
+
+        final String buildNumber = info.getBuildNumber();
+        final String commit = info.getCommit();
+        final String branch = info.getBranch();
+
         if (buildNumber != null) {
             Logger.getGlobal().log(Level.INFO, "Build number: {0}", buildNumber);
         }
@@ -65,18 +51,18 @@ public class BuildInfoTest {
         if (branch != null) {
             Logger.getGlobal().log(Level.INFO, "Branch: {0}", branch);
         }
-        
-        Date buildTimestamp = info.getBuildTimestamp();
-        String groupId = info.getGroupId();
-        String artifactId = info.getArtifactId();
-        String version = info.getVersion();
-        
+
+        final Date buildTimestamp = info.getBuildTimestamp();
+        final String groupId = info.getGroupId();
+        final String artifactId = info.getArtifactId();
+        final String version = info.getVersion();
+
         assertNotNull(buildTimestamp);
         assertNotNull(groupId);
         assertNotNull(artifactId);
         assertNotNull(version);
-        
-        Logger.getGlobal().log(Level.INFO, "Build timestamp: {0}", 
+
+        Logger.getGlobal().log(Level.INFO, "Build timestamp: {0}",
                 buildTimestamp);
         Logger.getGlobal().log(Level.INFO, "Group ID: {0}", groupId);
         Logger.getGlobal().log(Level.INFO, "Artifact ID: {0}", artifactId);

@@ -29,26 +29,29 @@ public class NotAvailableException extends AlgebraException {
 
     /**
      * Constructor with String containing message.
+     *
      * @param message Message indicating the cause of the exception.
      */
-    public NotAvailableException(String message) {
+    public NotAvailableException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause.
+     *
      * @param message Message describing the cause of the exception.
-     * @param cause Instance containing the cause of the exception.
+     * @param cause   Instance containing the cause of the exception.
      */
-    public NotAvailableException(String message, Throwable cause) {
+    public NotAvailableException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause.
+     *
      * @param cause Instance containing the cause of the exception.
      */
-    public NotAvailableException(Throwable cause) {
+    public NotAvailableException(final Throwable cause) {
         super(cause);
-    }            
+    }
 }

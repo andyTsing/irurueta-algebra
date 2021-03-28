@@ -19,7 +19,7 @@ package com.irurueta.algebra;
  * Base exception for all exception in the com.irurueta.algebra package
  */
 public class AlgebraException extends Exception {
-    
+
     /**
      * Constructor
      */
@@ -29,26 +29,29 @@ public class AlgebraException extends Exception {
 
     /**
      * Constructor with String containing message
+     *
      * @param message Message indicating the cause of the exception
      */
-    public AlgebraException(String message){
+    public AlgebraException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause
+     *
      * @param message Message describing the cause of the exception
-     * @param cause Instance containing the cause of the exception
+     * @param cause   Instance containing the cause of the exception
      */
-    public AlgebraException(String message, Throwable cause){
+    public AlgebraException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause
+     *
      * @param cause Instance containing the cause of the exception
      */
-    public AlgebraException(Throwable cause){
+    public AlgebraException(final Throwable cause) {
         super(cause);
-    }        
+    }
 }

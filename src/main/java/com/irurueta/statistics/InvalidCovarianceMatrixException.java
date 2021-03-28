@@ -20,38 +20,40 @@ package com.irurueta.statistics;
  * Covariance matrices need to be symmetric and non singular (i.e. symmetric
  * and positive definite).
  */
-@SuppressWarnings("WeakerAccess")
 public class InvalidCovarianceMatrixException extends StatisticsException {
-    
+
     /**
      * Constructor.
      */
     public InvalidCovarianceMatrixException() {
         super();
     }
-    
+
     /**
      * Constructor with String containing message.
+     *
      * @param message message indicating the cause of the exception.
      */
-    public InvalidCovarianceMatrixException(String message) {
+    public InvalidCovarianceMatrixException(final String message) {
         super(message);
     }
-    
+
     /**
      * Constructor with message and cause.
+     *
      * @param message message describing the cause of the exception.
-     * @param cause instance containing the cause of the exception.
+     * @param cause   instance containing the cause of the exception.
      */
-    public InvalidCovarianceMatrixException(String message, Throwable cause) {
+    public InvalidCovarianceMatrixException(final String message, final Throwable cause) {
         super(message, cause);
     }
-    
+
     /**
      * Constructor with cause.
+     *
      * @param cause instance containing the cause of the exception.
      */
-    public InvalidCovarianceMatrixException(Throwable cause) {
+    public InvalidCovarianceMatrixException(final Throwable cause) {
         super(cause);
     }
 }

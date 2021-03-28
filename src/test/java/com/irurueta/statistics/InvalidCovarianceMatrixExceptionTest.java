@@ -20,21 +20,7 @@ import org.junit.*;
 import static org.junit.Assert.assertNotNull;
 
 public class InvalidCovarianceMatrixExceptionTest {
-    
-    public InvalidCovarianceMatrixExceptionTest() { }
-    
-    @BeforeClass
-    public static void setUpClass() { }
-    
-    @AfterClass
-    public static void tearDownClass() { }
-    
-    @Before
-    public void setUp() { }
-    
-    @After
-    public void tearDown() { }
-    
+
     @Test
     public void testConstructor() {
         InvalidCovarianceMatrixException ex =

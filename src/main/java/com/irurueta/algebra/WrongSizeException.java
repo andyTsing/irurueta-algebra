@@ -28,26 +28,29 @@ public class WrongSizeException extends AlgebraException {
 
     /**
      * Constructor with String containing message.
+     *
      * @param message Message indicating the cause of the exception.
      */
-    public WrongSizeException(String message) {
+    public WrongSizeException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause.
+     *
      * @param message Message describing the cause of the exception.
-     * @param cause Instance containing the cause of the exception.
+     * @param cause   Instance containing the cause of the exception.
      */
-    public WrongSizeException(String message, Throwable cause) {
+    public WrongSizeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause.
+     *
      * @param cause Instance containing the cause of the exception.
      */
-    public WrongSizeException(Throwable cause) {
+    public WrongSizeException(final Throwable cause) {
         super(cause);
-    }            
+    }
 }

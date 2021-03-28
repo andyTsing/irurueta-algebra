@@ -24,12 +24,12 @@ public enum NormType {
      * Defines Frobenius norm type.
      */
     FROBENIUS_NORM,
-    
+
     /**
      * Defines one norm, which is the maximum column sum on a matrix.
      */
     ONE_NORM,
-    
+
     /**
      * Defines Infinity norm type, which is the maximum row sum on a matrix.
      */

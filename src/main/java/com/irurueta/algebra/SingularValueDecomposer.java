@@ -219,7 +219,7 @@ public class SingularValueDecomposer extends Decomposer {
         int n = inputMatrix.getColumns();
         
         //copy input matrix into U
-        u = inputMatrix.clone();
+        u = new Matrix(inputMatrix);
         w = new double[n];
         try {
             v = new Matrix(n, n);

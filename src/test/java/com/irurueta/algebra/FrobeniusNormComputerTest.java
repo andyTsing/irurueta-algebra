@@ -16,7 +16,7 @@
 package com.irurueta.algebra;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class FrobeniusNormComputerTest {
-    
+
     private static final int MIN_LIMIT = 0;
     private static final int MAX_LIMIT = 50;
     private static final int MIN_ROWS = 1;
@@ -35,40 +35,27 @@ public class FrobeniusNormComputerTest {
     private static final int MIN_LENGTH = 1;
     private static final int MAX_LENGTH = 100;
     private static final double ABSOLUTE_ERROR = 1e-6;
-    
-    public FrobeniusNormComputerTest() { }
 
-    @BeforeClass
-    public static void setUpClass() { }
-
-    @AfterClass
-    public static void tearDownClass() { }
-    
-    @Before
-    public void setUp() { }
-    
-    @After
-    public void tearDown() { }
-    
     @Test
     public void testGetNormType() {
-        FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
+        final FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
         assertEquals(normComputer.getNormType(), NormType.FROBENIUS_NORM);
     }
-    
+
     @Test
     public void testGetNormMatrix() throws WrongSizeException {
-        FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
-        int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
-        
-        int minSize = (rows < columns) ? rows : columns;
-        double sum = 0.0, norm;
+        final FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+        final int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
+
+        final int minSize = Math.min(rows, columns);
+        double sum = 0.0;
+        double norm;
         double initValue = randomizer.nextDouble(MIN_COLUMNS, MAX_COLUMNS);
         double value;
-        
-        //For random non-initialized matrix
+
+        // For random non-initialized matrix
         Matrix m = new Matrix(rows, columns);
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -76,102 +63,106 @@ public class FrobeniusNormComputerTest {
                 m.setElementAt(i, j, value);
                 sum += value * value;
             }
-        }      
-        
+        }
+
         norm = Math.sqrt(sum);
-        
+
         assertEquals(normComputer.getNorm(m), norm, ABSOLUTE_ERROR);
         assertEquals(FrobeniusNormComputer.norm(m), norm, ABSOLUTE_ERROR);
-        
-        //For initialized matrix
+
+        // For initialized matrix
         m = new Matrix(rows, columns);
         m.initialize(initValue);
-        
+
         norm = initValue * Math.sqrt(rows * columns);
-        
+
         assertEquals(normComputer.getNorm(m), norm, ABSOLUTE_ERROR);
         assertEquals(FrobeniusNormComputer.norm(m), norm, ABSOLUTE_ERROR);
-        
-        //For identity matrix
+
+        // For identity matrix
         m = Matrix.identity(rows, columns);
-        assertEquals(normComputer.getNorm(m), Math.sqrt(minSize), 
+        assertEquals(normComputer.getNorm(m), Math.sqrt(minSize),
                 ABSOLUTE_ERROR);
         assertEquals(FrobeniusNormComputer.norm(m), Math.sqrt(minSize),
                 ABSOLUTE_ERROR);
     }
-    
+
     @Test
     public void testGetNormArray() {
-        FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
-        double sum = 0.0, norm;
-        double initValue = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
+        final FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
+        double sum = 0.0;
+        double norm;
+        final double initValue = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
         double value;
-        
-        double[] v = new double[length];
-        
+
+        final double[] v = new double[length];
+
         for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
             v[i] = value;
             sum += value * value;
         }
-        
+
         norm = Math.sqrt(sum);
-        
+
         assertEquals(normComputer.getNorm(v), norm, ABSOLUTE_ERROR);
         assertEquals(FrobeniusNormComputer.norm(v), norm, ABSOLUTE_ERROR);
-        
+
         Arrays.fill(v, initValue);
-        
+
         norm = initValue * Math.sqrt(length);
-        
+
         assertEquals(normComputer.getNorm(v), norm, ABSOLUTE_ERROR);
         assertEquals(FrobeniusNormComputer.norm(v), norm, ABSOLUTE_ERROR);
     }
-    
+
     @Test
     public void testNormWithJacobian() throws AlgebraException {
-        FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
-        double sum = 0.0, norm;
+        final FrobeniusNormComputer normComputer = new FrobeniusNormComputer();
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int length = randomizer.nextInt(MIN_LENGTH, MAX_LENGTH);
+        double sum = 0.0;
+        final double norm;
         double value;
-        
-        double[] v = new double[length];
-        
+
+        final double[] v = new double[length];
+
         for (int i = 0; i < length; i++) {
             value = randomizer.nextDouble(MIN_LIMIT, MAX_LIMIT);
             v[i] = value;
             sum += value * value;
         }
-        
-        norm = Math.sqrt(sum);    
-        
-        Matrix jacobian = new Matrix(1, length);        
-        assertEquals(FrobeniusNormComputer.norm(v, jacobian), norm, 
-                ABSOLUTE_ERROR);        
+
+        norm = Math.sqrt(sum);
+
+        Matrix jacobian = new Matrix(1, length);
+        assertEquals(FrobeniusNormComputer.norm(v, jacobian), norm,
+                ABSOLUTE_ERROR);
         assertEquals(jacobian, Matrix.newFromArray(v).
                 multiplyByScalarAndReturnNew(1.0 / norm).
                 transposeAndReturnNew());
-        
-        //Force WrongSizeException
+
+        // Force WrongSizeException
         try {
-            FrobeniusNormComputer.norm(v, new Matrix(2,length));
+            FrobeniusNormComputer.norm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
-        } catch (WrongSizeException ignore) { }
-        
-        
+        } catch (final WrongSizeException ignore) {
+        }
+
+
         jacobian = new Matrix(1, length);
         assertEquals(normComputer.getNorm(v, jacobian), norm, ABSOLUTE_ERROR);
         assertEquals(jacobian, Matrix.newFromArray(v).
                 multiplyByScalarAndReturnNew(1.0 / norm).
-                transposeAndReturnNew()); 
-        
-        //Force WrongSizeException
+                transposeAndReturnNew());
+
+        // Force WrongSizeException
         try {
             normComputer.getNorm(v, new Matrix(2, length));
             fail("WrongSizeException expected but not thrown");
-        } catch (WrongSizeException ignore) { }
+        } catch (final WrongSizeException ignore) {
+        }
     }
 }

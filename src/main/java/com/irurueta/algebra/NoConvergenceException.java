@@ -18,7 +18,6 @@ package com.irurueta.algebra;
 /**
  * Exception thrown if some decomposer algorithm cannot converge
  */
-@SuppressWarnings("WeakerAccess")
 public class NoConvergenceException extends DecomposerException {
 
     /**
@@ -30,26 +29,29 @@ public class NoConvergenceException extends DecomposerException {
 
     /**
      * Constructor with String containing message.
+     *
      * @param message Message indicating the cause of the exception.
      */
-    public NoConvergenceException(String message) {
+    public NoConvergenceException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause.
+     *
      * @param message Message describing the cause of the exception.
-     * @param cause Instance containing the cause of the exception.
+     * @param cause   Instance containing the cause of the exception.
      */
-    public NoConvergenceException(String message, Throwable cause) {
+    public NoConvergenceException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause.
+     *
      * @param cause Instance containing the cause of the exception.
      */
-    public NoConvergenceException(Throwable cause) {
+    public NoConvergenceException(final Throwable cause) {
         super(cause);
-    }            
+    }
 }

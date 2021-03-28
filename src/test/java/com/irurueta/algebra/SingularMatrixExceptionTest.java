@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ * Copyright (C) 2021 Alberto Irurueta Carro (alberto@irurueta.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,24 +19,20 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;
 
-public class RankDeficientMatrixExceptionTest {
+public class SingularMatrixExceptionTest {
 
     @Test
     public void testConstructor() {
-        RankDeficientMatrixException ex =
-                new RankDeficientMatrixException();
+        SingularMatrixException ex = new SingularMatrixException();
         assertNotNull(ex);
 
-        ex = new RankDeficientMatrixException(
-                "message");
+        ex = new SingularMatrixException("message");
         assertNotNull(ex);
 
-        ex = new RankDeficientMatrixException(
-                new Exception());
+        ex = new SingularMatrixException(new Exception());
         assertNotNull(ex);
 
-        ex = new RankDeficientMatrixException(
-                "message", new Exception());
+        ex = new SingularMatrixException("message", new Exception());
         assertNotNull(ex);
     }
 }

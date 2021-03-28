@@ -28,26 +28,29 @@ public class DecomposerException extends AlgebraException {
 
     /**
      * Constructor with String containing message
+     *
      * @param message Message indicating the cause of the exception
      */
-    public DecomposerException(String message) {
+    public DecomposerException(final String message) {
         super(message);
     }
 
     /**
      * Constructor with message and cause
+     *
      * @param message Message describing the cause of the exception
-     * @param cause Instance containing the cause of the exception
+     * @param cause   Instance containing the cause of the exception
      */
-    public DecomposerException(String message, Throwable cause) {
+    public DecomposerException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Constructor with cause
+     *
      * @param cause Instance containing the cause of the exception
      */
-    public DecomposerException(Throwable cause) {
+    public DecomposerException(final Throwable cause) {
         super(cause);
-    }        
+    }
 }

@@ -27,463 +27,480 @@ import java.util.Random;
  * Defines a matrix of numerical data.
  * Values of a matrix are stored inside an internal array of data.
  */
-@SuppressWarnings("WeakerAccess")
-public class Matrix implements Serializable{
+public class Matrix implements Serializable, Cloneable {
     /**
      * Constant defining the default order in which values are stored in a
      * matrix. This can be useful when copying data to and from an array.
      */
     public static final boolean DEFAULT_USE_COLUMN_ORDER = true;
-    
+
     /**
      * Number of matrix rows.
      */
     private int rows;
-    
+
     /**
      * Number of matrix columns.
      */
     private int columns;
-    
+
     /**
      * Array containing data of matrix. Data is stored linearly in memory
      * using column order.
      */
     private double[] buffer;
-    
+
     /**
      * Array used for indexing column start positions within buffer. This
      * is used for faster access to matrix elements.
      */
     private int[] columnIndex;
-        
+
     /**
      * Constructor of this class.
      * By default when instantiating a matrix its values are undefined.
-     * @param rows Defines number of rows in matrix.
+     *
+     * @param rows    Defines number of rows in matrix.
      * @param columns Defines number of columns in matrix.
      * @throws WrongSizeException Exception thrown if matrix must be
-     * empty with provided size. In other words, matrices must have at least
-     * one row and one column. Leaving number of rows or columns to zero will
-     * raise this exception.
+     *                            empty with provided size. In other words, matrices must have at least
+     *                            one row and one column. Leaving number of rows or columns to zero will
+     *                            raise this exception.
      */
-    public Matrix(int rows, int columns) throws WrongSizeException {
+    public Matrix(final int rows, final int columns) throws WrongSizeException {
         internalResize(rows, columns);
     }
 
     /**
      * Copy constructor.
+     *
      * @param m matrix to copy from.
      */
-    public Matrix(Matrix m) {
+    public Matrix(final Matrix m) {
         try {
             internalResize(m.getRows(), m.getColumns());
-        } catch (WrongSizeException ignore) {
-            //never happens
+        } catch (final WrongSizeException ignore) {
+            // never happens
         }
 
         System.arraycopy(m.getBuffer(), 0, buffer, 0, buffer.length);
     }
-    
+
     /**
      * Returns number of rows in matrix.
+     *
      * @return Number of rows in matrix.
      */
     public int getRows() {
         return rows;
     }
-    
+
     /**
      * Returns number of columns in matrix.
+     *
      * @return Number of columns in matrix.
      */
     public int getColumns() {
         return columns;
     }
-    
+
     /**
      * Obtains element in matrix located at position (row and column).
      * Notice that row and column position are zero-indexed.
-     * @param row Row to be used for element location.
+     *
+     * @param row    Row to be used for element location.
      * @param column Column to be used for element location.
      * @return Value of element in matrix located at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if attempting
-     * to access a location that lies ouside the boundaries of the internal
-     * array containing matrix data. Notice that internal data is stored in
-     * column order, hence, if row position exceeds the number of rows in the
-     * matrix, this exception might not be raised depending on column position,
-     * however, if the column value exceeds the number of columns, it will
-     * always raise the exception.
+     *                                        to access a location that lies ouside the boundaries of the internal
+     *                                        array containing matrix data. Notice that internal data is stored in
+     *                                        column order, hence, if row position exceeds the number of rows in the
+     *                                        matrix, this exception might not be raised depending on column position,
+     *                                        however, if the column value exceeds the number of columns, it will
+     *                                        always raise the exception.
      */
-    public double getElementAt(int row, int column) {
+    public double getElementAt(final int row, final int column) {
         return buffer[columnIndex[column] + row];
     }
-    
+
     /**
      * Returns index within internal buffer corresponding to provided row
      * and column positions.
-     * @param row row to be used for element location.
+     *
+     * @param row    row to be used for element location.
      * @param column column to be used for element location.
      * @return index within internal buffer.
      */
-    public int getIndex(int row, int column) {
+    public int getIndex(final int row, final int column) {
         return columnIndex[column] + row;
     }
-    
+
     /**
      * Obtains element in matrix located at provided index value using the
      * order specified by DEFAULT_USE_COLUMN_ORDER.
      * Note: an index indicates linear position within matrix, in layman terms,
-     * if using column order, then position (i, j), where i stands for row 
+     * if using column order, then position (i, j), where i stands for row
      * index and j for column index, becomes index = j * rows + 1. On the other
      * hand, if using row order then index becomes index = i * columns + j.
+     *
      * @param index Linear position.
      * @return Value of element contained at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if index lays
-     * outside of valid values, which range from zero (inclusive) to 
-     * rows * columns (exclusive)
+     *                                        outside of valid values, which range from zero (inclusive) to
+     *                                        rows * columns (exclusive)
      */
-    public double getElementAtIndex(int index) {
+    public double getElementAtIndex(final int index) {
         return getElementAtIndex(index, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Obtain element in matrix located at provided index value using provided
      * order (either column or row order).
-     * @param index Linear position.
+     *
+     * @param index         Linear position.
      * @param isColumnOrder if true indicates that values are retrieved
-     * assuming that are stored in column order.
+     *                      assuming that are stored in column order.
      * @return Value of element contained at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if index lays
-     * outside of valid values, which range from zero (inclusive) to
-     * rows * columns (exclusive)
+     *                                        outside of valid values, which range from zero (inclusive) to
+     *                                        rows * columns (exclusive)
      */
-    public double getElementAtIndex(int index, boolean isColumnOrder) {
-        
+    public double getElementAtIndex(final int index, final boolean isColumnOrder) {
+
         if (isColumnOrder) {
             return buffer[index];
         } else {
-            int row = index / columns;
-            int column = index % columns;
+            final int row = index / columns;
+            final int column = index % columns;
             return buffer[columnIndex[column] + row];
         }
     }
-    
+
     /**
      * Sets element in matrix located at provided position (row and column).
-     * @param row Row to be used for element location to be set.
+     *
+     * @param row    Row to be used for element location to be set.
      * @param column Column to be used for element location to be set.
-     * @param value Value to be set at provided position.
+     * @param value  Value to be set at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if attempting
-     * to access a location that lies ouside the boundaries of the internal
-     * array containing matrix data. Notice that internal data is stored in
-     * column order, hence, if row position exceeds the number of rows in the
-     * matrix, this exception might not be raised depending on column position,
-     * however, if the column value exceeds the number of columns, it will
-     * always raise the exception.
+     *                                        to access a location that lies ouside the boundaries of the internal
+     *                                        array containing matrix data. Notice that internal data is stored in
+     *                                        column order, hence, if row position exceeds the number of rows in the
+     *                                        matrix, this exception might not be raised depending on column position,
+     *                                        however, if the column value exceeds the number of columns, it will
+     *                                        always raise the exception.
      */
-    public void setElementAt(int row, int column, double value) {
-        
+    public void setElementAt(final int row, final int column, final double value) {
+
         buffer[columnIndex[column] + row] = value;
     }
-    
+
     /**
-     * Sets element in matrix located at provided index using the order 
+     * Sets element in matrix located at provided index using the order
      * specified by DEFAULT_USE_COLUMN_ORDER.
      * Note: an index indicates linear position within matrix, in layman terms,
-     * if using column order, then position (i, j), where i stands for row 
+     * if using column order, then position (i, j), where i stands for row
      * index and j for column index, becomes index = j * rows + 1. On the other
      * hand, if using row order then index becomes index = i * columns + j.
+     *
      * @param index Linear position.
      * @param value Value of element contained at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if index lays
-     * outside of valid values, which range from zero (inclusive) to 
-     * rows * columns (exclusive)
+     *                                        outside of valid values, which range from zero (inclusive) to
+     *                                        rows * columns (exclusive)
      */
-    public void setElementAtIndex(int index, double value) {
-        
+    public void setElementAtIndex(final int index, final double value) {
+
         setElementAtIndex(index, value, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Sets element in matrix located at provided index using provided order
      * (either column or row order).
-     * @param index Linear position.
-     * @param value Value of element to be set at provided position.
+     *
+     * @param index         Linear position.
+     * @param value         Value of element to be set at provided position.
      * @param isColumnOrder if true indicates that values are retrieved
-     * assuming that are stored in column order.
+     *                      assuming that are stored in column order.
      * @throws ArrayIndexOutOfBoundsException Exception raised if index lays
-     * outside of valid values, which range from zero (inclusive) to
-     * rows * columns (exclusive).
+     *                                        outside of valid values, which range from zero (inclusive) to
+     *                                        rows * columns (exclusive).
      */
-    public void setElementAtIndex(int index, double value, 
-            boolean isColumnOrder) {
+    public void setElementAtIndex(
+            final int index, final double value, final boolean isColumnOrder) {
         if (isColumnOrder) {
             buffer[index] = value;
         } else {
-            int row = index / columns;
-            int column = index % columns;
+            final int row = index / columns;
+            final int column = index % columns;
             buffer[columnIndex[column] + row] = value;
         }
     }
-    
+
     /**
      * Returns a new matrix instance containing the same data as this instance.
+     *
      * @return A copy of this matrix instance.
+     * @throws CloneNotSupportedException if clone fails.
      */
     @Override
-    @SuppressWarnings("all")
-    public Matrix clone() {
-        Matrix out = null;
-        try {
-            out = new Matrix(rows, columns);
-            out.copyFrom(this);
-        } catch (WrongSizeException ignore) {
-            //never happens
-        }
+    public Matrix clone() throws CloneNotSupportedException {
+        Matrix out = (Matrix) super.clone();
+        out.copyFrom(this);
         return out;
     }
-    
+
     /**
      * Copies this matrix data into provided matrix. Provided output matrix will
      * be resized if needed.
+     *
      * @param output Destination matrix where data will be copied to.
      * @throws NullPointerException Exception raised if provided output matrix
-     * is null.
+     *                              is null.
      */
-    public void copyTo(Matrix output) {
-        //reset output size if not equal, otherwise reuse buffer and column 
-        //index
+    public void copyTo(final Matrix output) {
+        // reset output size if not equal, otherwise reuse buffer and column
+        // index
         if (output.getRows() != rows || output.getColumns() != columns) {
-            //resets size and column index
+            // resets size and column index
             try {
                 output.resize(rows, columns);
-            } catch (WrongSizeException ignore) {
-                //never happens
+            } catch (final WrongSizeException ignore) {
+                // never happens
             }
         }
-        //copies content
+        // copies content
         System.arraycopy(buffer, 0, output.buffer, 0, buffer.length);
     }
-    
+
     /**
      * Copies the contents of provided matrix into this instance. This instance
      * will be resized if needed.
+     *
      * @param input Input matrix where data will be copied from.
      * @throws NullPointerException Exception raised if provided input matrix is
-     * null.
+     *                              null.
      */
-    public void copyFrom(Matrix input) {
-        //reset size if not equal, otherwise reuse buffer and column index
+    public void copyFrom(final Matrix input) {
+        // reset size if not equal, otherwise reuse buffer and column index
         if (input.getRows() != rows || input.getColumns() != columns) {
-            //resets size and column index
+            // resets size and column index
             try {
                 resize(input.getRows(), input.getColumns());
-            } catch (WrongSizeException ignore) {
-                //never happens
+            } catch (final WrongSizeException ignore) {
+                // never happens
             }
         }
-        //copies content
+        // copies content
         System.arraycopy(input.buffer, 0, buffer, 0, buffer.length);
     }
 
     /**
      * Adds another matrix to this matrix instance and stores the result in
-     * provided result matrix. If provided result matrix doesn't have proper 
+     * provided result matrix. If provided result matrix doesn't have proper
      * size, it will be resized.
-     * @param other Matrix to be added to current instance.
+     *
+     * @param other  Matrix to be added to current instance.
      * @param result Matrix where result of summation is stored.
-     * @throws WrongSizeException Exception thrown if provided matrix to be 
-     * added (i.e. other) does not have the same size as this matrix.
+     * @throws WrongSizeException   Exception thrown if provided matrix to be
+     *                              added (i.e. other) does not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrices are
-     * null.
+     *                              null.
      */
-    public void add(Matrix other, Matrix result) throws WrongSizeException {
+    public void add(final Matrix other, final Matrix result) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
-        //resize result if needed
+
+        // resize result if needed
         if (result.getRows() != rows || result.getColumns() != columns) {
             result.resize(rows, columns);
         }
-        
+
         internalAdd(other, result);
     }
-    
+
     /**
      * Adds provided matrix to this instance and returns the result as a new
      * matrix instance.
+     *
      * @param other Matrix to be added.
      * @return Returns a new matrix containing the sum of this matrix with
      * provided matrix.
-     * @throws WrongSizeException Exception raised if provided matrix does
-     * not have the same size as this matrix.
+     * @throws WrongSizeException   Exception raised if provided matrix does
+     *                              not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
      */
-    public Matrix addAndReturnNew(Matrix other) throws WrongSizeException {
+    public Matrix addAndReturnNew(final Matrix other) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
-        Matrix out = new Matrix(rows, columns);
+
+        final Matrix out = new Matrix(rows, columns);
         internalAdd(other, out);
         return out;
     }
-    
+
     /**
      * Adds provided matrix to this instance.
+     *
      * @param other Matrix to be added.
-     * @throws WrongSizeException Exception raised if provided matrix does
-     * not have the same size as this matrix.
+     * @throws WrongSizeException   Exception raised if provided matrix does
+     *                              not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
      */
-    public void add(Matrix other) throws WrongSizeException {
+    public void add(final Matrix other) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
+
         internalAdd(other, this);
     }
 
     /**
-     * Subtracts another matrix from this matrix instance and stores the result 
-     * in provided result matrix. If provided result matrix doesn't have proper 
+     * Subtracts another matrix from this matrix instance and stores the result
+     * in provided result matrix. If provided result matrix doesn't have proper
      * size, it will be resized.
-     * @param other Matrix to be added to current instance.
+     *
+     * @param other  Matrix to be added to current instance.
      * @param result Matrix where result of subtraction is stored.
-     * @throws WrongSizeException Exception thrown if provided matrix to be 
-     * subtracted (i.e. other) does not have the same size as this matrix.
+     * @throws WrongSizeException   Exception thrown if provided matrix to be
+     *                              subtracted (i.e. other) does not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrices are
-     * null.
-     */    
-    public void subtract(Matrix other, Matrix result) throws WrongSizeException {
+     *                              null.
+     */
+    public void subtract(final Matrix other, final Matrix result) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
-        //resize result if needed
+
+        // resize result if needed
         if (result.getRows() != rows || result.getColumns() != columns) {
             result.resize(rows, columns);
         }
-        
-        internalSubtract(other, result);        
+
+        internalSubtract(other, result);
     }
-    
+
     /**
-     * Subtracts provided matrix from this instance and returns the result as a 
+     * Subtracts provided matrix from this instance and returns the result as a
      * new matrix instance.
+     *
      * @param other Matrix to be subtracted from.
-     * @return Returns a new matrix containing the subtraction of provided 
+     * @return Returns a new matrix containing the subtraction of provided
      * matrix from this matrix.
-     * @throws WrongSizeException Exception raised if provided matrix does
-     * not have the same size as this matrix.
+     * @throws WrongSizeException   Exception raised if provided matrix does
+     *                              not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
-     */    
-    public Matrix subtractAndReturnNew(Matrix other) 
+     */
+    public Matrix subtractAndReturnNew(final Matrix other)
             throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
-        Matrix out = new Matrix(rows, columns);
+
+        final Matrix out = new Matrix(rows, columns);
         internalSubtract(other, out);
         return out;
     }
-    
+
     /**
      * Subtracts provided matrix from this instance.
+     *
      * @param other Matrix to be subtracted from.
-     * @throws WrongSizeException Exception raised if provided matrix does
-     * not have the same size as this matrix.
+     * @throws WrongSizeException   Exception raised if provided matrix does
+     *                              not have the same size as this matrix.
      * @throws NullPointerException Exception raised if provided matrix is null.
-     */    
-    public void subtract(Matrix other) throws WrongSizeException {
+     */
+    public void subtract(final Matrix other) throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
+
         internalSubtract(other, this);
     }
 
     /**
-     * Multiplies another matrix to this matrix instance and stores the result 
-     * in provided result matrix. If provided result matrix doesn't have proper 
+     * Multiplies another matrix to this matrix instance and stores the result
+     * in provided result matrix. If provided result matrix doesn't have proper
      * size, it will be resized.
-     * @param other Matrix to be multiplied to current instance.
+     *
+     * @param other  Matrix to be multiplied to current instance.
      * @param result Matrix where result of product is stored.
-     * @throws WrongSizeException Exception thrown when current and provided
-     * matrix (i.e. other) has incompatible size for product computation.
+     * @throws WrongSizeException   Exception thrown when current and provided
+     *                              matrix (i.e. other) has incompatible size for product computation.
      * @throws NullPointerException Exception raised if provided matrices are
-     * null.
-     */        
-    public void multiply(Matrix other, Matrix result) throws WrongSizeException {
+     *                              null.
+     */
+    public void multiply(final Matrix other, final Matrix result) throws WrongSizeException {
         if (columns != other.rows) {
             throw new WrongSizeException();
         }
-        
-        //resize result if needed
+
+        // resize result if needed
         if (result.rows != rows || result.columns != other.columns) {
             result.resize(rows, other.columns);
         }
-        
+
         internalMultiply(other, result);
     }
-    
+
     /**
      * Multiplies this matrix with provided matrix and returns the result as
      * a new instance.
-     * If this matrix m1 has size m x n and provided matrix m2 has size p x q, 
+     * If this matrix m1 has size m x n and provided matrix m2 has size p x q,
      * then n must be equal to p so that product m1 * m2 can be correctly
-     * computed obtaining a matrix of size m x q, otherwise an 
+     * computed obtaining a matrix of size m x q, otherwise an
      * IllegalArgumentException will be raised.
+     *
      * @param other Right operand of matrix product
      * @return Matrix containing result of multiplication
-     * @throws WrongSizeException Exception thrown when current and 
-     * provided matrices have incompatible sizes for product computation.
+     * @throws WrongSizeException   Exception thrown when current and
+     *                              provided matrices have incompatible sizes for product computation.
      * @throws NullPointerException Exception thrown if provided matrix is null
      */
-    public Matrix multiplyAndReturnNew(Matrix other) 
+    public Matrix multiplyAndReturnNew(final Matrix other)
             throws WrongSizeException {
-        
+
         if (columns != other.rows) {
             throw new WrongSizeException();
         }
-        
-        Matrix out = new Matrix(rows, other.columns);
+
+        final Matrix out = new Matrix(rows, other.columns);
         internalMultiply(other, out);
         return out;
     }
-    
+
     /**
      * Multiplies this matrix with provided matrix.
      * If this matrix m1 has size m x n and provided matrix m2 has size p x q,
      * then n must be equal to p so that product m1 * m2 can be correctly
      * computed resizing this matrix to a new one having size m x q, otherwise
      * an IllegalArgumentException will be raised.
+     *
      * @param other Right operand of matrix product
-     * @throws WrongSizeException Exception thrown when current and
-     * provided matrices have incompatible sizes for product computation.
+     * @throws WrongSizeException   Exception thrown when current and
+     *                              provided matrices have incompatible sizes for product computation.
      * @throws NullPointerException Exception thrown if provided matrix is null
      */
-    public void multiply(Matrix other) throws WrongSizeException {
-        
+    public void multiply(final Matrix other) throws WrongSizeException {
+
         if (columns != other.rows) {
             throw new WrongSizeException();
         }
-        
-        //instantiate new buffer and column index
-        double[] resultBuffer = new double[rows * other.columns];
-        int[] resultColumnIndex = new int[other.columns];
+
+        // instantiate new buffer and column index
+        final double[] resultBuffer = new double[rows * other.columns];
+        final int[] resultColumnIndex = new int[other.columns];
         int counter = 0;
         for (int i = 0; i < other.columns; i++) {
             resultColumnIndex[i] = counter;
             counter += rows;
         }
-        
+
         internalMultiply(other, resultBuffer, resultColumnIndex);
-        //update matrix data        
-        columns = other.columns;        
+        // update matrix data
+        columns = other.columns;
         columnIndex = resultColumnIndex;
         buffer = resultBuffer;
     }
@@ -492,118 +509,128 @@ public class Matrix implements Serializable{
      * Computes the Kronecker product with provided matrix and stores the
      * result in provided result matrix. If provided result matrix doesn't
      * have proper size, it will be resized.
-     * @param other other matrix to be Kronecker multiplied to current matrix.
+     *
+     * @param other  other matrix to be Kronecker multiplied to current matrix.
      * @param result matrix where result will be stored.
      */
-    public void multiplyKronecker(Matrix other, Matrix result) {
-        //resize result if needed
-        int resultRows = rows*other.rows;
-        int resultCols = columns*other.columns;
+    public void multiplyKronecker(final Matrix other, final Matrix result) {
+        // resize result if needed
+        final int resultRows = rows * other.rows;
+        final int resultCols = columns * other.columns;
         if (result.rows != resultRows || result.columns != resultCols) {
             try {
                 result.resize(resultRows, resultCols);
-            } catch (WrongSizeException ignore) { /* never thrown */ }
+            } catch (final WrongSizeException ignore) {
+                // never thrown
+            }
         }
-        
+
         internalMultiplyKronecker(other, result);
     }
-    
+
     /**
-     * Computes the Kronecker product with provided matrix and returns the 
+     * Computes the Kronecker product with provided matrix and returns the
      * result as a new instance.
      * If this matrix m1 has size mxn and provided matrix m2 has size pxq,
      * the resulting matrix will be m*pxn*q.
+     *
      * @param other other matrix to be Kronecker multiplied to current matrix.
      * @return matrix containing result of Kronecker multiplication.
      */
-    public Matrix multiplyKroneckerAndReturnNew(Matrix other) {
+    public Matrix multiplyKroneckerAndReturnNew(final Matrix other) {
         Matrix out = null;
         try {
-            out = new Matrix(rows*other.rows, columns*other.columns);
+            out = new Matrix(rows * other.rows, columns * other.columns);
             internalMultiplyKronecker(other, out);
-        } catch (WrongSizeException ignore) { /* never thrown */ }
+        } catch (final WrongSizeException ignore) {
+            // never thrown
+        }
         return out;
     }
-    
+
     /**
      * Computes the Kronecer product of this matrix with provided matrix and
      * updates this matrix with the result of the multiplication.
      * If this matrix m1 has size mxn and provided matrix m2 has size pxq,
      * the resulting matrix will be resized to m*pxn*q.
+     *
      * @param other other matrix to be Kronecker multiplied to current matrix.
      */
-    @SuppressWarnings("Duplicates")
-    public void multiplyKronecker(Matrix other) {
-        
-        //instantiate new buffer and column index
-        int resultRows = rows*other.rows;
-        int resultCols = columns*other.columns;        
-        double[] resultBuffer = new double[resultRows*resultCols];
-        int[] resultColumnIndex = new int[resultCols];
+    public void multiplyKronecker(final Matrix other) {
+
+        // instantiate new buffer and column index
+        final int resultRows = rows * other.rows;
+        final int resultCols = columns * other.columns;
+        final double[] resultBuffer = new double[resultRows * resultCols];
+        final int[] resultColumnIndex = new int[resultCols];
         int counter = 0;
         for (int i = 0; i < resultCols; i++) {
             resultColumnIndex[i] = counter;
             counter += resultRows;
         }
-        
+
         internalMultiplyKronecker(other, resultBuffer, resultColumnIndex);
-        //update matrix data
+        // update matrix data
         rows = resultRows;
         columns = resultCols;
         columnIndex = resultColumnIndex;
         buffer = resultBuffer;
     }
-    
+
     /**
      * Computes product by scalar of this instance multiplying all its elements
-     * by provided scalar value and storing the results in provided result 
+     * by provided scalar value and storing the results in provided result
      * matrix. If provided result matrix doesn't have proper size, it will be
      * automatically resized.
+     *
      * @param scalar Scalar amount that current matrix will be multiplied by.
      * @param result Matrix where result of operation is stored.
      */
-    private void multiplyByScalar(double scalar, Matrix result) {
-        int length = rows * columns;
+    private void multiplyByScalar(final double scalar, final Matrix result) {
+        final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             result.buffer[i] = scalar * buffer[i];
-        }        
+        }
     }
-    
+
     /**
      * Computes product by scalar of this instance multiplying all its elements
      * by provided scalar value and returning the result as a new instance.
+     *
      * @param scalar Scalar amount that current matrix will be multiplied by.
      * @return Returns a new matrix instance that contains result of product by
      * scalar.
      */
-    public Matrix multiplyByScalarAndReturnNew(double scalar){
+    public Matrix multiplyByScalarAndReturnNew(final double scalar) {
         Matrix out = null;
         try {
             out = new Matrix(rows, columns);
             multiplyByScalar(scalar, out);
-        } catch (WrongSizeException ignore) {
-            //never happens
+        } catch (final WrongSizeException ignore) {
+            // never happens
         }
         return out;
     }
-    
+
     /**
      * Computes product by scalar of this instance multiplying all its elements
      * by provided scalar value and returning the result as a new instance.
+     *
      * @param scalar Scalar amount that current matrix will be multiplied by.
      */
-    public void multiplyByScalar(double scalar) {
+    public void multiplyByScalar(final double scalar) {
         multiplyByScalar(scalar, this);
     }
-    
+
     /**
      * Checks if provided object is a Matrix instance having exactly the same
      * contents as this matrix instance.
+     *
      * @param obj Object to be compared
      * @return Returns true if both objects are considered to be equal.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }
@@ -613,8 +640,8 @@ public class Matrix implements Serializable{
         if (!(obj instanceof Matrix)) {
             return false;
         }
-        
-        Matrix other = (Matrix)obj;
+
+        final Matrix other = (Matrix) obj;
         return equals(other);
     }
 
@@ -622,6 +649,7 @@ public class Matrix implements Serializable{
      * Computes and returns hash code for this instance. Hash codes are almost
      * unique values that are useful for fast classification and storage of
      * objects in collections.
+     *
      * @return Hash code
      */
     @Override
@@ -629,29 +657,31 @@ public class Matrix implements Serializable{
         return Objects.hash(this.rows, this.columns,
                 Arrays.hashCode(this.buffer), Arrays.hashCode(this.columnIndex));
     }
-    
+
     /**
      * Checks if provided matrix has exactly the same contents as this matrix
      * instance.
+     *
      * @param other Matrix to be compared.
      * @return Returns true if both objects are considered to be equal (same
      * content and size)
      */
-    public boolean equals(Matrix other) {
+    public boolean equals(final Matrix other) {
         return equals(other, 0.0);
     }
-    
+
     /**
      * Checks if provided matrix has contents similar to this matrix by checking
      * that all values have a maximum difference equal to provided threshold and
      * same size.
-     * @param other Matrix to be compared
-     * @param threshold Maximum difference allowed between values on same 
-     * position to determine that matrices are equal
+     *
+     * @param other     Matrix to be compared
+     * @param threshold Maximum difference allowed between values on same
+     *                  position to determine that matrices are equal
      * @return True if matrices are considered to be equal (almost equal content
      * and same size)
      */
-    public boolean equals(Matrix other, double threshold) {
+    public boolean equals(final Matrix other, final double threshold) {
         if (other == null) {
             return false;
         }
@@ -661,9 +691,9 @@ public class Matrix implements Serializable{
         if (other.getColumns() != columns) {
             return false;
         }
-        
-        //check contents
-        int length = rows * columns;
+
+        // check contents
+        final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             if (Math.abs(buffer[i] - other.buffer[i]) > threshold) {
                 return false;
@@ -673,116 +703,121 @@ public class Matrix implements Serializable{
     }
 
     /**
-     * Computes element by element product (i.e. Hadamard product) between 
-     * current and provided (i.e. other) matrix, and stores the result in 
+     * Computes element by element product (i.e. Hadamard product) between
+     * current and provided (i.e. other) matrix, and stores the result in
      * provided result matrix.
-     * @param other Instance that will be used for element by element product
-     * with current instance.
+     *
+     * @param other  Instance that will be used for element by element product
+     *               with current instance.
      * @param result Matrix where result of operation is stored.
-     * @throws WrongSizeException Exception raised if attempting to perform
-     * element by element product on matrices of different size.
+     * @throws WrongSizeException   Exception raised if attempting to perform
+     *                              element by element product on matrices of different size.
      * @throws NullPointerException Exception raised if provided matrix is null
      */
-    public void elementByElementProduct(Matrix other, Matrix result) 
+    public void elementByElementProduct(final Matrix other, final Matrix result)
             throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
 
-        //resize result if needed
+        // resize result if needed
         if (result.getRows() != rows || result.getColumns() != columns) {
             result.resize(rows, columns);
         }
-        
+
         internalElementByElementProduct(other, result);
     }
-    
+
     /**
      * Computes element by element product (i.e. Hadamard product) between
      * current and provided instances and returns the result as a new instace.
-     *	Example:
-     *	Having matrices
-     *		[1, 2, 3]		 [10, 11, 12]
-     *	m1 =	[4, 5, 6]	m2 = [13, 14, 15]
-     *		[7, 8, 9]		 [16, 17, 18]
+     * Example:
+     * Having matrices
+     * [1, 2, 3]		 [10, 11, 12]
+     * m1 =	[4, 5, 6]	m2 = [13, 14, 15]
+     * [7, 8, 9]		 [16, 17, 18]
      * Then their element by element product will be
-     *          [10,  22,  36 ]
-     *	m3 =    [52,  70,  90 ]
-     *		[112, 136, 162] 
-     *
+     * [10,  22,  36 ]
+     * m3 =    [52,  70,  90 ]
+     * [112, 136, 162]
+     * <p>
      * Note: Attempting to perform element product on matrices of different size
      * will raise an IllegalArgumentException
+     *
      * @param other Instance that will be used for element by element product
-     * with current instance.
+     *              with current instance.
      * @return A new Matrix containing element by element product result
-     * @throws WrongSizeException Exception raised if attempting to 
-     * perform element by element product on matrices of different size.
+     * @throws WrongSizeException   Exception raised if attempting to
+     *                              perform element by element product on matrices of different size.
      * @throws NullPointerException Exception raised if provided matrix is null
      */
-    public Matrix elementByElementProductAndReturnNew(Matrix other) 
+    public Matrix elementByElementProductAndReturnNew(final Matrix other)
             throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
-        Matrix out = new Matrix(rows, columns);
+
+        final Matrix out = new Matrix(rows, columns);
         internalElementByElementProduct(other, out);
         return out;
     }
-    
+
     /**
      * Computes element by element product (i.e. Hadamard product) between
      * current and provided instances.
-     *	Example:
-     *	Having matrices
-     *		[1, 2, 3]		 [10, 11, 12]
-     *	m1 =	[4, 5, 6]	m2 = [13, 14, 15]
-     *		[7, 8, 9]		 [16, 17, 18]
+     * Example:
+     * Having matrices
+     * [1, 2, 3]		 [10, 11, 12]
+     * m1 =	[4, 5, 6]	m2 = [13, 14, 15]
+     * [7, 8, 9]		 [16, 17, 18]
      * Then their element by element product will be
-     *          [10,  22,  36 ]
-     *	m3 =    [52,  70,  90 ]
-     *		[112, 136, 162] 
-     *
+     * [10,  22,  36 ]
+     * m3 =    [52,  70,  90 ]
+     * [112, 136, 162]
+     * <p>
      * Note: Attempting to perform element product on matrices of different size
      * will raise an IllegalArgumentException
+     *
      * @param other Instance that will be used for element by element product
-     * with current instance.
-     * @throws WrongSizeException Exception raised if attempting to 
-     * perform element by element product on matrices of different size.
+     *              with current instance.
+     * @throws WrongSizeException   Exception raised if attempting to
+     *                              perform element by element product on matrices of different size.
      * @throws NullPointerException Exception raised if provided matrix is null
-     */    
-    public void elementByElementProduct(Matrix other) 
+     */
+    public void elementByElementProduct(final Matrix other)
             throws WrongSizeException {
         if (other.getRows() != rows || other.getColumns() != columns) {
             throw new WrongSizeException();
         }
-        
+
         internalElementByElementProduct(other, this);
     }
 
     /**
-     * Transposes current matrix and stores result in provided matrix. If 
+     * Transposes current matrix and stores result in provided matrix. If
      * provided matrix doesn't have proper size, it will be resized.
+     *
      * @param result Instance where transposed matrix is stored.
      */
-    public void transpose(Matrix result) {
-        //resize result if needed
+    public void transpose(final Matrix result) {
+        // resize result if needed
         if (result.getRows() != columns || result.getColumns() != rows) {
             try {
                 result.resize(columns, rows);
-            } catch (WrongSizeException ignore) {
-                //never happens
+            } catch (final WrongSizeException ignore) {
+                // never happens
             }
         }
         internalTranspose(result);
     }
-    
+
     /**
-     * Transposes current matrix and returns result as a new instance. 
+     * Transposes current matrix and returns result as a new instance.
      * Transposition of a matrix is done by exchanging rows and columns, in
      * Layman terms, given a matrix m1 with elements located at m1(i,j), where i
      * is the row index and j is the column index, then it follows that its
      * transposed matrix m2 has the following property m2(i,j) = m1(j, i).
+     *
      * @return A new Matrix instance containing transposed matrix.
      */
     public Matrix transposeAndReturnNew() {
@@ -790,12 +825,12 @@ public class Matrix implements Serializable{
         try {
             out = new Matrix(columns, rows);
             internalTranspose(out);
-        } catch (WrongSizeException ignore) {
-            //never happens
+        } catch (final WrongSizeException ignore) {
+            // never happens
         }
         return out;
     }
-    
+
     /**
      * Transposes current matrix.
      * Transposition of a matrix is done by exchanging rows and columns, in
@@ -803,92 +838,95 @@ public class Matrix implements Serializable{
      * is the row index and j is the column index, then it follows that its
      * transposed matrix m2 has the following property m2(i,j) = m1(j, i).
      */
-    @SuppressWarnings("Duplicates")
     public void transpose() {
-        
-        double[] newBuffer = new double[rows * columns];
-        int[] newColumnIndex = new int[rows];
+
+        final double[] newBuffer = new double[rows * columns];
+        final int[] newColumnIndex = new int[rows];
         int counter = 0;
         for (int i = 0; i < rows; i++) {
             newColumnIndex[i] = counter;
             counter += columns;
         }
         internalTranspose(newBuffer, newColumnIndex);
-        
-        //update matrix data
-        
-        //swap rows and columns
-        int tmp = rows;
+
+        // update matrix data
+
+        // swap rows and columns
+        final int tmp = rows;
         rows = columns;
         columns = tmp;
-        
+
         columnIndex = newColumnIndex;
         buffer = newBuffer;
     }
-    
+
     /**
      * Sets the contents of this matrix to provided value in all of its elements
+     *
      * @param initValue Value to be set on all the elements of this matrix.
      */
-    public void initialize(double initValue) {
-        //initialize buffer array to provided value
+    public void initialize(final double initValue) {
+        // initialize buffer array to provided value
         Arrays.fill(buffer, initValue);
     }
-    
+
     /**
      * Resizes current instance by removing its contents and resizing it to
      * provided size.
-     * @param rows Number of rows to be set
+     *
+     * @param rows    Number of rows to be set
      * @param columns Number of columns to be set
      * @throws WrongSizeException Exception raised if either rows or
-     * columns is zero.
+     *                            columns is zero.
      */
-    public void resize(int rows, int columns) throws WrongSizeException {
+    public void resize(final int rows, final int columns) throws WrongSizeException {
         internalResize(rows, columns);
     }
 
     /**
      * Resets current instance by removing its contents, resizing it to provided
      * size and setting all its elements to provided value.
-     * @param rows Number of rows to be set
-     * @param columns Number of columns to be set
+     *
+     * @param rows      Number of rows to be set
+     * @param columns   Number of columns to be set
      * @param initValue Value to be set in all of its elements
      * @throws WrongSizeException Exception raised if either rows or
-     * columns is zero.
+     *                            columns is zero.
      */
-    public void reset(int rows, int columns, double initValue) 
+    public void reset(final int rows, final int columns, final double initValue)
             throws WrongSizeException {
         internalResize(rows, columns);
         initialize(initValue);
     }
-    
+
     /**
      * Returns the contents of the matrix as an array of values using
      * DEFAULT_USE_COLUMN_ORDER to pick elements.
+     *
      * @return Contents of matrix as an array
      */
     public double[] toArray() {
         return toArray(DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Returns the contents of the matrix as an array of values using provided
      * order to pick elements.
+     *
      * @param isColumnOrder If true, picks elements from matrix using column
-     * order, otherwise row order is used.
+     *                      order, otherwise row order is used.
      * @return Contents of matrix as an array,
      */
-    @SuppressWarnings("Duplicates")
-    public double[] toArray(boolean isColumnOrder) {
-        int length = rows * columns;               
-        
+    public double[] toArray(final boolean isColumnOrder) {
+        final int length = rows * columns;
+
         if (isColumnOrder) {
             return Arrays.copyOf(buffer, length);
         } else {
-            double[] out = new double[length];
+            final double[] out = new double[length];
             double value;
             int counter = 0;
-            
+
             for (int j = 0; j < rows; j++) {
                 for (int i = 0; i < columns; i++) {
                     value = buffer[columnIndex[i] + j];
@@ -896,57 +934,59 @@ public class Matrix implements Serializable{
                     counter++;
                 }
             }
-            
+
             return out;
         }
     }
-    
+
     /**
-     * Copies the contents of the matrx to an array of values using column 
+     * Copies the contents of the matrx to an array of values using column
      * order.
+     *
      * @param result array where values will be copied to.
      * @throws WrongSizeException if provided result array does not have the
-     * same number of elements as the matrix (i.e. rows x columns).
+     *                            same number of elements as the matrix (i.e. rows x columns).
      */
-    public void toArray(double[] result) throws WrongSizeException {
+    public void toArray(final double[] result) throws WrongSizeException {
         toArray(result, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Copies the contents of the matrix to an array of values using provided
      * order to pick elements.
-     * @param result array where values will be copied to.
-     * @param isColumnOrder if true, picks elements from matrix using column 
-     * order, otherwise row order is used.
+     *
+     * @param result        array where values will be copied to.
+     * @param isColumnOrder if true, picks elements from matrix using column
+     *                      order, otherwise row order is used.
      * @throws WrongSizeException if provided result array does not have the
-     * same number of elements as the matrix (i.e. rows x columns).
+     *                            same number of elements as the matrix (i.e. rows x columns).
      */
-    @SuppressWarnings("Duplicates")
-    public void toArray(double[] result, boolean isColumnOrder) 
+    public void toArray(final double[] result, final boolean isColumnOrder)
             throws WrongSizeException {
         if (result.length != buffer.length) {
             throw new WrongSizeException(
                     "result array must be equal to rows x columns");
         }
-        
+
         if (isColumnOrder) {
             System.arraycopy(buffer, 0, result, 0, buffer.length);
         } else {
             double value;
             int counter = 0;
-            
+
             for (int j = 0; j < rows; j++) {
                 for (int i = 0; i < columns; i++) {
                     value = buffer[columnIndex[i] + j];
                     result[counter] = value;
                     counter++;
                 }
-            }            
+            }
         }
     }
-    
+
     /**
      * Returns current matrix internal buffer of data.
+     *
      * @return Internal buffer of data.
      */
     public double[] getBuffer() {
@@ -957,72 +997,72 @@ public class Matrix implements Serializable{
      * Obtains a submatrix of current matrix instance. Submatrix is obtained by
      * copying all elements contained within provided coordinates (both top-left
      * and bottom-right points are included within submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts.
-     * @param topLeftColumn Top-left column index where submatrix starts.
-     * @param bottomRightRow Bottom-right row index where submatrix ends.
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts.
+     * @param topLeftColumn     Top-left column index where submatrix starts.
+     * @param bottomRightRow    Bottom-right row index where submatrix ends.
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param result Instance where submatrix data is stored.
+     * @param result            Instance where submatrix data is stored.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
-     * @throws NullPointerException If provided result matrix is null.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
+     * @throws NullPointerException     If provided result matrix is null.
      */
-    @SuppressWarnings("Duplicates")
-    public void getSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, Matrix result) {
+    public void getSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn, final Matrix result) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
-        int subRows = bottomRightRow - topLeftRow + 1;
-        int subCols = bottomRightColumn - topLeftColumn + 1;
+
+        final int subRows = bottomRightRow - topLeftRow + 1;
+        final int subCols = bottomRightColumn - topLeftColumn + 1;
         if (result.getRows() != subRows || result.getColumns() != subCols) {
-            //resize result
+            // resize result
             try {
                 result.resize(subRows, subCols);
-            } catch (WrongSizeException ignore) {
-                //never happens
+            } catch (final WrongSizeException ignore) {
+                // never happens
             }
         }
         internalGetSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, result);
     }
-    
+
     /**
      * Obtains a submatrix of current matrix instance. Submatrix is obtained by
      * copying all elements contained within provided coordinates (both top-left
      * and bottom-right points are included within submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts.
-     * @param topLeftColumn Top-left column index where submatrix starts.
-     * @param bottomRightRow Bottom-right row index where submatrix ends.
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts.
+     * @param topLeftColumn     Top-left column index where submatrix starts.
+     * @param bottomRightRow    Bottom-right row index where submatrix ends.
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
      * @return A new instance containing selected submatrix.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located belo or at right side of bottom-right corner.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located belo or at right side of bottom-right corner.
      */
-    @SuppressWarnings("Duplicates")
-    public Matrix getSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn) {
+    public Matrix getSubmatrix(final int topLeftRow, final int topLeftColumn,
+                               final int bottomRightRow, final int bottomRightColumn) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
+
         Matrix out;
         try {
             out = new Matrix(bottomRightRow - topLeftRow + 1,
-                bottomRightColumn - topLeftColumn + 1);
-        } catch (WrongSizeException e) {
+                    bottomRightColumn - topLeftColumn + 1);
+        } catch (final WrongSizeException e) {
             throw new IllegalArgumentException(e);
         }
         internalGetSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
@@ -1031,217 +1071,222 @@ public class Matrix implements Serializable{
     }
 
     /**
-     * Retrieves a submatrix of current matrix instance as an array of values 
-     * using column order and storing the result in provided array. 
-     * Submatrix is obtained by copying all elements contained within provided 
-     * coordinates (both top-left and bottom-right points are included within 
+     * Retrieves a submatrix of current matrix instance as an array of values
+     * using column order and storing the result in provided array.
+     * Submatrix is obtained by copying all elements contained within provided
+     * coordinates (both top-left and bottom-right points are included within
      * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts
+     * @param topLeftColumn     Top-left column index where submatrix starts
+     * @param bottomRightRow    Bottom-right row index where submatrix ends
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param array Array where submatrix data is stored.
+     * @param array             Array where submatrix data is stored.
      * @throws IllegalArgumentException Thrown if provided coordinates lie
-     * outside of matrix boundaries or if top-left corner is at the bottom or 
-     * right side of bottom-right corner
-     * @throws WrongSizeException thrown if length of provided array does not
-     * match the number of elements to be extracted from this matrix
+     *                                  outside of matrix boundaries or if top-left corner is at the bottom or
+     *                                  right side of bottom-right corner
+     * @throws WrongSizeException       thrown if length of provided array does not
+     *                                  match the number of elements to be extracted from this matrix
      */
-    @SuppressWarnings("Duplicates")
-    public void getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] array)
+    public void getSubmatrixAsArray(final int topLeftRow, final int topLeftColumn,
+                                    final int bottomRightRow, final int bottomRightColumn,
+                                    final double[] array)
             throws WrongSizeException {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
 
-        int length = (bottomRightRow - topLeftRow + 1) *
-                (bottomRightColumn - topLeftColumn + 1);        
-        if (array.length != length) {
-            throw new WrongSizeException();
-        }
-        
-        getSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
-                bottomRightColumn, DEFAULT_USE_COLUMN_ORDER, array);
-    }
-    
-    /**
-     * Retrieves a submatrix of current matrix instance as an array of values
-     * using provided column order and storing the result in provided array. 
-     * Submatrix is obtained by copying all elements contained within provided 
-     * coordinates (both top-left and bottom-right points are included within 
-     * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param isColumnOrder If true, picks elements from matrix using column
-     * order, otherwise row order is used.
-     * @param array Array where submatrix data is stored.
-     * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
-     * @throws WrongSizeException If provided array doesn't have proper length,
-     * which must be equal to the amount of elements in desired submatrix.
-     */
-    @SuppressWarnings("Duplicates")
-    public void getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, boolean isColumnOrder,
-            double[] array) throws WrongSizeException {
-        if (topLeftRow < 0 || topLeftRow >= rows ||
-                topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
-                bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
-                topLeftColumn > bottomRightColumn) {
-            throw new IllegalArgumentException();
-        }
-        
-        int length = (bottomRightRow - topLeftRow + 1) *
+        final int length = (bottomRightRow - topLeftRow + 1) *
                 (bottomRightColumn - topLeftColumn + 1);
         if (array.length != length) {
             throw new WrongSizeException();
         }
-        
-        internalGetSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow, 
-                bottomRightColumn, isColumnOrder, array);        
+
+        getSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
+                bottomRightColumn, DEFAULT_USE_COLUMN_ORDER, array);
     }
-    
+
+    /**
+     * Retrieves a submatrix of current matrix instance as an array of values
+     * using provided column order and storing the result in provided array.
+     * Submatrix is obtained by copying all elements contained within provided
+     * coordinates (both top-left and bottom-right points are included within
+     * submatrix).
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts
+     * @param topLeftColumn     Top-left column index where submatrix starts
+     * @param bottomRightRow    Bottom-right row index where submatrix ends
+     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param isColumnOrder     If true, picks elements from matrix using column
+     *                          order, otherwise row order is used.
+     * @param array             Array where submatrix data is stored.
+     * @throws IllegalArgumentException Exception raised whenever top-left or
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
+     * @throws WrongSizeException       If provided array doesn't have proper length,
+     *                                  which must be equal to the amount of elements in desired submatrix.
+     */
+    public void getSubmatrixAsArray(final int topLeftRow, final int topLeftColumn,
+                                    final int bottomRightRow, final int bottomRightColumn,
+                                    final boolean isColumnOrder, final double[] array)
+            throws WrongSizeException {
+        if (topLeftRow < 0 || topLeftRow >= rows ||
+                topLeftColumn < 0 || topLeftColumn >= columns ||
+                bottomRightRow < 0 || bottomRightRow >= rows ||
+                bottomRightColumn < 0 || bottomRightColumn >= columns ||
+                topLeftRow > bottomRightRow ||
+                topLeftColumn > bottomRightColumn) {
+            throw new IllegalArgumentException();
+        }
+
+        final int length = (bottomRightRow - topLeftRow + 1) *
+                (bottomRightColumn - topLeftColumn + 1);
+        if (array.length != length) {
+            throw new WrongSizeException();
+        }
+
+        internalGetSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
+                bottomRightColumn, isColumnOrder, array);
+    }
+
     /**
      * Obtains submatrix of current matrix instance as an array of values using
-     * DEFAULT_USE_COLUMN_ORDER. Array is obtained by copying all elements 
+     * DEFAULT_USE_COLUMN_ORDER. Array is obtained by copying all elements
      * contained within provided coordinates (both top-left
      * and bottom-right points are included within submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts
+     * @param topLeftColumn     Top-left column index where submatrix starts
+     * @param bottomRightRow    Bottom-right row index where submatrix ends
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
      * @return An array containing submatrix elements
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located belo or at right side of bottom-right corner.
-     */    
-    public double[] getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn) {
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located belo or at right side of bottom-right corner.
+     */
+    public double[] getSubmatrixAsArray(final int topLeftRow, final int topLeftColumn,
+                                        final int bottomRightRow, final int bottomRightColumn) {
         return getSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, DEFAULT_USE_COLUMN_ORDER);
     }
 
     /**
      * Obtains submatrix of current matrix instance as an array of values using
-     * provided order. Array is obtained by copying all elements 
+     * provided order. Array is obtained by copying all elements
      * contained within provided coordinates (both top-left
      * and bottom-right points are included within submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts
+     * @param topLeftColumn     Top-left column index where submatrix starts
+     * @param bottomRightRow    Bottom-right row index where submatrix ends
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param isColumnOrder If true, picks elements from matrix using column
-     * order, otherwise row order is used.
+     * @param isColumnOrder     If true, picks elements from matrix using column
+     *                          order, otherwise row order is used.
      * @return An array containing submatrix elements
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
      */
-    @SuppressWarnings("Duplicates")
-    public double[] getSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, boolean isColumnOrder) {
+    public double[] getSubmatrixAsArray(final int topLeftRow, final int topLeftColumn,
+                                        final int bottomRightRow, final int bottomRightColumn,
+                                        final boolean isColumnOrder) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
-        int length = (bottomRightRow - topLeftRow + 1) *
+
+        final int length = (bottomRightRow - topLeftRow + 1) *
                 (bottomRightColumn - topLeftColumn + 1);
-        
-        double[] out = new double[length];
+
+        final double[] out = new double[length];
         internalGetSubmatrixAsArray(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, isColumnOrder, out);
         return out;
     }
-    
+
     /**
      * Copies elements from provided submatrix into this matrix at provided
      * location.
-     * @param topLeftRow Top-left row index where submatrix copy starts
-     * @param topLeftColumn Top-left column index where submatrix copy starts
-     * @param bottomRightRow Bottom-right row index where submatrix copy ends
-     * @param bottomRightColumn Bottom-right column index where submatrix copy 
-     * ends.
-     * @param submatrix Submatrix to be copied
+     *
+     * @param topLeftRow        Top-left row index where submatrix copy starts
+     * @param topLeftColumn     Top-left column index where submatrix copy starts
+     * @param bottomRightRow    Bottom-right row index where submatrix copy ends
+     * @param bottomRightColumn Bottom-right column index where submatrix copy
+     *                          ends.
+     * @param submatrix         Submatrix to be copied
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
      */
-    public void setSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, Matrix submatrix) {
-        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn,
+                             final Matrix submatrix) {
+        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, submatrix, 0, 0,
                 submatrix.getRows() - 1,
                 submatrix.getColumns() - 1);
     }
-    
+
     /**
      * Copies elements from provided submatrix into this matrix at provided
      * location
-     * @param topLeftRow Top-left row index where submatrix copy starts
-     * @param topLeftColumn Top-left column index where submatrix copy starts
-     * @param bottomRightRow Bottom-right row index where submatrix copy ends
-     * @param bottomRightColumn Bottom-right column index where submatrix copy
-     * ends.
-     * @param submatrix Submatrix to be copied
-     * @param submatrixTopLeftRow Top-left row index of submatrix where copy 
-     * starts
-     * @param submatrixTopLeftColumn Top-left column index of submatrix where
-     * copy starts
-     * @param submatrixBottomRightRow Bottom-right row index of submatrix where
-     * copy ends
+     *
+     * @param topLeftRow                 Top-left row index where submatrix copy starts
+     * @param topLeftColumn              Top-left column index where submatrix copy starts
+     * @param bottomRightRow             Bottom-right row index where submatrix copy ends
+     * @param bottomRightColumn          Bottom-right column index where submatrix copy
+     *                                   ends.
+     * @param submatrix                  Submatrix to be copied
+     * @param submatrixTopLeftRow        Top-left row index of submatrix where copy
+     *                                   starts
+     * @param submatrixTopLeftColumn     Top-left column index of submatrix where
+     *                                   copy starts
+     * @param submatrixBottomRightRow    Bottom-right row index of submatrix where
+     *                                   copy ends
      * @param submatrixBottomRightColumn Bottom-right column index of submatrix
-     * where copy ends
-     * @throws IllegalArgumentException  Exception raised whenever top-left or
-     * bottom-right corners lie outside current or provided matrices, or if
-     * top-left corners are indeed located below or at right side of 
-     * bottom-right corners.
+     *                                   where copy ends
+     * @throws IllegalArgumentException Exception raised whenever top-left or
+     *                                  bottom-right corners lie outside current or provided matrices, or if
+     *                                  top-left corners are indeed located below or at right side of
+     *                                  bottom-right corners.
      */
-    @SuppressWarnings("all")
-    public void setSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, Matrix submatrix,
-            int submatrixTopLeftRow, int submatrixTopLeftColumn,
-            int submatrixBottomRightRow, int submatrixBottomRightColumn) {
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn,
+                             final Matrix submatrix, final int submatrixTopLeftRow,
+                             final int submatrixTopLeftColumn, final int submatrixBottomRightRow,
+                             final int submatrixBottomRightColumn) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
-        if (submatrixTopLeftRow < 0 || submatrixTopLeftRow >= submatrix.rows ||
-                submatrixTopLeftColumn < 0 || 
-                submatrixTopLeftColumn >= submatrix.columns ||
-                submatrixBottomRightRow < 0 || 
+
+        if (submatrixTopLeftRow < 0 || submatrixTopLeftColumn < 0 ||
+                submatrixBottomRightRow < 0 ||
                 submatrixBottomRightRow >= submatrix.rows ||
-                submatrixBottomRightColumn < 0 || 
+                submatrixBottomRightColumn < 0 ||
                 submatrixBottomRightColumn >= submatrix.columns ||
                 submatrixTopLeftRow > submatrixBottomRightRow ||
                 submatrixTopLeftColumn > submatrixBottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
-        int matrixRows = bottomRightRow - topLeftRow + 1;
-        int matrixColumns = bottomRightColumn - topLeftColumn + 1;
-        int submatrixRows = submatrixBottomRightRow - submatrixTopLeftRow + 1;
-        int submatrixColumns = submatrixBottomRightColumn -                 
+
+        final int matrixRows = bottomRightRow - topLeftRow + 1;
+        final int matrixColumns = bottomRightColumn - topLeftColumn + 1;
+        final int submatrixRows = submatrixBottomRightRow - submatrixTopLeftRow + 1;
+        final int submatrixColumns = submatrixBottomRightColumn -
                 submatrixTopLeftColumn + 1;
         if (matrixRows != submatrixRows || matrixColumns != submatrixColumns) {
             throw new IllegalArgumentException();
@@ -1253,8 +1298,8 @@ public class Matrix implements Serializable{
         for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
             destPos = columnIndex[j] + topLeftRow;
             sourcePos = submatrix.columnIndex[j2] + submatrixTopLeftRow;
-            for(int i = topLeftRow; i <= bottomRightRow; i++){
-                //Lines below are equivalent to commented code
+            for (int i = topLeftRow; i <= bottomRightRow; i++) {
+                // Lines below are equivalent to commented code
                 buffer[destPos] = submatrix.buffer[sourcePos];
                 destPos++;
                 sourcePos++;
@@ -1262,104 +1307,108 @@ public class Matrix implements Serializable{
             j2++;
         }
     }
-    
+
     /**
      * Sets elements in provided region to provided value.
-     * @param topLeftRow Top-left row index of region (inclusive).
-     * @param topLeftColumn Top-left column index of region (inclusive).
-     * @param bottomRightRow Bottom-right row index of region (inclusive).
+     *
+     * @param topLeftRow        Top-left row index of region (inclusive).
+     * @param topLeftColumn     Top-left column index of region (inclusive).
+     * @param bottomRightRow    Bottom-right row index of region (inclusive).
      * @param bottomRightColumn Bottom-right column index of region (inclusive).
-     * @param value Value to be set.
+     * @param value             Value to be set.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
      */
-    @SuppressWarnings("Duplicates")
-    public void setSubmatrix(int topLeftRow, int topLeftColumn, 
-            int bottomRightRow, int bottomRightColumn, double value) {
+    public void setSubmatrix(int topLeftRow, int topLeftColumn,
+                             int bottomRightRow, int bottomRightColumn, double value) {
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
+
         for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
-            for(int i = topLeftRow; i <= bottomRightRow; i++){
+            for (int i = topLeftRow; i <= bottomRightRow; i++) {
                 buffer[columnIndex[j] + i] = value;
             }
         }
     }
-    
+
     /**
      * Copies elements from provided array into this matrix at provided
      * location. Elements in array are copied into this matrix considering
      * DEFAULT_USE_COLUMN_ORDER.
-     * @param topLeftRow Top-left row index where copy starts.
-     * @param topLeftColumn Top-left column index where copy starts.
-     * @param bottomRightRow Bottom-right row index where copy ends.
+     *
+     * @param topLeftRow        Top-left row index where copy starts.
+     * @param topLeftColumn     Top-left column index where copy starts.
+     * @param bottomRightRow    Bottom-right row index where copy ends.
      * @param bottomRightColumn Bottom-right column index where copy
-     * ends.
-     * @param values Array to be copied.
+     *                          ends.
+     * @param values            Array to be copied.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
-     */    
-    public void setSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] values) {
-        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
+     */
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn,
+                             final double[] values) {
+        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, values, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
-     * Copies elements from provided array into this matrix at provided 
+     * Copies elements from provided array into this matrix at provided
      * location. Elements in array are copied into this matrix following
      * provided order (either row or column order).
-     * @param topLeftRow Top-left row index where copy starts.
-     * @param topLeftColumn Top-left column index where copy ends.
-     * @param bottomRightRow Bottom-right row index where copy ends.
+     *
+     * @param topLeftRow        Top-left row index where copy starts.
+     * @param topLeftColumn     Top-left column index where copy ends.
+     * @param bottomRightRow    Bottom-right row index where copy ends.
      * @param bottomRightColumn Bottom-right column index where copy ends.
-     * @param values Array to be copied.
-     * @param isColumnOrder If true values are copied consecutively from array
-     * following column order on the destination matrix, otherwise row order is
-     * used.
+     * @param values            Array to be copied.
+     * @param isColumnOrder     If true values are copied consecutively from array
+     *                          following column order on the destination matrix, otherwise row order is
+     *                          used.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner.
      */
-    public void setSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] values,
-            boolean isColumnOrder) {
-        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn, final double[] values,
+                             final boolean isColumnOrder) {
+        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, values, 0, values.length - 1, isColumnOrder);
     }
-    
+
     /**
      * Copies elements from provided array into this matrix at provided
      * location. Elements in array are copied into this matrix considering
      * DEFAULT_USE_COLUMN_ORDER starting at provided location until end provided
      * position.
-     * @param topLeftRow Top-left row index where copy starts (inclusive).
-     * @param topLeftColumn Top-left column index where copy starts (inclusive).
-     * @param bottomRightRow Bottom-right row index where copy ends (inclusive).
+     *
+     * @param topLeftRow        Top-left row index where copy starts (inclusive).
+     * @param topLeftColumn     Top-left column index where copy starts (inclusive).
+     * @param bottomRightRow    Bottom-right row index where copy ends (inclusive).
      * @param bottomRightColumn Bottom-right column index where copy
-     * ends. (inclusive)
-     * @param values Array to be copied.
-     * @param valuesStart Position where copy from array will start (inclusive).
-     * @param valuesEnd Position where copy from array will finish (inclusive).
+     *                          ends. (inclusive)
+     * @param values            Array to be copied.
+     * @param valuesStart       Position where copy from array will start (inclusive).
+     * @param valuesEnd         Position where copy from array will finish (inclusive).
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner, 
-     * or if valuesStart and valuesEnd lie outside of valid array positions or
-     * start is greater than end position.
-     */        
-    public void setSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] values,
-            int valuesStart, int valuesEnd) {
-        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow, 
-                bottomRightColumn, values, valuesStart, valuesEnd, 
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner,
+     *                                  or if valuesStart and valuesEnd lie outside of valid array positions or
+     *                                  start is greater than end position.
+     */
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn, final double[] values,
+                             final int valuesStart, final int valuesEnd) {
+        setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
+                bottomRightColumn, values, valuesStart, valuesEnd,
                 DEFAULT_USE_COLUMN_ORDER);
     }
 
@@ -1368,66 +1417,65 @@ public class Matrix implements Serializable{
      * location. Elements in array are copied into this matrix following
      * provided order (either row or column order) starting at provided location
      * until end provided position.
-     * @param topLeftRow Top-left row index where copy starts (inclusive)
-     * @param topLeftColumn Top-left column index where copy starts (inclusive)
-     * @param bottomRightRow Bottom-right row index where copy ends (inclusive)
-     * @param bottomRightColumn Bottom-right column index where copy 
-     * ends. (inclusive)
-     * @param values Array to be copied.
-     * @param valuesStart Position where copy from array will start (inclusive).
-     * @param valuesEnd Position where copy from array will finish (inclusive).
-     * @param isColumnOrder If true values are copied consecutively from array
-     * following column order on the destination matrix, otherwise row order is
-     * used.
+     *
+     * @param topLeftRow        Top-left row index where copy starts (inclusive)
+     * @param topLeftColumn     Top-left column index where copy starts (inclusive)
+     * @param bottomRightRow    Bottom-right row index where copy ends (inclusive)
+     * @param bottomRightColumn Bottom-right column index where copy
+     *                          ends. (inclusive)
+     * @param values            Array to be copied.
+     * @param valuesStart       Position where copy from array will start (inclusive).
+     * @param valuesEnd         Position where copy from array will finish (inclusive).
+     * @param isColumnOrder     If true values are copied consecutively from array
+     *                          following column order on the destination matrix, otherwise row order is
+     *                          used.
      * @throws IllegalArgumentException Exception raised whenever top-left or
-     * bottom-right corners lie outside current matrix instance, or if top-left
-     * corner is indeed located below or at right side of bottom-right corner, 
-     * or if valuesStart and valuesEnd lie outside of valid array positions or
-     * start is greater than end position.
+     *                                  bottom-right corners lie outside current matrix instance, or if top-left
+     *                                  corner is indeed located below or at right side of bottom-right corner,
+     *                                  or if valuesStart and valuesEnd lie outside of valid array positions or
+     *                                  start is greater than end position.
      */
-    @SuppressWarnings("all")
-    public void setSubmatrix(int topLeftRow, int topLeftColumn,
-            int bottomRightRow, int bottomRightColumn, double[] values,
-            int valuesStart, int valuesEnd, boolean isColumnOrder) {
-        
+    public void setSubmatrix(final int topLeftRow, final int topLeftColumn,
+                             final int bottomRightRow, final int bottomRightColumn, final double[] values,
+                             final int valuesStart, final int valuesEnd, final boolean isColumnOrder) {
+
         if (topLeftRow < 0 || topLeftRow >= rows ||
                 topLeftColumn < 0 || topLeftColumn >= columns ||
-                bottomRightRow < 0 || bottomRightRow >= rows || 
+                bottomRightRow < 0 || bottomRightRow >= rows ||
                 bottomRightColumn < 0 || bottomRightColumn >= columns ||
-                topLeftRow > bottomRightRow || 
+                topLeftRow > bottomRightRow ||
                 topLeftColumn > bottomRightColumn) {
             throw new IllegalArgumentException();
         }
-        
-        if (valuesStart < 0 || valuesStart >= values.length ||
-                valuesEnd < 0 || valuesEnd >= values.length ||
+
+        if (valuesStart < 0 || valuesEnd < 0 || valuesEnd >= values.length ||
                 valuesStart > valuesEnd) {
             throw new IllegalArgumentException();
         }
-        
-        int matrixRows = bottomRightRow - topLeftRow + 1;
-        int matrixColumns = bottomRightColumn - topLeftColumn + 1;        
-        int matrixLength = matrixRows * matrixColumns;
-        int valuesLength = valuesEnd - valuesStart + 1;
-        
+
+        final int matrixRows = bottomRightRow - topLeftRow + 1;
+        final int matrixColumns = bottomRightColumn - topLeftColumn + 1;
+        final int matrixLength = matrixRows * matrixColumns;
+        final int valuesLength = valuesEnd - valuesStart + 1;
+
         if (matrixLength != valuesLength) {
             throw new IllegalArgumentException();
         }
-        
+
         int counter = valuesStart;
         if (isColumnOrder) {
             int destPos;
             for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
                 destPos = columnIndex[j] + topLeftRow;
-                for(int i = topLeftRow; i <= bottomRightRow; i++){
-                    //Two Lines below are equivalent to:
-                    //buffer[columnIndex[j] + i] = values[counter]
+                for (int i = topLeftRow; i <= bottomRightRow; i++) {
+                    // Two Lines below are equivalent to:
+                    // buffer[columnIndex[j] + i] = values[counter]
                     buffer[destPos] = values[counter];
                     destPos++;
                     counter++;
                 }
-            }        
-            
+            }
+
         } else {
             for (int i = topLeftRow; i <= bottomRightRow; i++) {
                 for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
@@ -1437,260 +1485,275 @@ public class Matrix implements Serializable{
             }
         }
     }
-    
+
     /**
-     * Sets values into provided matrix to make it an identity matrix (all 
+     * Sets values into provided matrix to make it an identity matrix (all
      * elements in the diagonal equal to one, and remaining elements to zero).
+     *
      * @param m Matrix where identity values are set.
      */
-    public static void identity(Matrix m) {
+    public static void identity(final Matrix m) {
         m.initialize(0.0);
-        
-        int minSize = (m.rows < m.columns) ? m.rows : m.columns;
+
+        final int minSize = Math.min(m.rows, m.columns);
         for (int i = 0; i < minSize; i++) {
             m.buffer[m.columnIndex[i] + i] = 1.0;
-        }        
+        }
     }
-    
+
     /**
      * Creates and returns a new matrix instance having all the elements on
      * the diagonal equal to one and the remainng ones equal to zero.
-     * @param rows Number of rows of created instance
+     *
+     * @param rows    Number of rows of created instance
      * @param columns Number of columns of created instance
      * @return An identity matrix
-     * @throws WrongSizeException Raised if either rows or columns is 
-     * equal to zero
+     * @throws WrongSizeException Raised if either rows or columns is
+     *                            equal to zero
      */
-    public static Matrix identity(int rows, int columns) 
+    public static Matrix identity(final int rows, final int columns)
             throws WrongSizeException {
-        
-        Matrix out = new Matrix(rows, columns);
+
+        final Matrix out = new Matrix(rows, columns);
         identity(out);
         return out;
-    }    
-    
+    }
+
     /**
      * Fills provided matrix with random uniform values ranging from minValue to
      * maxValue.
+     *
      * @param minValue Minimum value of uniform random generated values
      * @param maxValue Maximum value of uniform random generated values
-     * @param random Random generator
-     * @param result Matrix where random values are stored.
+     * @param random   Random generator
+     * @param result   Matrix where random values are stored.
      * @throws IllegalArgumentException if minValue &lt;= maxValue
-     * @throws NullPointerException if either provided random or result 
-     * instances are null
+     * @throws NullPointerException     if either provided random or result
+     *                                  instances are null
      */
-    public static void fillWithUniformRandomValues(double minValue, 
-            double maxValue, Random random, Matrix result) {
-        UniformRandomizer randomizer = new UniformRandomizer(random);
-        
-        int length = result.rows * result.columns;
-        
+    public static void fillWithUniformRandomValues(
+            final double minValue, final double maxValue, final Random random, final Matrix result) {
+        final UniformRandomizer randomizer = new UniformRandomizer(random);
+
+        final int length = result.rows * result.columns;
+
         for (int i = 0; i < length; i++) {
             result.buffer[i] = randomizer.nextDouble(minValue, maxValue);
         }
     }
-    
+
     /**
      * Fills provided matrix with random uniform values ranging from minValue to
      * maxValue.
+     *
      * @param minValue Minimum value of uniform random generated values
      * @param maxValue Maximum value of uniform random generated values
-     * @param result Matrix where random values are stored
+     * @param result   Matrix where random values are stored
      * @throws IllegalArgumentException if minValue &lt;= maxValue
-     * @throws NullPointerException if provided result matrix is null
+     * @throws NullPointerException     if provided result matrix is null
      */
-    public static void fillWithUniformRandomValues(double minValue, 
-            double maxValue, Matrix result) {
+    public static void fillWithUniformRandomValues(
+            final double minValue, final double maxValue, final Matrix result) {
         fillWithUniformRandomValues(minValue, maxValue, new Random(), result);
     }
-    
+
     /**
      * Creates new matrix instance using provided size and containing uniformly
      * distributed random values with provided range.
-     * @param rows Number of rows of instantiated matrix
-     * @param columns Number of columns of instantiated matrix
+     *
+     * @param rows     Number of rows of instantiated matrix
+     * @param columns  Number of columns of instantiated matrix
      * @param minValue Minimum value of uniform random generated values
      * @param maxValue Maximum value of uniform random generated values
      * @return A new matrix containing uniform random values
-     * @throws WrongSizeException Exception thrown if either rows or
-     * columns is zero, or if the minimum random value is greater or equal
-     * than the maximum random value
+     * @throws WrongSizeException       Exception thrown if either rows or
+     *                                  columns is zero, or if the minimum random value is greater or equal
+     *                                  than the maximum random value
      * @throws IllegalArgumentException if minValue &lt;= maxValue
      */
-    public static Matrix createWithUniformRandomValues(int rows, int columns,
-            double minValue, double maxValue) throws WrongSizeException {
+    public static Matrix createWithUniformRandomValues(
+            final int rows, final int columns, final double minValue, final double maxValue)
+            throws WrongSizeException {
         return createWithUniformRandomValues(rows, columns, minValue, maxValue,
                 new Random());
     }
-    
+
     /**
      * Creates new matrix instance using provided size and containing uniformly
      * distributed random values with provided range and using provided random
      * generator
-     * @param rows Number of rows of instantiated matrix
-     * @param columns Number of columns of instantiated matrix
+     *
+     * @param rows     Number of rows of instantiated matrix
+     * @param columns  Number of columns of instantiated matrix
      * @param minValue Minimum value of uniform random generated values
      * @param maxValue Maximum value of uniform random generated values
-     * @param random A random generator.
+     * @param random   A random generator.
      * @return A new matrix containing uniform random values
-     * @throws WrongSizeException Exception thrown if either rows or
-     * columns is zero, or if the minimum random value is greater or equal
-     * than the maximum random value
+     * @throws WrongSizeException       Exception thrown if either rows or
+     *                                  columns is zero, or if the minimum random value is greater or equal
+     *                                  than the maximum random value
      * @throws IllegalArgumentException if minValue &lt;= maxValue
-     */    
-    public static Matrix createWithUniformRandomValues(int rows, int columns,
-            double minValue, double maxValue, Random random) 
-            throws WrongSizeException {
-        
-        Matrix out = new Matrix(rows, columns);
+     */
+    public static Matrix createWithUniformRandomValues(
+            final int rows, final int columns, final double minValue, final double maxValue,
+            final Random random) throws WrongSizeException {
+
+        final Matrix out = new Matrix(rows, columns);
         fillWithUniformRandomValues(minValue, maxValue, random, out);
         return out;
     }
-    
+
     /**
      * Fills provided matrix with random Gaussian values with provided mean and
      * standard deviation.
-     * @param mean Mean value of generated random values
+     *
+     * @param mean              Mean value of generated random values
      * @param standardDeviation Standard deviation of generated random values
-     * @param random Random generator
-     * @param result Matrix where random values are stored
-     * @throws IllegalArgumentException if standard deviation is negative or 
-     * zero
-     * @throws NullPointerException if provided result matrix is null
-     */    
-    public static void fillWithGaussianRandomValues(double mean, 
-            double standardDeviation, Random random, Matrix result) {
-        
-        GaussianRandomizer randomizer = new GaussianRandomizer(random, mean, 
+     * @param random            Random generator
+     * @param result            Matrix where random values are stored
+     * @throws IllegalArgumentException if standard deviation is negative or
+     *                                  zero
+     * @throws NullPointerException     if provided result matrix is null
+     */
+    public static void fillWithGaussianRandomValues(
+            final double mean, final double standardDeviation, final Random random, final Matrix result) {
+
+        final GaussianRandomizer randomizer = new GaussianRandomizer(random, mean,
                 standardDeviation);
-        
-        int length = result.rows * result.columns;
-        
+
+        final int length = result.rows * result.columns;
+
         for (int i = 0; i < length; i++) {
             result.buffer[i] = randomizer.nextDouble();
-        }        
+        }
     }
-    
+
     /**
      * Fills provided matrix with random Gaussian values with provided mean and
      * standard deviation
-     * @param mean Mean value of generated random values
+     *
+     * @param mean              Mean value of generated random values
      * @param standardDeviation Standard deviation of generated random values
-     * @param result Matrix where random values are stored
+     * @param result            Matrix where random values are stored
      * @throws IllegalArgumentException if standard deviation is negative or
-     * zero
-     * @throws NullPointerException if provided result matrix is null
+     *                                  zero
+     * @throws NullPointerException     if provided result matrix is null
      */
-    public static void fillWithGaussianRandomValues(double mean, 
-            double standardDeviation, Matrix result) {
-        fillWithGaussianRandomValues(mean, standardDeviation, new Random(), 
+    public static void fillWithGaussianRandomValues(
+            final double mean, final double standardDeviation, final Matrix result) {
+        fillWithGaussianRandomValues(mean, standardDeviation, new Random(),
                 result);
     }
-    
+
     /**
-     * Creates new matrix instance using provided size and containing 
-     * gaussian/normal distributed random values with provided median and 
+     * Creates new matrix instance using provided size and containing
+     * gaussian/normal distributed random values with provided median and
      * standard deviation.
-     * @param rows Number of rows of instantiated matrix
-     * @param columns Number of columns of instantiated matrix
-     * @param mean Mean value of gaussian random generated values
-     * @param standardDeviation Standard deviation of gaussian random generated 
-     * values
+     *
+     * @param rows              Number of rows of instantiated matrix
+     * @param columns           Number of columns of instantiated matrix
+     * @param mean              Mean value of gaussian random generated values
+     * @param standardDeviation Standard deviation of gaussian random generated
+     *                          values
      * @return A new matrix containing gaussian random values
-     * @throws WrongSizeException Exception thrown if either rows or 
-     * columns is zero, or if the standard deviation is negative or zero.
-     * @throws IllegalArgumentException  thrown if provided standard deviation
-     * is negative or zero.
+     * @throws WrongSizeException       Exception thrown if either rows or
+     *                                  columns is zero, or if the standard deviation is negative or zero.
+     * @throws IllegalArgumentException thrown if provided standard deviation
+     *                                  is negative or zero.
      */
-    public static Matrix createWithGaussianRandomValues(int rows, int columns,
-            double mean, double standardDeviation) 
+    public static Matrix createWithGaussianRandomValues(
+            final int rows, final int columns, final double mean, final double standardDeviation)
             throws WrongSizeException {
-        return createWithGaussianRandomValues(rows, columns, mean, 
+        return createWithGaussianRandomValues(rows, columns, mean,
                 standardDeviation, new Random());
     }
 
     /**
-     * Creates new matrix instance using provided size and containing 
-     * gaussian/normal distributed random values with provided median and 
+     * Creates new matrix instance using provided size and containing
+     * gaussian/normal distributed random values with provided median and
      * standard deviation and using provided random generator
-     * @param rows Number of rows of instantiated matrix
-     * @param columns Number of columns of instantiated matrix
-     * @param mean Mean value of gaussian random generated values
-     * @param standardDeviation Standard deviation of gaussian random generated 
-     * values
-     * @param random A random generator.
+     *
+     * @param rows              Number of rows of instantiated matrix
+     * @param columns           Number of columns of instantiated matrix
+     * @param mean              Mean value of gaussian random generated values
+     * @param standardDeviation Standard deviation of gaussian random generated
+     *                          values
+     * @param random            A random generator.
      * @return A new matrix containing gaussian random values
-     * @throws WrongSizeException Exception thrown if either rows or 
-     * columns is zero, or if the standard deviation is negative or zero.
-     * @throws IllegalArgumentException  thrown if provided standard deviation
-     * is negative or zero.
-     */    
-    public static Matrix createWithGaussianRandomValues(int rows, int columns,
-            double mean, double standardDeviation, Random random) 
-            throws WrongSizeException {
-        
-        Matrix out = new Matrix(rows, columns);
+     * @throws WrongSizeException       Exception thrown if either rows or
+     *                                  columns is zero, or if the standard deviation is negative or zero.
+     * @throws IllegalArgumentException thrown if provided standard deviation
+     *                                  is negative or zero.
+     */
+    public static Matrix createWithGaussianRandomValues(
+            final int rows, final int columns, final double mean, final double standardDeviation,
+            final Random random) throws WrongSizeException {
+
+        final Matrix out = new Matrix(rows, columns);
         fillWithGaussianRandomValues(mean, standardDeviation, random, out);
         return out;
     }
-    
+
     /**
-     * Makes provided result matrix a diagonal matrix containing provided 
-     * elements in the diagonal. Elements outside the diagonal will be set to 
+     * Makes provided result matrix a diagonal matrix containing provided
+     * elements in the diagonal. Elements outside the diagonal will be set to
      * zero
+     *
      * @param diagonal Array containing the elements to be set on the diagonal
-     * @param result Matrix where values are stored
+     * @param result   Matrix where values are stored
      * @throws NullPointerException Exception thrown if provided parameters are
-     * null
+     *                              null
      */
-    public static void diagonal(double[] diagonal, Matrix result) {
-        
+    public static void diagonal(final double[] diagonal, final Matrix result) {
+
         result.initialize(0.0);
-        //set diagonal elements
-        //noinspection all
-        for(int i = 0; i < diagonal.length; i++){
+        // set diagonal elements
+        //noinspection ManualArrayCopy
+        for (int i = 0; i < diagonal.length; i++) {
             result.buffer[result.columnIndex[i] + i] = diagonal[i];
         }
     }
-    
+
     /**
      * Creates a diagonal matrix having all the elements in provided array in
      * its diagonal and the remaining elements equal to zero.
      * Returned matrix will have size n x n, where n is the length of the array
+     *
      * @param diagonal Array containing the elements to be set on the diagonal
      * @return A diagonal matrix
      * @throws NullPointerException Raised if provided diagonal array is null
      */
-    public static Matrix diagonal(double[] diagonal) {
-        
+    public static Matrix diagonal(final double[] diagonal) {
+
         Matrix out = null;
         try {
             out = new Matrix(diagonal.length, diagonal.length);
             diagonal(diagonal, out);
-        } catch (WrongSizeException ignore) {
-            //never happens
+        } catch (final WrongSizeException ignore) {
+            // never happens
         }
 
         return out;
     }
-    
+
     /**
      * Instantiates new matrix from array using DEFAULT_USE_COLUMN_ORDER
+     *
      * @param array Array used as source to copy values from
      * @return Returns matrix created from array
      */
-    public static Matrix newFromArray(double[] array) {
+    public static Matrix newFromArray(final double[] array) {
         return newFromArray(array, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Instantiates new matrix from array using either column or row order
-     * @param array Array used as source to copy values from
+     *
+     * @param array         Array used as source to copy values from
      * @param isColumnOrder True if column order must be used, false otherwise
      * @return Returns matrix created from array
      */
-    public static Matrix newFromArray(double[] array, boolean isColumnOrder) {
+    public static Matrix newFromArray(final double[] array, final boolean isColumnOrder) {
         Matrix m = null;
         try {
             if (isColumnOrder) {
@@ -1700,60 +1763,63 @@ public class Matrix implements Serializable{
                 m = new Matrix(1, array.length);
                 m.setSubmatrix(0, 0, 0, array.length - 1, array);
             }
-        } catch (WrongSizeException ignore) {
-            //never happens
+        } catch (final WrongSizeException ignore) {
+            // never happens
         }
-        return m;        
+        return m;
     }
-    
+
     /**
      * Copies elements of array into this instance using column order.
+     *
      * @param array array to copy values from.
      * @throws WrongSizeException if provided array length is not equal to the
-     * number of rows multiplied per the number of columns of this instance.
+     *                            number of rows multiplied per the number of columns of this instance.
      */
-    public void fromArray(double[] array) throws WrongSizeException {
+    public void fromArray(final double[] array) throws WrongSizeException {
         fromArray(array, DEFAULT_USE_COLUMN_ORDER);
     }
-    
+
     /**
      * Copies elements of array into this instance using provided order.
-     * @param array array to copy values from.
+     *
+     * @param array         array to copy values from.
      * @param isColumnOrder true to use column order, false otherwise.
      * @throws WrongSizeException if provided array length is not equal to the
-     * number of rows multiplied per the number of columns of this instance.
+     *                            number of rows multiplied per the number of columns of this instance.
      */
-    public void fromArray(double[] array, boolean isColumnOrder) 
+    public void fromArray(final double[] array, final boolean isColumnOrder)
             throws WrongSizeException {
         if (array.length != buffer.length) {
             throw new WrongSizeException(
                     "array length must be equal to rows x columns");
-        }   
-        
+        }
+
         if (isColumnOrder) {
             System.arraycopy(array, 0, buffer, 0, array.length);
         } else {
             int counter = 0;
-            
+
             for (int j = 0; j < rows; j++) {
                 for (int i = 0; i < columns; i++) {
                     buffer[columnIndex[i] + j] = array[counter];
                     counter++;
                 }
-            }                        
+            }
         }
     }
-    
+
     /**
      * Symmetrizes this instance and stores the result into provided instance.
      * Symmetrization is done by averaging this instance with its transpose
      * (i.e. S = (M+M')/2
+     *
      * @param result instance where symmetrized version of this instance will be
-     * stored.
+     *               stored.
      * @throws WrongSizeException if this instance is not square or provided
-     * result instance doesn't have the same size as this instance.
+     *                            result instance doesn't have the same size as this instance.
      */
-    public void symmetrize(Matrix result) throws WrongSizeException {
+    public void symmetrize(final Matrix result) throws WrongSizeException {
         if (rows != columns) {
             throw new WrongSizeException("matrix must be square");
         }
@@ -1761,8 +1827,8 @@ public class Matrix implements Serializable{
             throw new WrongSizeException(
                     "result matrix must have the size of this instance");
         }
-        
-        //S = (M+M')/2
+
+        // S = (M+M')/2
         double value1;
         double value2;
         double avg;
@@ -1770,38 +1836,40 @@ public class Matrix implements Serializable{
         int pos2;
         for (int i = 0; i < columns; i++) {
             for (int j = i; j < rows; j++) {
-                //value at (i, j)
+                // value at (i, j)
                 pos1 = columnIndex[i] + j;
                 value1 = buffer[pos1];
-                //transposed value (i.e. value at (j,i))
+                // transposed value (i.e. value at (j,i))
                 pos2 = columnIndex[j] + i;
                 value2 = buffer[pos2];
-                
-                avg = 0.5*(value1 + value2);
+
+                avg = 0.5 * (value1 + value2);
                 result.buffer[pos1] = avg;
                 result.buffer[pos2] = avg;
             }
         }
     }
-    
+
     /**
-     * Symmetrizes this instance and returns the result as a new matrix 
+     * Symmetrizes this instance and returns the result as a new matrix
      * instance.
      * Symmetrization is done by averaging this instance with its transpose
      * (i.e. S = (M+M')/2
+     *
      * @return a new symmetrizes version of this instance.
      * @throws WrongSizeException if this instance is not square.
      */
     public Matrix symmetrizeAndReturnNew() throws WrongSizeException {
-        Matrix m = new Matrix(rows, columns);
+        final Matrix m = new Matrix(rows, columns);
         symmetrize(m);
         return m;
     }
-    
+
     /**
      * Symmetrizes this instance and updates it with computed value.
      * Symmetrization is done by averaging this instance with its transpose
      * (i.e. S = (M+M')/2
+     *
      * @throws WrongSizeException if this instance is not square.
      */
     public void symmetrize() throws WrongSizeException {
@@ -1810,11 +1878,12 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally add two matrices.
-     * @param other Matrix to be added to current matrix
+     *
+     * @param other  Matrix to be added to current matrix
      * @param result Matrix where result will be stored.
      */
     private void internalAdd(Matrix other, Matrix result) {
-        int length = rows * columns;
+        final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             result.buffer[i] = buffer[i] + other.buffer[i];
         }
@@ -1822,11 +1891,12 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally subtract two matrices.
-     * @param other Matrix to be subtracted from current matrix.
+     *
+     * @param other  Matrix to be subtracted from current matrix.
      * @param result Matrix where result will be stored.
      */
-    private void internalSubtract(Matrix other, Matrix result) {
-        int length = rows * columns;
+    private void internalSubtract(final Matrix other, final Matrix result) {
+        final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             result.buffer[i] = buffer[i] - other.buffer[i];
         }
@@ -1834,14 +1904,15 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally multiply two matrices.
-     * @param other Matrix to be multiplied to current matrix
-     * @param resultBuffer Matrix buffer of data where result will be stored.
+     *
+     * @param other             Matrix to be multiplied to current matrix
+     * @param resultBuffer      Matrix buffer of data where result will be stored.
      * @param resultColumnIndex Array of matrix column indices where result will
-     * be stored.
+     *                          be stored.
      */
-    private void internalMultiply(Matrix other, double[] resultBuffer,
-                                  int[] resultColumnIndex) {
-        int columns2 = other.columns;
+    private void internalMultiply(final Matrix other, final double[] resultBuffer,
+                                  final int[] resultColumnIndex) {
+        final int columns2 = other.columns;
         double value;
         for (int k = 0; k < columns2; k++) {
             for (int j = 0; j < rows; j++) {
@@ -1857,39 +1928,41 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally multiply two matrices.
-     * @param other Matrix to be multiplied to current matrix.
+     *
+     * @param other  Matrix to be multiplied to current matrix.
      * @param result Matrix where result will be stored.
      */
-    private void internalMultiply(Matrix other, Matrix result) {
+    private void internalMultiply(final Matrix other, final Matrix result) {
         internalMultiply(other, result.buffer, result.columnIndex);
     }
 
     /**
      * Method to internally compute the Kronecker product between two matrices.
-     * @param other other matrix to be Kronecker multiplied to current matrix.
-     * @param resultBuffer matrix buffer of data where result will be stored.
+     *
+     * @param other             other matrix to be Kronecker multiplied to current matrix.
+     * @param resultBuffer      matrix buffer of data where result will be stored.
      * @param resultColumnIndex array of matrix column indices where result will
-     * be stored.
+     *                          be stored.
      */
-    private void internalMultiplyKronecker(Matrix other, double[] resultBuffer,
-                                           int[] resultColumnIndex) {
-        int rows2 = other.rows;
-        int columns2 = other.columns;
+    private void internalMultiplyKronecker(
+            final Matrix other, final double[] resultBuffer, final int[] resultColumnIndex) {
+        final int rows2 = other.rows;
+        final int columns2 = other.columns;
 
         for (int j1 = 0; j1 < rows; j1++) {
-            int startJ3 = j1*other.rows;
+            final int startJ3 = j1 * other.rows;
             for (int i1 = 0; i1 < columns; i1++) {
-                int startI3 = i1*other.columns;
-                double value1 = buffer[columnIndex[i1] + j1];
+                final int startI3 = i1 * other.columns;
+                final double value1 = buffer[columnIndex[i1] + j1];
 
                 for (int j2 = 0; j2 < rows2; j2++) {
-                    int j3 = startJ3 + j2;
+                    final int j3 = startJ3 + j2;
                     for (int i2 = 0; i2 < columns2; i2++) {
-                        int i3 = startI3 + i2;
-                        double value2 =
+                        final int i3 = startI3 + i2;
+                        final double value2 =
                                 other.buffer[other.columnIndex[i2] + j2];
 
-                        double value3 = value1*value2;
+                        final double value3 = value1 * value2;
                         resultBuffer[resultColumnIndex[i3] + j3] = value3;
                     }
                 }
@@ -1899,20 +1972,22 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally compute the Kronecker product between two matrices.
-     * @param other other matrix to be Kronecker multiplied to current matrix.
+     *
+     * @param other  other matrix to be Kronecker multiplied to current matrix.
      * @param result matrix where result will be stored.
      */
-    private void internalMultiplyKronecker(Matrix other, Matrix result) {
+    private void internalMultiplyKronecker(final Matrix other, final Matrix result) {
         internalMultiplyKronecker(other, result.buffer, result.columnIndex);
     }
 
     /**
      * Method to internally compute element by element product of two matrices.
-     * @param other Matrix to be element by element multiplied to current matrix
+     *
+     * @param other  Matrix to be element by element multiplied to current matrix
      * @param result Matrix where result will be stored.
      */
-    private void internalElementByElementProduct(Matrix other, Matrix result) {
-        int length = rows * columns;
+    private void internalElementByElementProduct(final Matrix other, final Matrix result) {
+        final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             result.buffer[i] = buffer[i] * other.buffer[i];
         }
@@ -1920,12 +1995,13 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally compute matrix transposition.
-     * @param resultBuffer Buffer where transposed matrix data is stored.
+     *
+     * @param resultBuffer      Buffer where transposed matrix data is stored.
      * @param resultColumnIndex Buffer where indices of transposed matrix data
-     * is stored.
+     *                          is stored.
      */
-    private void internalTranspose(double[] resultBuffer,
-                                   int[] resultColumnIndex) {
+    private void internalTranspose(final double[] resultBuffer,
+                                   final int[] resultColumnIndex) {
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < columns; i++) {
                 resultBuffer[resultColumnIndex[j] + i] =
@@ -1936,21 +2012,22 @@ public class Matrix implements Serializable{
 
     /**
      * Method to internally compute matrix transposition.
+     *
      * @param result Matrix where transposed data is stored.
      */
-    private void internalTranspose(Matrix result) {
+    private void internalTranspose(final Matrix result) {
         internalTranspose(result.buffer, result.columnIndex);
     }
 
     /**
      * Method used internally to remove matrix contents and resizing it.
-     * @param rows Number of rows to be set
+     *
+     * @param rows    Number of rows to be set
      * @param columns Number of columns to be set.
      * @throws WrongSizeException Exception raised if either rows or
-     * columns is zero.
+     *                            columns is zero.
      */
-    @SuppressWarnings("Duplicates")
-    private void internalResize(int rows, int columns)
+    private void internalResize(final int rows, final int columns)
             throws WrongSizeException {
         if (rows == 0 || columns == 0) {
             throw new WrongSizeException();
@@ -1959,11 +2036,11 @@ public class Matrix implements Serializable{
         this.rows = rows;
         this.columns = columns;
 
-        //instantiate buffers of data
+        // instantiate buffers of data
         buffer = new double[rows * columns];
         columnIndex = new int[columns];
 
-        //initialize column index
+        // initialize column index
         int counter = 0;
         for (int i = 0; i < columns; i++) {
             columnIndex[i] = counter;
@@ -1976,14 +2053,16 @@ public class Matrix implements Serializable{
      * Submatrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
      * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts.
-     * @param topLeftColumn Top-left column index where submatrix starts.
-     * @param bottomRightRow Bottom-right row index where submatrix ends.
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts.
+     * @param topLeftColumn     Top-left column index where submatrix starts.
+     * @param bottomRightRow    Bottom-right row index where submatrix ends.
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param result Instance where submatrix data is stored.
+     * @param result            Instance where submatrix data is stored.
      */
-    private void internalGetSubmatrix(int topLeftRow, int topLeftColumn,
-                                      int bottomRightRow, int bottomRightColumn, Matrix result) {
+    private void internalGetSubmatrix(
+            final int topLeftRow, final int topLeftColumn, final int bottomRightRow,
+            final int bottomRightColumn, final Matrix result) {
         int i2 = 0;
         int j2 = 0;
         for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
@@ -2004,18 +2083,18 @@ public class Matrix implements Serializable{
      * Submatrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
      * submatrix).
-     * @param topLeftRow Top-left row index where submatrix starts
-     * @param topLeftColumn Top-left column index where submatrix starts
-     * @param bottomRightRow Bottom-right row index where submatrix ends
+     *
+     * @param topLeftRow        Top-left row index where submatrix starts
+     * @param topLeftColumn     Top-left column index where submatrix starts
+     * @param bottomRightRow    Bottom-right row index where submatrix ends
      * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param isColumnOrder If true, picks elements from matrix using column
-     * order, otherwise row order is used.
-     * @param result Array where submatrix data is stored.
+     * @param isColumnOrder     If true, picks elements from matrix using column
+     *                          order, otherwise row order is used.
+     * @param result            Array where submatrix data is stored.
      */
-    @SuppressWarnings("Duplicates")
-    private void internalGetSubmatrixAsArray(int topLeftRow, int topLeftColumn,
-                                             int bottomRightRow, int bottomRightColumn, boolean isColumnOrder,
-                                             double[] result) {
+    private void internalGetSubmatrixAsArray(
+            final int topLeftRow, final int topLeftColumn, final int bottomRightRow,
+            final int bottomRightColumn, final boolean isColumnOrder, final double[] result) {
         int counter = 0;
         if (isColumnOrder) {
             for (int j = topLeftColumn; j <= bottomRightColumn; j++) {
