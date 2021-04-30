@@ -20,6 +20,7 @@ package com.irurueta.algebra;
  * provided input matrix into an upper triangular matrix (R) and an orthogonal
  * matrix (Q). In other words, if input matrix is A, then A = R * Q
  */
+@SuppressWarnings("DuplicatedCode")
 public class RQDecomposer extends Decomposer {
 
     /**
@@ -200,7 +201,7 @@ public class RQDecomposer extends Decomposer {
                 perm.transpose();
 
             } catch (final WrongSizeException ignore) {
-                //never happens
+                // never happens
             }
         }
         return perm;

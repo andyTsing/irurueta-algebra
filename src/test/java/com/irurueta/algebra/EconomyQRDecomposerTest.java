@@ -496,7 +496,7 @@ public class EconomyQRDecomposerTest {
 
         assertTrue((double) valid / (double) total > VALID_RATIO);
 
-        // Try for matrix having rows < columns (Trhows WrongSizeException)
+        // Try for matrix having rows < columns (Throws WrongSizeException)
         m = DecomposerHelper.getNonSingularMatrixInstance(columns, rows);
         b = Matrix.createWithUniformRandomValues(columns, columns2,
                 MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);

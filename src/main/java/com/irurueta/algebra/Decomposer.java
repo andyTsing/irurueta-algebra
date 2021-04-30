@@ -96,7 +96,7 @@ public abstract class Decomposer {
     /**
      * Returns boolean indicating whether this instance is locked or not. When
      * locked, attempting to change some parameters of this instance might raise
-     * a LockedExcpetion.
+     * a LockedException.
      *
      * @return Boolean indicating whether this instance is locked or not.
      */

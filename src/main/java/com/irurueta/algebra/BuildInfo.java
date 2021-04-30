@@ -144,7 +144,7 @@ public class BuildInfo {
             mBuildNumber = props.getProperty(BUILD_NUMBER_KEY);
             mCommit = props.getProperty(COMMIT_KEY);
             mBranch = props.getProperty(BRANCH_KEY);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.WARNING, "Failed to load build info", e);
         }
     }

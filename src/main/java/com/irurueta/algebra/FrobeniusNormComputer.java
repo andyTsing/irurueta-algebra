@@ -16,7 +16,7 @@
 package com.irurueta.algebra;
 
 /**
- * Class in charge of coputing Frobenius norms of vectors and matrices.
+ * Class in charge of computing Frobenius norms of vectors and matrices.
  */
 public class FrobeniusNormComputer extends NormComputer {
 

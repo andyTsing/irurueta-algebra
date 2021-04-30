@@ -48,6 +48,7 @@ public class InfinityNormComputer extends NormComputer {
      * @param m matrix being used for norm computation.
      * @return norm of provided matrix.
      */
+    @SuppressWarnings("DuplicatedCode")
     public static double norm(final Matrix m) {
         final int rows = m.getRows();
         final int columns = m.getColumns();

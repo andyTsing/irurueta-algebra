@@ -21,6 +21,7 @@ package com.irurueta.algebra;
  * Note: Depending on the situation it might be more computationally efficient
  * to use methods implemented in Decomposer subclasses.
  */
+@SuppressWarnings("DuplicatedCode")
 public class Utils {
 
     /**
@@ -412,7 +413,7 @@ public class Utils {
      * otherwise and stores the result in provided result matrix. Result matrix
      * will be resized if needed
      *
-     * @param m      Matrix to be inversed.
+     * @param m      Matrix to be inverted.
      * @param result Matrix where matrix inverse is stored.
      * @throws WrongSizeException           Exception thrown if provided matrix m has less
      *                                      rows than columns.
@@ -437,7 +438,7 @@ public class Utils {
      * Computes matrix inverse if provided matrix is squared, or pseudo-inverse
      * otherwise.
      *
-     * @param m Matrix to be inversed.
+     * @param m Matrix to be inverted.
      * @return Matrix inverse.
      * @throws WrongSizeException           Exception thrown if provided matrix m has less
      *                                      rows than columns.
@@ -457,7 +458,7 @@ public class Utils {
      * stores the result in provided result matrix. Result matrix will be
      * resized if needed
      *
-     * @param array  array to be inversed
+     * @param array  array to be inverted
      * @param result Array pseudo inverse
      * @throws WrongSizeException           never thrown
      * @throws RankDeficientMatrixException Exception thrown if provided array
@@ -481,7 +482,7 @@ public class Utils {
     /**
      * Computes array pseudo-inverse considering it as a column matrix.
      *
-     * @param array array to be inversed
+     * @param array array to be inverted
      * @return Array pseudo inverse
      * @throws WrongSizeException           never thrown
      * @throws RankDeficientMatrixException Exception thrown if provided array
@@ -497,8 +498,8 @@ public class Utils {
     }
 
     /**
-     * Computes Moore-Penrose pseudoinverse of provided matrix.
-     * Moore-Penrose pseudoinverse always exists for any matrix regardless of
+     * Computes Moore-Penrose pseudo-inverse of provided matrix.
+     * Moore-Penrose pseudo-inverse always exists for any matrix regardless of
      * its size, and can be computed as: pinv(A) = inv(A'*A)*A' in Matlab
      * notation.
      * However, for computation efficiency, Singular Value Decomposition is
@@ -509,17 +510,17 @@ public class Utils {
      * reciprocal.
      * In other words pinv(W)(i,i) = 1./W(i,i) for W(i,i) != 0 or zero
      * otherwise.
-     * Notice that for invertible squared matrices, the pseudoinverse is equal
+     * Notice that for invertible squared matrices, the pseudo-inverse is equal
      * to the inverse.
-     * Also notice that pseudoinverse can be used to solve overdetermined
+     * Also notice that pseudo-inverse can be used to solve overdetermined
      * systems of linear equations with least minimum square error (LMSE).
      * Finally notice that Utils.inverse(Matrix) also can return a
-     * pseudoinverse, however, this method since it uses SVD decomposition is
+     * pseudo-inverse, however, this method since it uses SVD decomposition is
      * numerically more stable at the expense of being computationally more
      * expensive.
      *
      * @param m Input matrix.
-     * @return Moore-Penrose matrix pseudoinverse.
+     * @return Moore-Penrose matrix pseudo-inverse.
      * @throws DecomposerException Exception thrown if matrix cannot be
      *                             inverted, usually because matrix contains numerically unstable values
      *                             such as NaN or inf.
@@ -558,11 +559,11 @@ public class Utils {
     }
 
     /**
-     * Computes Moore-Penrose pseudoinver of provided array considering it as
+     * Computes Moore-Penrose pseudo-inverse of provided array considering it as
      * a column matrix.
      *
      * @param array Input array
-     * @return More-Penrose pseudoinverse
+     * @return More-Penrose pseudo-inverse
      * @throws DecomposerException Exception thrown if matrix cannot be
      *                             inverted, usually because matrix contains numerically unstable values
      *                             such as NaN or inf.
@@ -727,7 +728,7 @@ public class Utils {
      * @param m          Matrix of size 3x1 or 1x3 that will be used to compute the
      *                   skew-symmetric matrix.
      * @param result     Matrix where skew matrix is stored
-     * @param columnwise boolean indicating whether m is columnwise
+     * @param columnwise boolean indicating whether m is column-wise
      * @throws WrongSizeException Exception thrown if provided m matrix doesn't
      *                            have proper size
      */
@@ -1294,7 +1295,7 @@ public class Utils {
 
     /**
      * Computes the dot product of provided matrices, as the sum of the product
-     * of the elmenents on both matrices, assuming that both represent column
+     * of the elements on both matrices, assuming that both represent column
      * vectors.
      *
      * @param firstOperand  first operand.
@@ -1317,7 +1318,7 @@ public class Utils {
 
     /**
      * Computes the dot product of provided matrices, as the sum of the product
-     * of the elmenents on both matrices, assuming that both represent column
+     * of the elements on both matrices, assuming that both represent column
      * vectors.
      *
      * @param firstOperand   first operand. Must be 1xN.
@@ -1355,7 +1356,7 @@ public class Utils {
      * M = [A B ; B' C]
      * where A is posxpos, B is posx(s - pos) and C is (s-pos)x(s-pos)
      * Then pos indicates the position that delimits the separation between
-     * these submatrices in the diagonal.
+     * these sub-matrices in the diagonal.
      * If fromStart is true, then Schur complement of A is computed and result
      * will have size (s-pos)x(s-pos).
      * If fromStart if false, then Schur complement of C is computed and result
@@ -1393,7 +1394,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
      */
@@ -1449,7 +1450,7 @@ public class Utils {
             final Matrix r = decomposer.getR();
 
             // s, which is the square root of Schur complement and is the result,
-            // is an upper right matrix because it is a submatrix of r
+            // is an upper right matrix because it is a sub-matrix of r
             final int sizeMinus1 = rows - 1;
             r.getSubmatrix(pos, pos, sizeMinus1, sizeMinus1, result);
 
@@ -1493,7 +1494,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
@@ -1506,7 +1507,7 @@ public class Utils {
     }
 
     /**
-     * Computes the Schur complement of the submatrix A within a symmetric
+     * Computes the Schur complement of the sub-matrix A within a symmetric
      * matrix, returning always the full Schur complement.
      *
      * @param m      matrix to compute the Schur complement from
@@ -1517,7 +1518,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
@@ -1542,7 +1543,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
@@ -1587,7 +1588,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrice">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
@@ -1599,7 +1600,7 @@ public class Utils {
     }
 
     /**
-     * Computes the Schur complement of the submatrix A within a symmetric
+     * Computes the Schur complement of the sub-matrix A within a symmetric
      * matrix, returning always the full Schur complement.
      *
      * @param m   matrix to compute the Schur complement from
@@ -1609,7 +1610,7 @@ public class Utils {
      * @throws IllegalArgumentException     if m is not square, pos is greater or
      *                                      equal than matrix size, or pos is zero.
      * @throws DecomposerException          if m is numerically unstable.
-     * @throws RankDeficientMatrixException if iA matris is singular or
+     * @throws RankDeficientMatrixException if iA matrix is singular or
      *                                      numerically unstable.
      * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
      * @see <a href="http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices">http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices</a>
@@ -1672,7 +1673,7 @@ public class Utils {
     }
 
     /**
-     * Computes the Schur complement of the submatrix A within a symmetric
+     * Computes the Schur complement of the sub-matrix A within a symmetric
      * matrix, returning always the full Schur complement.
      *
      * @param m      matrix to compute the Schur complement from
@@ -1752,7 +1753,7 @@ public class Utils {
     }
 
     /**
-     * Computes the Schur complement of the submatrix A within a symmetric
+     * Computes the Schur complement of the sub-matrix A within a symmetric
      * matrix, returning always the full Schur complement.
      *
      * @param m   matrix to compute the Schur complement from

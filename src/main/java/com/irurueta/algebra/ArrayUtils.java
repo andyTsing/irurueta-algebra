@@ -20,6 +20,7 @@ import java.util.Arrays;
 /**
  * Class containing utility methods for common operations with arrays of values.
  */
+@SuppressWarnings("DuplicatedCode")
 public class ArrayUtils {
 
     /**
@@ -262,7 +263,7 @@ public class ArrayUtils {
                 (jacobianSecond.getRows() != 1 ||
                         jacobianSecond.getColumns() != secondOperand.length)) {
             throw new IllegalArgumentException("jacobian second must be a " +
-                    "row vector havnig the same number of columns as " +
+                    "row vector having the same number of columns as " +
                     "second operand length");
         }
 

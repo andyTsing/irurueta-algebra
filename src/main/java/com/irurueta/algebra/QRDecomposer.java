@@ -21,6 +21,7 @@ package com.irurueta.algebra;
  * matrix (R). In other words, if input matrix is A, then:
  * A = Q * R
  */
+@SuppressWarnings("DuplicatedCode")
 public class QRDecomposer extends Decomposer {
 
     /**
@@ -169,7 +170,7 @@ public class QRDecomposer extends Decomposer {
         // matrix) on top-left area.
         q.setSubmatrix(0, 0, rows - 1, columns - 1, inputMatrix);
 
-        // Construct QR decomposition by means of Gram-Schimidt
+        // Construct QR decomposition by means of Gram-Schmidt
         for (int j = 0; j < rows; j++) {
             // Find orthogonal base by means of Gram-Schmidt of all rows of Q
             // Previous columns of Q will contain already normalized vectors,
@@ -189,7 +190,7 @@ public class QRDecomposer extends Decomposer {
                 }
 
                 // Update j-th column of Q by subtracting obtained dot product
-                // respect to previous k-th orthonormal column, on the diretion
+                // respect to previous k-th orthonormal column, on the direction
                 // of this latter column.
                 for (int i = 0; i < rows; i++) {
                     q.setElementAt(i, j, q.getElementAt(i, j) -
@@ -413,7 +414,7 @@ public class QRDecomposer extends Decomposer {
      * @throws RankDeficientMatrixException Exception thrown if provided input
      *                                      matrix to be QR decomposed is rank deficient. In this case linear system
      *                                      of equations cannot be solved.
-     * @throws IllegalArgumentException     Exception thrown if provided rounging
+     * @throws IllegalArgumentException     Exception thrown if provided rounding
      *                                      error is lower than minimum allowed value (MIN_ROUND_ERROR).
      * @see #decompose()
      */
@@ -456,7 +457,7 @@ public class QRDecomposer extends Decomposer {
         // Each column of B will be a column of out (i.e. a solution of the
         // linear system of equations)
         for (int j2 = 0; j2 < colsB; j2++) {
-            // for everdetermined systems R has rows > columns, so we use only
+            // for overdetermined systems R has rows > columns, so we use only
             // first columns rows, which contain upper diagonal data of R, the
             // remaining rows of R are just zero.
             for (int i = columns - 1; i >= 0; i--) {
@@ -553,7 +554,7 @@ public class QRDecomposer extends Decomposer {
      * @throws RankDeficientMatrixException Exception thrown if provided input
      *                                      matrix to be QR decomposed is rank deficient. In this case linear system
      *                                      of equations cannot be solved.
-     * @throws IllegalArgumentException     Exception thrown if provided rounging
+     * @throws IllegalArgumentException     Exception thrown if provided rounding
      *                                      error is lower than minimum allowed value (MIN_ROUND_ERROR).
      * @see #decompose()
      */

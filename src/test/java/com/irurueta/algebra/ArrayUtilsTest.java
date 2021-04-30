@@ -635,7 +635,7 @@ public class ArrayUtilsTest {
 
 
         // test for odd/even case
-        length++; // if length was even it will be now odd, and viceversa
+        length++; // if length was even it will be now odd, and vice versa
 
         v = new double[length];
         randomizer.fill(v);
@@ -677,7 +677,7 @@ public class ArrayUtilsTest {
 
 
         // test for odd/even case
-        length++; // if length was even it will be now odd, and viceversa
+        length++; // if length was even it will be now odd, and vice versa
 
         v = new double[length];
         randomizer.fill(v);
@@ -729,7 +729,7 @@ public class ArrayUtilsTest {
         }
 
         // test for odd/even case
-        length++; // if length was even it will be now odd, and viceversa
+        length++; // if length was even it will be now odd, and vice versa
 
         v = new Complex[length];
         // fill array with random values
@@ -785,7 +785,7 @@ public class ArrayUtilsTest {
 
 
         // test for odd/even case
-        length++; // if length was even it will be now odd, and viceversa
+        length++; // if length was even it will be now odd, and vice versa
 
         v = new Complex[length];
         // fill array with random values

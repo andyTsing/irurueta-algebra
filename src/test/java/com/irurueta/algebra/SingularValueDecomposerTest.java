@@ -61,6 +61,25 @@ public class SingularValueDecomposerTest {
         assertFalse(decomposer.isDecompositionAvailable());
         assertEquals(decomposer.getDecomposerType(),
                 DecomposerType.SINGULAR_VALUE_DECOMPOSITION);
+        assertEquals(SingularValueDecomposer.DEFAULT_MAX_ITERS, decomposer.getMaxIterations());
+
+        decomposer.setInputMatrix(m);
+        assertTrue(decomposer.isReady());
+        assertFalse(decomposer.isLocked());
+        assertFalse(decomposer.isDecompositionAvailable());
+        assertEquals(decomposer.getInputMatrix(), m);
+        assertEquals(decomposer.getDecomposerType(),
+                DecomposerType.SINGULAR_VALUE_DECOMPOSITION);
+
+        decomposer = new SingularValueDecomposer(SingularValueDecomposer.DEFAULT_MAX_ITERS + 1);
+
+        assertFalse(decomposer.isReady());
+        assertFalse(decomposer.isLocked());
+        assertFalse(decomposer.isDecompositionAvailable());
+        assertEquals(decomposer.getDecomposerType(),
+                DecomposerType.SINGULAR_VALUE_DECOMPOSITION);
+        assertEquals(SingularValueDecomposer.DEFAULT_MAX_ITERS + 1,
+                decomposer.getMaxIterations());
 
         decomposer.setInputMatrix(m);
         assertTrue(decomposer.isReady());
@@ -75,6 +94,7 @@ public class SingularValueDecomposerTest {
         assertFalse(decomposer.isLocked());
         assertFalse(decomposer.isDecompositionAvailable());
         assertEquals(decomposer.getInputMatrix(), m);
+        assertEquals(SingularValueDecomposer.DEFAULT_MAX_ITERS, decomposer.getMaxIterations());
 
         decomposer.decompose();
 
@@ -351,11 +371,13 @@ public class SingularValueDecomposerTest {
         final Matrix m = Matrix.createWithUniformRandomValues(rows, columns,
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
         final Matrix w;
+        final Matrix w2 = new Matrix(columns, columns);
         final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);
 
         decomposer.decompose();
 
         w = decomposer.getW();
+        decomposer.getW(w2);
 
         // Check that singular values are ordered from largest to smallest and
         // that W is diagonal
@@ -375,6 +397,19 @@ public class SingularValueDecomposerTest {
                     assertEquals(w.getElementAt(i, j), 0.0, ROUND_ERROR);
                 }
             }
+        }
+
+        assertEquals(w, w2);
+
+        try {
+            decomposer.getW(new Matrix(columns + 1, columns));
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+        try {
+            decomposer.getW(new Matrix(columns, columns + 1));
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
         }
     }
 
@@ -537,6 +572,7 @@ public class SingularValueDecomposerTest {
         final Matrix w;
         final Matrix m2;
         final Matrix r;
+        final Matrix r2 = new Matrix(1, 1);
         final Matrix rTrans;
         final Matrix ident;
 
@@ -566,12 +602,19 @@ public class SingularValueDecomposerTest {
                 fail("NotAvailableException expected but not thrown");
             } catch (final NotAvailableException ignore) {
             }
+            try {
+                decomposer.getRange(r2);
+                fail("NotAvailableException expected but not thrown");
+            } catch (final NotAvailableException ignore) {
+            }
         } else {
             r = decomposer.getRange();
+            decomposer.getRange(r2);
             rTrans = r.transposeAndReturnNew();
             ident = rTrans.multiplyAndReturnNew(r);
             assertEquals(r.getColumns(), rank);
             assertEquals(r.getRows(), rows);
+            assertEquals(r, r2);
 
             for (int j = 0; j < ident.getColumns(); j++) {
                 for (int i = 0; i < ident.getRows(); i++) {
@@ -604,6 +647,7 @@ public class SingularValueDecomposerTest {
         final Matrix w;
         final Matrix m2;
         final Matrix ns;
+        final Matrix ns2 = new Matrix(1, 1);
         final Matrix nsTrans;
         final Matrix ident;
 
@@ -634,12 +678,19 @@ public class SingularValueDecomposerTest {
                 fail("NotAvailableException expected but not thrown");
             } catch (final NotAvailableException ignore) {
             }
+            try {
+                decomposer.getNullspace(new Matrix(1, 1));
+                fail("NotAvailableException expected but not thrown");
+            } catch (final NotAvailableException ignore) {
+            }
         } else {
             ns = decomposer.getNullspace();
+            decomposer.getNullspace(ns2);
             nsTrans = ns.transposeAndReturnNew();
             ident = nsTrans.multiplyAndReturnNew(ns);
             assertEquals(ns.getColumns(), nullity);
             assertEquals(ns.getRows(), columns);
+            assertEquals(ns, ns2);
 
             for (int j = 0; j < ident.getColumns(); j++) {
                 for (int i = 0; i < ident.getRows(); i++) {
@@ -656,7 +707,7 @@ public class SingularValueDecomposerTest {
     }
 
     @Test
-    public void testSolve() throws WrongSizeException, NotReadyException,
+    public void testSolveMatrix() throws WrongSizeException, NotReadyException,
             LockedException, DecomposerException, NotAvailableException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -668,18 +719,25 @@ public class SingularValueDecomposerTest {
         Matrix b;
         Matrix s;
         Matrix b2;
+        Matrix s2;
         double relError;
 
-        // Try for square marix
+        // Try for square matrix
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
         b = Matrix.createWithUniformRandomValues(rows, columns2,
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+        s2 = new Matrix(1, 1);
 
         final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);
 
         // Force NotAvailableException
         try {
             decomposer.solve(b);
+            fail("NotAvailableException expected but not thrown");
+        } catch (final NotAvailableException ignore) {
+        }
+        try {
+            decomposer.solve(b, s2);
             fail("NotAvailableException expected but not thrown");
         } catch (final NotAvailableException ignore) {
         }
@@ -690,8 +748,14 @@ public class SingularValueDecomposerTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        try {
+            decomposer.solve(b, -1.0, s2);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
 
         s = decomposer.solve(b);
+        decomposer.solve(b, s2);
 
         // check that solution after calling solve matches following equation:
         // m * s = b
@@ -700,6 +764,7 @@ public class SingularValueDecomposerTest {
         assertEquals(b2.getRows(), b.getRows());
         assertEquals(b2.getColumns(), b.getColumns());
         assertTrue(b2.equals(b, ROUND_ERROR));
+        assertEquals(s, s2);
 
         // Try for overdetermined system (rows > columns)
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
@@ -712,8 +777,14 @@ public class SingularValueDecomposerTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        try {
+            decomposer.solve(b, -1.0, s2);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
 
         s = decomposer.solve(b);
+        decomposer.solve(b, s2);
 
         // check that solution after calling solve matches following equation:
         // m * s = b
@@ -733,6 +804,8 @@ public class SingularValueDecomposerTest {
             }
         }
 
+        assertEquals(s, s2);
+
         assertTrue(((double) valid / (double) total) > VALID_RATIO);
 
         // Try for b matrix having different number of rows than m (Throws
@@ -744,6 +817,132 @@ public class SingularValueDecomposerTest {
         decomposer.decompose();
         try {
             decomposer.solve(b);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+        try {
+            decomposer.solve(b, s2);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+    }
+
+    @Test
+    public void testSolveArray() throws WrongSizeException, NotReadyException,
+            LockedException, DecomposerException, NotAvailableException {
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int rows = randomizer.nextInt(MIN_ROWS + 4, MAX_ROWS + 4);
+        final int columns = randomizer.nextInt(MIN_COLUMNS + 2, rows - 1);
+        final int columns2 = 1;
+
+        Matrix m;
+        double[] b;
+        double[] s;
+        Matrix b2;
+        double[] s2;
+        double relError;
+
+        // Try for square matrix
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
+        b = Matrix.createWithUniformRandomValues(rows, columns2,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        s2 = new double[rows];
+
+        final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);
+
+        // Force NotAvailableException
+        try {
+            decomposer.solve(b);
+            fail("NotAvailableException expected but not thrown");
+        } catch (final NotAvailableException ignore) {
+        }
+        try {
+            decomposer.solve(b, s2);
+            fail("NotAvailableException expected but not thrown");
+        } catch (final NotAvailableException ignore) {
+        }
+
+        decomposer.decompose();
+        try {
+            decomposer.solve(b, -1.0);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            decomposer.solve(b, -1.0, s2);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+
+        s = decomposer.solve(b);
+        decomposer.solve(b, s2);
+
+        // check that solution after calling solve matches following equation:
+        // m * s = b
+        b2 = m.multiplyAndReturnNew(Matrix.newFromArray(s));
+
+        assertEquals(b.length, b2.getRows());
+        assertEquals(1, b2.getColumns());
+        assertTrue(b2.equals(Matrix.newFromArray(b), ROUND_ERROR));
+        assertArrayEquals(s, s2, 0.0);
+
+        // Try for overdetermined system (rows > columns)
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(rows, columns2,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        s2 = new double[columns];
+        decomposer.setInputMatrix(m);
+        decomposer.decompose();
+        try {
+            decomposer.solve(b, -1.0);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            decomposer.solve(b, -1.0, s2);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+
+        s = decomposer.solve(b);
+        decomposer.solve(b, s2);
+
+        // check that solution after calling solve matches following equation:
+        // m * s = b
+        b2 = m.multiplyAndReturnNew(Matrix.newFromArray(s));
+
+        assertEquals(b.length, b2.getRows());
+        assertEquals(1, b2.getColumns());
+        int valid = 0, total = b2.getColumns() * b2.getRows();
+        for (int j = 0; j < b2.getColumns(); j++) {
+            for (int i = 0; i < b2.getRows(); i++) {
+                relError = Math.abs(RELATIVE_ERROR_OVERDETERMINED *
+                        b2.getElementAt(i, j));
+                if (Math.abs(b2.getElementAt(i, j) - b[i]) < relError) {
+                    valid++;
+                }
+            }
+        }
+
+        assertArrayEquals(s, s2, 0.0);
+
+        assertTrue(((double) valid / (double) total) > VALID_RATIO);
+
+        // Try for b matrix having different number of rows than m (Throws
+        // WrongSizeException
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(columns, columns2,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        decomposer.setInputMatrix(m);
+        decomposer.decompose();
+        try {
+            decomposer.solve(b);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+        try {
+            decomposer.solve(b, s2);
             fail("WrongSizeException expected but not thrown");
         } catch (final WrongSizeException ignore) {
         }

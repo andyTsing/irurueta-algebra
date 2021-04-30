@@ -27,6 +27,7 @@ import java.util.Random;
  * Defines a matrix of numerical data.
  * Values of a matrix are stored inside an internal array of data.
  */
+@SuppressWarnings("DuplicatedCode")
 public class Matrix implements Serializable, Cloneable {
     /**
      * Constant defining the default order in which values are stored in a
@@ -112,7 +113,7 @@ public class Matrix implements Serializable, Cloneable {
      * @param column Column to be used for element location.
      * @return Value of element in matrix located at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if attempting
-     *                                        to access a location that lies ouside the boundaries of the internal
+     *                                        to access a location that lies outside the boundaries of the internal
      *                                        array containing matrix data. Notice that internal data is stored in
      *                                        column order, hence, if row position exceeds the number of rows in the
      *                                        matrix, this exception might not be raised depending on column position,
@@ -183,7 +184,7 @@ public class Matrix implements Serializable, Cloneable {
      * @param column Column to be used for element location to be set.
      * @param value  Value to be set at provided position.
      * @throws ArrayIndexOutOfBoundsException Exception raised if attempting
-     *                                        to access a location that lies ouside the boundaries of the internal
+     *                                        to access a location that lies outside the boundaries of the internal
      *                                        array containing matrix data. Notice that internal data is stored in
      *                                        column order, hence, if row position exceeds the number of rows in the
      *                                        matrix, this exception might not be raised depending on column position,
@@ -549,7 +550,7 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Computes the Kronecer product of this matrix with provided matrix and
+     * Computes the Kronecker product of this matrix with provided matrix and
      * updates this matrix with the result of the multiplication.
      * If this matrix m1 has size mxn and provided matrix m2 has size pxq,
      * the resulting matrix will be resized to m*pxn*q.
@@ -730,7 +731,7 @@ public class Matrix implements Serializable, Cloneable {
 
     /**
      * Computes element by element product (i.e. Hadamard product) between
-     * current and provided instances and returns the result as a new instace.
+     * current and provided instances and returns the result as a new instance.
      * Example:
      * Having matrices
      * [1, 2, 3]		 [10, 11, 12]
@@ -940,7 +941,7 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Copies the contents of the matrx to an array of values using column
+     * Copies the contents of the matrix to an array of values using column
      * order.
      *
      * @param result array where values will be copied to.
@@ -994,15 +995,15 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Obtains a submatrix of current matrix instance. Submatrix is obtained by
+     * Obtains a sub-matrix of current matrix instance. Sub-matrix is obtained by
      * copying all elements contained within provided coordinates (both top-left
-     * and bottom-right points are included within submatrix).
+     * and bottom-right points are included within sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts.
-     * @param topLeftColumn     Top-left column index where submatrix starts.
-     * @param bottomRightRow    Bottom-right row index where submatrix ends.
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param result            Instance where submatrix data is stored.
+     * @param topLeftRow        Top-left row index where sub-matrix starts.
+     * @param topLeftColumn     Top-left column index where sub-matrix starts.
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends.
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
+     * @param result            Instance where sub-matrix data is stored.
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located below or at right side of bottom-right corner.
@@ -1034,15 +1035,15 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Obtains a submatrix of current matrix instance. Submatrix is obtained by
+     * Obtains a sub-matrix of current matrix instance. Sub-matrix is obtained by
      * copying all elements contained within provided coordinates (both top-left
-     * and bottom-right points are included within submatrix).
+     * and bottom-right points are included within sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts.
-     * @param topLeftColumn     Top-left column index where submatrix starts.
-     * @param bottomRightRow    Bottom-right row index where submatrix ends.
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @return A new instance containing selected submatrix.
+     * @param topLeftRow        Top-left row index where sub-matrix starts.
+     * @param topLeftColumn     Top-left column index where sub-matrix starts.
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends.
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
+     * @return A new instance containing selected sub-matrix.
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located belo or at right side of bottom-right corner.
@@ -1071,17 +1072,17 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Retrieves a submatrix of current matrix instance as an array of values
+     * Retrieves a sub-matrix of current matrix instance as an array of values
      * using column order and storing the result in provided array.
-     * Submatrix is obtained by copying all elements contained within provided
+     * Sub-matrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
-     * submatrix).
+     * sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts
-     * @param topLeftColumn     Top-left column index where submatrix starts
-     * @param bottomRightRow    Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param array             Array where submatrix data is stored.
+     * @param topLeftRow        Top-left row index where sub-matrix starts
+     * @param topLeftColumn     Top-left column index where sub-matrix starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
+     * @param array             Array where sub-matrix data is stored.
      * @throws IllegalArgumentException Thrown if provided coordinates lie
      *                                  outside of matrix boundaries or if top-left corner is at the bottom or
      *                                  right side of bottom-right corner
@@ -1112,24 +1113,24 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Retrieves a submatrix of current matrix instance as an array of values
+     * Retrieves a sub-matrix of current matrix instance as an array of values
      * using provided column order and storing the result in provided array.
-     * Submatrix is obtained by copying all elements contained within provided
+     * Sub-matrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
-     * submatrix).
+     * sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts
-     * @param topLeftColumn     Top-left column index where submatrix starts
-     * @param bottomRightRow    Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param topLeftRow        Top-left row index where sub-matrix starts
+     * @param topLeftColumn     Top-left column index where sub-matrix starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
      * @param isColumnOrder     If true, picks elements from matrix using column
      *                          order, otherwise row order is used.
-     * @param array             Array where submatrix data is stored.
+     * @param array             Array where sub-matrix data is stored.
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located below or at right side of bottom-right corner.
      * @throws WrongSizeException       If provided array doesn't have proper length,
-     *                                  which must be equal to the amount of elements in desired submatrix.
+     *                                  which must be equal to the amount of elements in desired sub-matrix.
      */
     public void getSubmatrixAsArray(final int topLeftRow, final int topLeftColumn,
                                     final int bottomRightRow, final int bottomRightColumn,
@@ -1155,16 +1156,16 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Obtains submatrix of current matrix instance as an array of values using
+     * Obtains sub-matrix of current matrix instance as an array of values using
      * DEFAULT_USE_COLUMN_ORDER. Array is obtained by copying all elements
      * contained within provided coordinates (both top-left
-     * and bottom-right points are included within submatrix).
+     * and bottom-right points are included within sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts
-     * @param topLeftColumn     Top-left column index where submatrix starts
-     * @param bottomRightRow    Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @return An array containing submatrix elements
+     * @param topLeftRow        Top-left row index where sub-matrix starts
+     * @param topLeftColumn     Top-left column index where sub-matrix starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
+     * @return An array containing sub-matrix elements
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located belo or at right side of bottom-right corner.
@@ -1176,18 +1177,18 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Obtains submatrix of current matrix instance as an array of values using
+     * Obtains sub-matrix of current matrix instance as an array of values using
      * provided order. Array is obtained by copying all elements
      * contained within provided coordinates (both top-left
-     * and bottom-right points are included within submatrix).
+     * and bottom-right points are included within sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts
-     * @param topLeftColumn     Top-left column index where submatrix starts
-     * @param bottomRightRow    Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param topLeftRow        Top-left row index where sub-matrix starts
+     * @param topLeftColumn     Top-left column index where sub-matrix starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
      * @param isColumnOrder     If true, picks elements from matrix using column
      *                          order, otherwise row order is used.
-     * @return An array containing submatrix elements
+     * @return An array containing sub-matrix elements
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located below or at right side of bottom-right corner.
@@ -1214,15 +1215,15 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Copies elements from provided submatrix into this matrix at provided
+     * Copies elements from provided sub-matrix into this matrix at provided
      * location.
      *
-     * @param topLeftRow        Top-left row index where submatrix copy starts
-     * @param topLeftColumn     Top-left column index where submatrix copy starts
-     * @param bottomRightRow    Bottom-right row index where submatrix copy ends
-     * @param bottomRightColumn Bottom-right column index where submatrix copy
+     * @param topLeftRow        Top-left row index where sub-matrix copy starts
+     * @param topLeftColumn     Top-left column index where sub-matrix copy starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix copy ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix copy
      *                          ends.
-     * @param submatrix         Submatrix to be copied
+     * @param submatrix         Sub-matrix to be copied
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current matrix instance, or if top-left
      *                                  corner is indeed located below or at right side of bottom-right corner.
@@ -1237,22 +1238,22 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Copies elements from provided submatrix into this matrix at provided
+     * Copies elements from provided sub-matrix into this matrix at provided
      * location
      *
-     * @param topLeftRow                 Top-left row index where submatrix copy starts
-     * @param topLeftColumn              Top-left column index where submatrix copy starts
-     * @param bottomRightRow             Bottom-right row index where submatrix copy ends
-     * @param bottomRightColumn          Bottom-right column index where submatrix copy
+     * @param topLeftRow                 Top-left row index where sub-matrix copy starts
+     * @param topLeftColumn              Top-left column index where sub-matrix copy starts
+     * @param bottomRightRow             Bottom-right row index where sub-matrix copy ends
+     * @param bottomRightColumn          Bottom-right column index where sub-matrix copy
      *                                   ends.
-     * @param submatrix                  Submatrix to be copied
-     * @param submatrixTopLeftRow        Top-left row index of submatrix where copy
+     * @param submatrix                  Sub-matrix to be copied
+     * @param submatrixTopLeftRow        Top-left row index of sub-matrix where copy
      *                                   starts
-     * @param submatrixTopLeftColumn     Top-left column index of submatrix where
+     * @param submatrixTopLeftColumn     Top-left column index of sub-matrix where
      *                                   copy starts
-     * @param submatrixBottomRightRow    Bottom-right row index of submatrix where
+     * @param submatrixBottomRightRow    Bottom-right row index of sub-matrix where
      *                                   copy ends
-     * @param submatrixBottomRightColumn Bottom-right column index of submatrix
+     * @param submatrixBottomRightColumn Bottom-right column index of sub-matrix
      *                                   where copy ends
      * @throws IllegalArgumentException Exception raised whenever top-left or
      *                                  bottom-right corners lie outside current or provided matrices, or if
@@ -1503,7 +1504,7 @@ public class Matrix implements Serializable, Cloneable {
 
     /**
      * Creates and returns a new matrix instance having all the elements on
-     * the diagonal equal to one and the remainng ones equal to zero.
+     * the diagonal equal to one and the remaining ones equal to zero.
      *
      * @param rows    Number of rows of created instance
      * @param columns Number of columns of created instance
@@ -1882,7 +1883,7 @@ public class Matrix implements Serializable, Cloneable {
      * @param other  Matrix to be added to current matrix
      * @param result Matrix where result will be stored.
      */
-    private void internalAdd(Matrix other, Matrix result) {
+    private void internalAdd(final Matrix other, final Matrix result) {
         final int length = rows * columns;
         for (int i = 0; i < length; i++) {
             result.buffer[i] = buffer[i] + other.buffer[i];
@@ -2049,16 +2050,16 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Internal method to retrieve a submatrix of current matrix instance.
-     * Submatrix is obtained by copying all elements contained within provided
+     * Internal method to retrieve a sub-matrix of current matrix instance.
+     * Sub-matrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
-     * submatrix).
+     * sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts.
-     * @param topLeftColumn     Top-left column index where submatrix starts.
-     * @param bottomRightRow    Bottom-right row index where submatrix ends.
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
-     * @param result            Instance where submatrix data is stored.
+     * @param topLeftRow        Top-left row index where sub-matrix starts.
+     * @param topLeftColumn     Top-left column index where sub-matrix starts.
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends.
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
+     * @param result            Instance where sub-matrix data is stored.
      */
     private void internalGetSubmatrix(
             final int topLeftRow, final int topLeftColumn, final int bottomRightRow,
@@ -2077,20 +2078,20 @@ public class Matrix implements Serializable, Cloneable {
     }
 
     /**
-     * Internal method to retrieve a submatrix of current matrix instance as an
+     * Internal method to retrieve a sub-matrix of current matrix instance as an
      * array of values using provided column order and storing the result in
      * provided array.
-     * Submatrix is obtained by copying all elements contained within provided
+     * Sub-matrix is obtained by copying all elements contained within provided
      * coordinates (both top-left and bottom-right points are included within
-     * submatrix).
+     * sub-matrix).
      *
-     * @param topLeftRow        Top-left row index where submatrix starts
-     * @param topLeftColumn     Top-left column index where submatrix starts
-     * @param bottomRightRow    Bottom-right row index where submatrix ends
-     * @param bottomRightColumn Bottom-right column index where submatrix ends.
+     * @param topLeftRow        Top-left row index where sub-matrix starts
+     * @param topLeftColumn     Top-left column index where sub-matrix starts
+     * @param bottomRightRow    Bottom-right row index where sub-matrix ends
+     * @param bottomRightColumn Bottom-right column index where sub-matrix ends.
      * @param isColumnOrder     If true, picks elements from matrix using column
      *                          order, otherwise row order is used.
-     * @param result            Array where submatrix data is stored.
+     * @param result            Array where sub-matrix data is stored.
      */
     private void internalGetSubmatrixAsArray(
             final int topLeftRow, final int topLeftColumn, final int bottomRightRow,

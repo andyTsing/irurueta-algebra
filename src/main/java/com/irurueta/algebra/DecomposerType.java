@@ -33,7 +33,7 @@ public enum DecomposerType {
 
     /**
      * Defines Economy QR decomposition, which is a faster version of QR
-     * decomposition. Notiche that economy sized version only works for matrices
+     * decomposition. Notice that economy sized version only works for matrices
      * having rows &lt; columns, while Q is a rows-by-columns and R is
      * columns-by-columns in size.
      */
@@ -49,13 +49,13 @@ public enum DecomposerType {
 
     /**
      * Defines Cholesky decomposition, which decomposes a square symmetric and
-     * positive definite matrix into a triangular factor (L) and itrs transposed
+     * positive definite matrix into a triangular factor (L) and its transposed
      * (L').
      */
     CHOLESKY_DECOMPOSITION,
 
     /**
-     * Defines Singular Value DEcomposition, which decomposes any rectangular
+     * Defines Singular Value Decomposition, which decomposes any rectangular
      * matrix into 2 unary matrices (U, V) and 1 diagonal matrix containing
      * singular values (D).
      */

@@ -19,6 +19,7 @@ package com.irurueta.algebra;
  * This decomposer computes economy QR decomposition, which is faster than
  * typical QR decomposition.
  */
+@SuppressWarnings("DuplicatedCode")
 public class EconomyQRDecomposer extends Decomposer {
 
     /**
@@ -261,7 +262,7 @@ public class EconomyQRDecomposer extends Decomposer {
      *
      * @param h Matrix where Householder vectors will be stored
      * @throws NotAvailableException Exception thrown if attempting to call this
-     *                               method before computing QR decoposition. To avoid this exception call
+     *                               method before computing QR decomposition. To avoid this exception call
      *                               decompose() method first.
      * @see #decompose()
      */
@@ -335,7 +336,7 @@ public class EconomyQRDecomposer extends Decomposer {
         if (r.getRows() != columns || r.getColumns() != columns) {
             try {
                 r.resize(columns, columns);
-            } catch (WrongSizeException ignore) {
+            } catch (final WrongSizeException ignore) {
                 // never happens
             }
         }
@@ -366,7 +367,7 @@ public class EconomyQRDecomposer extends Decomposer {
      *
      * @return Upper triangular factor matrix
      * @throws NotAvailableException Exception thrown if attempting to call this
-     *                               method before computing QR decomposition. To aviod this exception call
+     *                               method before computing QR decomposition. To avoid this exception call
      *                               decompose() method first.
      * @see #decompose()
      */
@@ -601,8 +602,8 @@ public class EconomyQRDecomposer extends Decomposer {
             }
         }
 
-        // Pick only first columns rows of X in case of everdetermined systems
-        // (where rows > columns), othersise rows == columns and we pick them all
+        // Pick only first columns rows of X in case of overdetermined systems
+        // (where rows > columns), otherwise rows == columns and we pick them all
         if (result.getRows() != columns || result.getColumns() != colsB) {
             // resize result
             result.resize(columns, colsB);

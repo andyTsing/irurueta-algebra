@@ -28,9 +28,6 @@ public class DecomposerHelper {
 
     private static final double ERROR = 1e-8;
 
-    public DecomposerHelper() {
-    }
-
     // Cholesky Decomposer
     public static Matrix getLeftLowerTriangulatorFactor(final int rows)
             throws WrongSizeException {
@@ -95,7 +92,19 @@ public class DecomposerHelper {
         return m;
     }
 
-    // LU, QR and Economy QR decompoers
+    // LU, QR and Economy QR decomposers
+    public static Matrix getSymmetricMatrix(final int rows) throws WrongSizeException {
+
+        // generate random matrix of size rows x rows (the number of columns can
+        // be anything indeed)
+        final Matrix m = Matrix.createWithUniformRandomValues(rows, rows,
+                MIN_VALUE, MAX_VALUE);
+
+        // create a symmetric matrix by multiplying it with its transpose
+        m.multiply(m.transposeAndReturnNew());
+        return m;
+    }
+
     static Matrix getNonSingularMatrixInstance(final int rows, final int columns)
             throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -197,18 +206,6 @@ public class DecomposerHelper {
                     column1);
         }
 
-        return m;
-    }
-
-    public static Matrix getSymmetricMatrix(final int rows) throws WrongSizeException {
-
-        // generate random matrix of size rows x rows (the number of columns can
-        // be anything indeed)
-        final Matrix m = Matrix.createWithUniformRandomValues(rows, rows,
-                MIN_VALUE, MAX_VALUE);
-
-        // create a symmetric matrix by multiplying it with its transpose
-        m.multiply(m.transposeAndReturnNew());
         return m;
     }
 }

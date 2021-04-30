@@ -386,6 +386,8 @@ public class MatrixTest {
             }
         }
 
+        final Matrix m3 = new Matrix(rows, columns);
+        m1.add(m2, m3);
         m1.add(m2);
 
         // check correctness
@@ -397,6 +399,8 @@ public class MatrixTest {
                         m2.getElementAt(i, j), ABSOLUTE_ERROR);
             }
         }
+
+        assertEquals(m1, m3);
 
         // Force WrongSizeException
         final Matrix wrong = new Matrix(rows + 1, columns + 1);
@@ -979,6 +983,8 @@ public class MatrixTest {
             }
         }
 
+        final Matrix m2 = new Matrix(rows, columns);
+        m.transpose(m2);
         m.transpose();
 
         // check correctness
@@ -990,6 +996,8 @@ public class MatrixTest {
                 assertEquals(tmp[i][j], m.getElementAt(j, i), 0.0);
             }
         }
+
+        assertEquals(m2, m);
     }
 
     @Test
@@ -1582,7 +1590,7 @@ public class MatrixTest {
         final int submatrixColumns = bottomRightColumn - topLeftColumn + 1;
         final Matrix submatrix = new Matrix(submatrixRows, submatrixColumns);
 
-        // fill submatrix with random values
+        // fill sub-matrix with random values
         for (int j = 0; j < submatrixColumns; j++) {
             for (int i = 0; i < submatrixRows; i++) {
                 submatrix.setElementAt(i, j, randomizer.nextDouble(
@@ -1590,7 +1598,7 @@ public class MatrixTest {
             }
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, submatrix);
 
@@ -1705,7 +1713,7 @@ public class MatrixTest {
 
         final Matrix submatrix = new Matrix(rows, columns);
 
-        // fill submatrix with random values
+        // fill sub-matrix with random values
         for (int j = 0; j < columns; j++) {
             for (int i = 0; i < rows; i++) {
                 submatrix.setElementAt(i, j, randomizer.nextDouble(
@@ -1713,7 +1721,7 @@ public class MatrixTest {
             }
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, submatrix, topLeftRow, topLeftColumn,
                 bottomRightRow, bottomRightColumn);
@@ -1916,7 +1924,7 @@ public class MatrixTest {
             }
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, value);
 
@@ -2020,7 +2028,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array);
         int counter = 0;
@@ -2134,7 +2142,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array, true);
         int counter = 0;
@@ -2244,7 +2252,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array, false);
         int counter = 0;
@@ -2356,7 +2364,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array, offset, offset + length - 1);
         int counter = offset;
@@ -2471,7 +2479,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array, offset, offset + length - 1, true);
         int counter = offset;
@@ -2588,7 +2596,7 @@ public class MatrixTest {
                     MAX_RANDOM_VALUE);
         }
 
-        // set submatrix
+        // set sub-matrix
         m.setSubmatrix(topLeftRow, topLeftColumn, bottomRightRow,
                 bottomRightColumn, array, offset, offset + length - 1, false);
         int counter = offset;

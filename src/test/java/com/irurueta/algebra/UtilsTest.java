@@ -22,7 +22,6 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class UtilsTest {
 
     private static final double MIN_RANDOM_VALUE = 0.0;
@@ -134,7 +133,7 @@ public class UtilsTest {
     }
 
     @Test
-    public void testSolve() throws WrongSizeException, NotReadyException,
+    public void testSolveMatrix() throws WrongSizeException, NotReadyException,
             LockedException, DecomposerException, NotAvailableException,
             SingularMatrixException, RankDeficientMatrixException {
 
@@ -143,20 +142,23 @@ public class UtilsTest {
         final int columns = randomizer.nextInt(MIN_COLUMNS + 2, rows - 1);
         final int colsB = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
 
-        Matrix m, b, s, s2;
+        Matrix m, b, s, s2, s3;
 
         // Test for non-singular square matrix
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
         b = Matrix.createWithUniformRandomValues(rows, colsB, MIN_RANDOM_VALUE,
                 MAX_RANDOM_VALUE);
+        s3 = new Matrix(rows, colsB);
 
         final LUDecomposer decomposer = new LUDecomposer(m);
         decomposer.decompose();
 
         s = decomposer.solve(b);
         s2 = Utils.solve(m, b);
+        Utils.solve(m, b, s3);
 
         assertTrue(s.equals(s2, ABSOLUTE_ERROR));
+        assertEquals(s2, s3);
 
         // Test for singular square matrix (Force RankDeficientMatrixException)
         m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
@@ -165,26 +167,40 @@ public class UtilsTest {
             fail("RankDeficientMatrixException expected but not thrown");
         } catch (final RankDeficientMatrixException ignore) {
         }
+        try {
+            Utils.solve(m, b, s3);
+            fail("RankDeficientMatrixException expected but not thrown");
+        } catch (final RankDeficientMatrixException ignore) {
+        }
 
         // Test for non-square (rows > columns) non-rank deficient matrix
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
         b = Matrix.createWithUniformRandomValues(rows, colsB,
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+        s3 = new Matrix(columns, colsB);
 
         final EconomyQRDecomposer decomposer2 = new EconomyQRDecomposer(m);
         decomposer2.decompose();
 
         s = decomposer2.solve(b);
         s2 = Utils.solve(m, b);
+        Utils.solve(m, b, s3);
 
         assertTrue(s.equals(s2, ABSOLUTE_ERROR));
+        assertEquals(s2, s3);
 
         // Test for non-square (rows < columns) matrix (Force WrongSizeException)
         m = DecomposerHelper.getSingularMatrixInstance(columns, rows);
         b = Matrix.createWithUniformRandomValues(columns, colsB,
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+        s3 = new Matrix(rows, colsB);
         try {
             Utils.solve(m, b);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+        try {
+            Utils.solve(m, b, s3);
             fail("WrongSizeException expected but not thrown");
         } catch (final WrongSizeException ignore) {
         }
@@ -193,10 +209,107 @@ public class UtilsTest {
         m = DecomposerHelper.getSingularMatrixInstance(rows, columns);
         b = Matrix.createWithUniformRandomValues(columns, colsB,
                 MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+        s3 = new Matrix(columns, colsB);
         try {
             Utils.solve(m, b);
             fail("WrongSizeException expected but not thrown");
         } catch (final WrongSizeException ignore) {
+        }
+        try {
+            Utils.solve(m, b, s3);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+    }
+
+    @Test
+    public void testSolveArray() throws WrongSizeException, NotReadyException,
+            LockedException, DecomposerException, NotAvailableException,
+            SingularMatrixException, RankDeficientMatrixException {
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
+        final int columns = randomizer.nextInt(MIN_COLUMNS + 2, rows - 1);
+        final int colsB = 1;
+
+        Matrix m, s;
+        double[] b, s2, s3;
+
+        // Test for non-singular square matrix
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
+        b = Matrix.createWithUniformRandomValues(rows, colsB, MIN_RANDOM_VALUE,
+                MAX_RANDOM_VALUE).toArray();
+        s3 = new double[rows];
+
+        final LUDecomposer decomposer = new LUDecomposer(m);
+        decomposer.decompose();
+
+        s = decomposer.solve(Matrix.newFromArray(b));
+        s2 = Utils.solve(m, b);
+        Utils.solve(m, b, s3);
+
+        assertArrayEquals(s.toArray(), s2, ABSOLUTE_ERROR);
+        assertArrayEquals(s2, s3, 0.0);
+
+        // Test for singular square matrix (Force RankDeficientMatrixException)
+        m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
+        try {
+            Utils.solve(m, b);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
+        }
+        try {
+            Utils.solve(m, b, s3);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
+        }
+
+        // Test for non-square (rows > columns) non-rank deficient matrix
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(rows, colsB,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        s3 = new double[columns];
+
+        final EconomyQRDecomposer decomposer2 = new EconomyQRDecomposer(m);
+        decomposer2.decompose();
+
+        s = decomposer2.solve(Matrix.newFromArray(b));
+        s2 = Utils.solve(m, b);
+        Utils.solve(m, b, s3);
+
+        assertArrayEquals(s.toArray(), s2, ABSOLUTE_ERROR);
+        assertArrayEquals(s2, s3, 0.0);
+
+        // Test for non-square (rows < columns) matrix (Force WrongSizeException)
+        m = DecomposerHelper.getSingularMatrixInstance(columns, rows);
+        b = Matrix.createWithUniformRandomValues(columns, colsB,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        s3 = new double[rows];
+        try {
+            Utils.solve(m, b);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
+        }
+        try {
+            Utils.solve(m, b, s3);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
+        }
+
+        // Test for b having different number of rows than m
+        m = DecomposerHelper.getSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(columns, colsB,
+                MIN_RANDOM_VALUE, MAX_RANDOM_VALUE).toArray();
+        s3 = new double[columns];
+        try {
+            Utils.solve(m, b);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
+        }
+        try {
+            Utils.solve(m, b, s3);
+            fail("DecomposerException expected but not thrown");
+        } catch (final DecomposerException ignore) {
         }
     }
 
@@ -297,7 +410,7 @@ public class UtilsTest {
         }
 
         // Test for non-square (rows > columns) non-singular matrix to find
-        // pseudoinverse, hence we use BIG_RELATIVE_ERROR to test correctness
+        // pseudo-inverse, hence we use BIG_RELATIVE_ERROR to test correctness
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
         inverse = Utils.inverse(m);
 
@@ -347,7 +460,7 @@ public class UtilsTest {
         }
 
         // Test for non-square (rows > columns) non-singular matrix to find
-        // pseudoinverse, hence we use BIG_RELATIVE_ERROR to test correctness
+        // pseudo-inverse, hence we use BIG_RELATIVE_ERROR to test correctness
         m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
         inverse = new Matrix(rows, columns);
         Utils.inverse(m, inverse);

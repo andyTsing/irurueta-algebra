@@ -101,7 +101,7 @@ public class GaussJordanEliminationTest {
             SingularMatrixException, RankDeficientMatrixException,
             DecomposerException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-       final  int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
+        final int rows = randomizer.nextInt(MIN_COLUMNS + 5, MAX_COLUMNS + 5);
 
         Matrix a;
         final Matrix a2;

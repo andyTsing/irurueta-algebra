@@ -62,6 +62,7 @@ public class MultivariateGaussianRandomizerTest {
             fail("NullPointerException expected but not thrown");
         } catch (final NullPointerException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(randomizer);
 
 

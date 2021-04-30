@@ -24,6 +24,7 @@ package com.irurueta.algebra;
  * LU decomposition is a useful and fast way of solving systems of linear
  * equations, computing determinants or finding whether a matrix is singular.
  */
+@SuppressWarnings("DuplicatedCode")
 public class LUDecomposer extends Decomposer {
 
     /**
@@ -39,7 +40,7 @@ public class LUDecomposer extends Decomposer {
     public static final double MIN_ROUND_ERROR = 0.0;
 
     /**
-     * Internal matrix containing resuts of decomposition.
+     * Internal matrix containing results of decomposition.
      */
     private Matrix lu;
 
@@ -539,13 +540,13 @@ public class LUDecomposer extends Decomposer {
 
     /**
      * Returns determinant of provided input matrix using LU decomposition as
-     * means to obtian it.
+     * means to obtain it.
      * Provided input matrix must be square (even though LU decomposition can
      * be computed for non-square matrices), otherwise a WrongSizeException will
      * be raised when calling this method.
      * LU decomposition can be used to avoid determinant computation using other
      * slow methods, because LU decomposition obtains two triangular matrices,
-     * and the determinant of a triangular matris is just the product of the
+     * and the determinant of a triangular matrix is just the product of the
      * diagonal elements.
      * Since the determinant of a matrix product is the product of determinants,
      * then determinant of input matrix can be computed as the product of

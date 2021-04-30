@@ -448,4 +448,125 @@ public class QRDecomposerTest {
         } catch (final RankDeficientMatrixException ignore) {
         }
     }
+
+    @Test
+    public void testSolve2() throws WrongSizeException,
+            RankDeficientMatrixException, NotReadyException, LockedException,
+            DecomposerException, NotAvailableException {
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int rows = randomizer.nextInt(MIN_ROWS + 4, MAX_ROWS + 2);
+        final int columns = randomizer.nextInt(MIN_COLUMNS + 2, rows - 1);
+        final int columns2 = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
+
+        Matrix m;
+        Matrix b;
+        Matrix s;
+        Matrix b2;
+        double relError;
+
+        // Try for square matrix
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, rows);
+        b = Matrix.createWithUniformRandomValues(rows, columns2,
+                MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
+
+        final QRDecomposer decomposer = new QRDecomposer(m);
+
+        s = new Matrix(rows, columns2);
+
+        // Force NotAvailableException
+        try {
+            decomposer.solve(b, s);
+            fail("NotAvailableException expected but not thrown");
+        } catch (final NotAvailableException ignore) {
+        }
+        decomposer.decompose();
+
+        // Force IllegalArgumentException
+        try {
+            decomposer.solve(b, -1.0, s);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+
+        decomposer.solve(b, s);
+
+        // Check that solution after calling solve matches following equation:
+        // m * s = b
+        b2 = m.multiplyAndReturnNew(s);
+
+        assertEquals(b2.getRows(), b.getRows());
+        assertEquals(b2.getColumns(), b.getColumns());
+
+        assertTrue(b.equals(b, ABSOLUTE_ERROR));
+
+
+        // Try for overdetermined system (rows > columns)
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(rows, columns2,
+                MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
+        s = new Matrix(columns, columns2);
+
+        decomposer.setInputMatrix(m);
+        decomposer.decompose();
+
+        // Force IllegalArgumentException
+        try {
+            decomposer.solve(b, -1.0, s);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+
+        decomposer.solve(b, s);
+
+        // check that solution after calling solve matches following equation:
+        // m * s = b
+        b2 = m.multiplyAndReturnNew(s);
+
+        assertEquals(b2.getRows(), b.getRows());
+        assertEquals(b2.getColumns(), b.getColumns());
+
+        int valid = 0;
+        final int total = b2.getColumns() * b2.getRows();
+        for (int j = 0; j < b2.getColumns(); j++) {
+            for (int i = 0; i < b2.getRows(); i++) {
+                relError = Math.abs(RELATIVE_ERROR * b2.getElementAt(i, j));
+                if (Math.abs(b2.getElementAt(i, j) - b.getElementAt(i, j)) <
+                        relError) {
+                    valid++;
+                }
+            }
+        }
+
+        assertTrue(((double) valid / (double) total) > VALID_RATIO);
+
+        // Try for b matrix having different number of rows than m
+        // (Throws WrongSizeException)
+        m = DecomposerHelper.getNonSingularMatrixInstance(rows, columns);
+        b = Matrix.createWithUniformRandomValues(columns, columns2,
+                MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
+        s = new Matrix(columns, columns2);
+        decomposer.setInputMatrix(m);
+        decomposer.decompose();
+        try {
+            decomposer.solve(b, s);
+            fail("WrongSizeException expected but not thrown");
+        } catch (final WrongSizeException ignore) {
+        }
+
+        // Test for Rank deficient matrix only for squared matrices
+        // (for other sizes, rank deficiency might not be detected and solve
+        // method would execute)
+        m = DecomposerHelper.getSingularMatrixInstance(rows, rows);
+        b = Matrix.createWithUniformRandomValues(rows, columns2,
+                MIN_RANDOM_VALUE2, MAX_RANDOM_VALUE);
+        s = new Matrix(rows, columns2);
+        decomposer.setInputMatrix(m);
+        decomposer.decompose();
+        try {
+            decomposer.solve(b, ABSOLUTE_ERROR, s);
+            fail("RankDeficientMatrixException expected but not thrown");
+        } catch (final RankDeficientMatrixException ignore) {
+        }
+    }
 }
