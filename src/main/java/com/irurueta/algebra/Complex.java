@@ -186,7 +186,7 @@ public class Complex implements Serializable, Cloneable {
      * Adds this instance with provided complex value and stores the result
      * in provided instance
      *
-     * @param other  Complex to be added to current instance
+     * @param other  Complex to be added to current instance.
      * @param result Complex instance where result is stored.
      */
     public void add(final Complex other, final Complex result) {
@@ -199,7 +199,7 @@ public class Complex implements Serializable, Cloneable {
      * instance.
      *
      * @param other Complex to be added to current instance.
-     * @return Result of summation
+     * @return Result of summation.
      */
     public Complex addAndReturnNew(final Complex other) {
         final Complex result = new Complex();
@@ -233,7 +233,7 @@ public class Complex implements Serializable, Cloneable {
      * as a new instance
      *
      * @param other Complex to be subtracted from current instance.
-     * @return Result of subtraction
+     * @return Result of subtraction.
      */
     public Complex subtractAndReturnNew(final Complex other) {
         final Complex result = new Complex();
@@ -470,9 +470,9 @@ public class Complex implements Serializable, Cloneable {
      * Determines whether two Complex objects are equal or not up to a certain
      * level of tolerance in both their real and imaginary parts. When the
      * difference in both their real and imaginary parts is below the tolerance
-     * level, then both instances are considered to be equal
+     * level, then both instances are considered to be equal.
      *
-     * @param other     Other Complex to compare
+     * @param other     Other Complex to compare.
      * @param tolerance Margin of tolerance.
      * @return Returns true if both Complex instances are considered to be
      * equal.
@@ -485,9 +485,9 @@ public class Complex implements Serializable, Cloneable {
     }
 
     /**
-     * Makes a copy of this instance having the same real and imaginary parts
+     * Makes a copy of this instance having the same real and imaginary parts.
      *
-     * @return a copy of this instance
+     * @return a copy of this instance.
      * @throws CloneNotSupportedException if clone fails.
      */
     @Override
@@ -498,9 +498,9 @@ public class Complex implements Serializable, Cloneable {
     }
 
     /**
-     * Copies provided value into current instance
+     * Copies provided value into current instance.
      *
-     * @param value Value to copy from
+     * @param value Value to copy from.
      */
     public void copyFrom(final Complex value) {
         this.real = value.real;
