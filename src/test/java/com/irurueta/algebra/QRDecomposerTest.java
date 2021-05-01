@@ -457,7 +457,7 @@ public class QRDecomposerTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final int rows = randomizer.nextInt(MIN_ROWS + 4, MAX_ROWS + 2);
         final int columns = randomizer.nextInt(MIN_COLUMNS + 2, rows - 1);
-        final int columns2 = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
+        final int columns2 = randomizer.nextInt(MIN_COLUMNS + 1, MAX_COLUMNS);
 
         Matrix m;
         Matrix b;
