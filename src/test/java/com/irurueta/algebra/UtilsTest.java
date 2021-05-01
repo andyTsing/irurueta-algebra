@@ -876,7 +876,7 @@ public class UtilsTest {
     public void testIsOrthonormalAndIsOrthogonal() throws WrongSizeException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+        final int rows = randomizer.nextInt(MIN_ROWS + 1, MAX_ROWS);
 
         Matrix m = DecomposerHelper.getOrthonormalMatrix(rows);
 
