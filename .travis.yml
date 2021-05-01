@@ -25,7 +25,7 @@ addons:
   sonarcloud:
     organization: "albertoirurueta-github"
     token:
-      secure: "OIK7UXRFf3JbCef/uacV/w6L4AvFrkXinG1IVoPIERiyVb5lVp8ZOU1Fe1YBiKNicD+Xe3aW7MZ+7tgWqXccT85oAY3Aqfz4/V1WXPUIkkFdqhOdbnvt2CWbK8r4YI8qiZemVuHKLY0uYlBEhPF0ieR4vwDg87Q+N2bUwwbJiu26ZYy1tHxH7ErXyaMIwKTPO5sQ3bXQ9Gn++JrSigI+HvD0t6BGhsxTj8NCrSZruazghIhJiV69jdjy3MLiym2USGq66Zby461NXm+V5EAZZKVRSFTD/hqy9e5fKQLQPYetRnthirLnoPDzRmZw4LL9QpzuB/Vqm148UYKmuE69dmdJG+f72EQ7yxFRgDRDOvCL3NOnXmEALpeTN7wh8x078OLl9jELRbxXwXO77niHyoeJVE2GDaQ+ZtHW1NUdZkCJmipB8zs+7rWH0EY9Mgrl499lJwUrjlS3eeNQPBZ1gB34MVIDS3B9YcC7GEysuJk0sRQ2GSVixOeko0pgGlMDOV5CJ8YwDovd4MfwF5ig0r1McK64s4yJhXePe/erpzCziSWjn7AUk/gGzbDnLMQVqxAXXIaaakjvOIzoWmhuN4zm7nQgzjqlR+tpooCnJ4Rw5aUm7J8taOKsGLTvyZEcJddmWNlaT1zpgiZHt0YrQvkw2xJFKBHpqkc2o/A8ZRc="
+      secure: "kNCSSKDG++q/oJpGzOUaNILPtsEjpzZvy49X9jh9mPjaeELCU+zmYCjW75knZCjEe6qtwccHI7UoiIe6nL4Nj36Kr02MkZWFOqYATAKo65DuC542v1MbkBnIQKwqPqjrD3st84WhnAveXMuywNUtXbgaH09DIiHDKf/SaAPbx9DdbfHOF3mpY8agAsG8M3gEzHNIYfXY7i+gaIbUM5ktZpnE7mWic8BbvLm4E7mslYTv3XAaBaYqN/lH+YD50LBhotLWQxjfPzo0qUCx98ULaW4lHcruyOPEQQ/8k0Yuy82jTgVYneBRpKYoR+n1XWe1uvljirzRmYnfKPSjxCojfa7ehKZsoOWFbSqGTVESlsIRwhEAOi5D+yOYnmaCGKUduHEyeL3P6nQJSd452UWh+Yp0xfn2PlYonRj5H85oTUR8vj1wfVlDxCbLI9k5afvZBUETnvSbKH75PjlscODO+ai4KXtuZfefnHfeBwqP4EgrNjlUlT8m0FIUHLzgoE3tgLLr+CAXEeFQC8FcK5dHbqkV0F9hyjWI7gwzPQLgmhKs77fbN84OFdKwPcc9HqzMDkrUnPUy3fgFYAuK4pDMXFaSoylhzz6mKa6qJg9W3n0ZzSMIl7MiAkKE3C0LLZCejZfXy3T61HtFsVyrgTYwG9eEAAwNaFmk54b5JkAlL70="
 
 #if timeout occurs, add travis_wait as in example below:
 #script: travis_wait mvn clean jacoco:prepare-agent install jacoco:report site
@@ -34,7 +34,7 @@ addons:
 script:
 - travis_wait 40 mvn clean jacoco:prepare-agent install jacoco:report -P !build-extras
 - mvn site -Djacoco.skip -DskipTests -P !build-extras
-- sonar-scanner
+- mvn sonar:sonar -Dsonar.projectKey=albertoirurueta_irurueta-algebra
 
 cache:
   directories:
