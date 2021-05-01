@@ -77,10 +77,9 @@
         <sonar.projectVersion>${project.version}</sonar.projectVersion>
         <sonar.language>java</sonar.language>
         <sonar.java.source>1.7</sonar.java.source>
-        <sonar.sources>.</sonar.sources>
-        <sonar.inclusions>src/main/java/**</sonar.inclusions>
-        <sonar.tests>src/test/java</sonar.tests>
-        <sonar.java.binaries>target/classes</sonar.java.binaries>
+        <sonar.sources>${project.basedir}/src/main/java</sonar.sources>
+        <sonar.tests>${project.basedir}/src/test/java</sonar.tests>
+        <sonar.java.binaries>${project.basedir}/target/classes</sonar.java.binaries>
         <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
     </properties>
 
