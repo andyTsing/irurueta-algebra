@@ -71,16 +71,6 @@
         <maven.compiler.target>1.7</maven.compiler.target>
         <github.global.server>github</github.global.server>
         <github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
-        <sonar.organization>albertoirurueta-github</sonar.organization>
-        <sonar.projectKey>albertoirurueta_irurueta-algebra</sonar.projectKey>
-        <sonar.projectName>irurueta-algebra</sonar.projectName>
-        <sonar.projectVersion>${project.version}</sonar.projectVersion>
-        <sonar.language>java</sonar.language>
-        <sonar.java.source>1.7</sonar.java.source>
-        <sonar.sources>${project.basedir}/src/main/java</sonar.sources>
-        <sonar.tests>${project.basedir}/src/test/java</sonar.tests>
-        <sonar.java.binaries>${project.basedir}/target/classes</sonar.java.binaries>
-        <sonar.sourceEncoding>${project.build.sourceEncoding}</sonar.sourceEncoding>
     </properties>
 
     <profiles>
@@ -284,11 +274,6 @@
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.8.0.2131</version>
             </plugin>
         </plugins>
     </build>
