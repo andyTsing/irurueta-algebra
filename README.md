@@ -1,7 +1,7 @@
 # irurueta-algebra
 A small algebra library
 
-[![Build Status](https://travis-ci.org/albertoirurueta/irurueta-algebra.svg?branch=master)](https://travis-ci.org/albertoirurueta/irurueta-algebra)
+[![Build Status](https://travis-ci.com/albertoirurueta/irurueta-algebra.svg?branch=master)](https://travis-ci.com/albertoirurueta/irurueta-algebra)
 
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-algebra&metric=bugs)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-algebra)

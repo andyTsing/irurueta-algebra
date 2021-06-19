@@ -16,6 +16,7 @@
 package com.irurueta.algebra;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class defining a Complex number having real and imaginary parts.
@@ -460,10 +461,7 @@ public class Complex implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + (int) (Double.doubleToLongBits(this.real) ^ (Double.doubleToLongBits(this.real) >>> 32));
-        hash = 47 * hash + (int) (Double.doubleToLongBits(this.imaginary) ^ (Double.doubleToLongBits(this.imaginary) >>> 32));
-        return hash;
+        return Objects.hash(real, imaginary);
     }
 
     /**

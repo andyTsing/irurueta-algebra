@@ -15,9 +15,11 @@
  */
 package com.irurueta.algebra;
 
+import com.irurueta.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -544,7 +546,7 @@ public class ComplexTest {
     }
 
     @Test
-    public void testEquals() {
+    public void testEqualsAndHashCode() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double real1 = randomizer.nextDouble(MIN_RANDOM_VALUE,
                 MAX_RANDOM_VALUE);
@@ -561,6 +563,8 @@ public class ComplexTest {
         assertEquals(c1, c2);
         assertNotEquals(c1, c3);
         assertNotEquals(c1, new Object());
+
+        assertEquals(c1.hashCode(), c2.hashCode());
     }
 
     @Test
@@ -596,5 +600,20 @@ public class ComplexTest {
         // check correctness
         assertEquals(c2.getReal(), real, 0.0);
         assertEquals(c2.getImaginary(), imaginary, 0.0);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double real = randomizer.nextDouble(MIN_RANDOM_VALUE, MAX_RANDOM_VALUE);
+        final double imaginary = randomizer.nextDouble(MIN_RANDOM_VALUE,
+                MAX_RANDOM_VALUE);
+        final Complex c1 = new Complex(real, imaginary);
+
+        final byte[] bytes = SerializationHelper.serialize(c1);
+        final Complex c2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(c1, c2);
+        assertNotSame(c1, c2);
     }
 }

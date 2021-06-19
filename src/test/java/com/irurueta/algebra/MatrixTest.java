@@ -15,9 +15,11 @@
  */
 package com.irurueta.algebra;
 
+import com.irurueta.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.*;
 
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -3331,5 +3333,28 @@ public class MatrixTest {
         }
 
         assertTrue(numValid > 0);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws WrongSizeException, IOException,
+            ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final int rows = randomizer.nextInt(MIN_ROWS, MAX_ROWS);
+        final int columns = randomizer.nextInt(MIN_COLUMNS, MAX_COLUMNS);
+
+        // instantiate matrix and fill with random values
+        final Matrix m1 = new Matrix(rows, columns);
+        for (int j = 0; j < columns; j++) {
+            for (int i = 0; i < rows; i++) {
+                m1.setElementAt(i, j, randomizer.nextDouble(MIN_RANDOM_VALUE,
+                        MAX_RANDOM_VALUE));
+            }
+        }
+
+        final byte[] bytes = SerializationHelper.serialize(m1);
+        final Matrix m2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(m1, m2);
+        assertNotSame(m1, m2);
     }
 }
