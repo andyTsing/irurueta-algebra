@@ -20,3 +20,17 @@ A small algebra library
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-algebra&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-algebra)
 
 [Maven Site Report](http://albertoirurueta.github.io/irurueta-algebra)
+
+## Usage
+
+Add the following dependency to your project:
+
+Latest release:
+```
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-algebra</artifactId>
+    <version>1.0.0</version>
+    <scope>compile</scope>
+</dependency>
+```

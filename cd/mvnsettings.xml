@@ -22,4 +22,8 @@
 
     </profile>
   </profiles>
+
+  <pluginGroups>
+    <pluginGroup>org.sonatype.plugins</pluginGroup>
+  </pluginGroups>
 </settings>
