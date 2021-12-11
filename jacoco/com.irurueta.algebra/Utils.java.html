@@ -1,0 +1,1780 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Utils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">Utils.java</span></div><h1>Utils.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * This class contains a series of helper statistics methods that can be used
+ * to perform most typical operations in matrix algebra.
+ * Note: Depending on the situation it might be more computationally efficient
+ * to use methods implemented in Decomposer subclasses.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class Utils {
+
+    /**
+     * Constant defining the default threshold to compare the different content
+     * of one matrix to check whether is symmetric.
+     */
+    public static final double DEFAULT_SYMMETRIC_THRESHOLD = 1e-12;
+
+    /**
+     * Constant defining the default threshold to determine whether a matrix is
+     * orthonormal or not.
+     */
+    public static final double DEFAULT_ORTHOGONAL_THRESHOLD = 1e-12;
+
+    /**
+     * Constant defining machine precision
+     */
+    public static final double EPSILON = 1e-12;
+
+    /**
+     * Constant defining minimum allowed threshold
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Constructor.
+     */
+    private Utils() {
+    }
+
+    /**
+     * Computes trace of provided matrix.
+     * Trace is the sum of the elements located on the diagonal of a given
+     * matrix.
+     *
+     * @param m Input matrix.
+     * @return Trace of provided matrix
+     */
+    public static double trace(final Matrix m) {
+<span class="fc" id="L64">        final int minSize = Math.min(m.getRows(), m.getColumns());</span>
+<span class="fc" id="L65">        double trace = 0.0;</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (int i = 0; i &lt; minSize; i++) {</span>
+<span class="fc" id="L67">            trace += m.getElementAt(i, i);</span>
+        }
+<span class="fc" id="L69">        return trace;</span>
+    }
+
+    /**
+     * Computes condition number of provided matrix.
+     * Condition number determines how well behaved a matrix is for solving
+     * a linear system of equations
+     *
+     * @param m Input matrix.
+     * @return Condition number of provided matrix.
+     * @throws DecomposerException Exception thrown if decomposition fails for
+     *                             any reason.
+     * @see SingularValueDecomposer
+     */
+    public static double cond(final Matrix m) throws DecomposerException {
+<span class="fc" id="L84">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);</span>
+        try {
+<span class="fc" id="L86">            decomposer.decompose();</span>
+<span class="fc" id="L87">            return decomposer.getConditionNumber();</span>
+<span class="nc" id="L88">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L89">            throw e;</span>
+<span class="nc" id="L90">        } catch (final Exception e) {</span>
+<span class="nc" id="L91">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes rank of provided matrix.
+     * Rank indicates the number of linearly independent columns or rows on
+     * a matrix.
+     *
+     * @param m Input matrix.
+     * @return Rank of provided matrix.
+     * @throws DecomposerException Exception thrown if decomposition fails for
+     *                             any reason.
+     */
+    public static int rank(final Matrix m) throws DecomposerException {
+<span class="fc" id="L106">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);</span>
+        try {
+<span class="fc" id="L108">            decomposer.decompose();</span>
+<span class="fc" id="L109">            return decomposer.getRank();</span>
+<span class="nc" id="L110">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L111">            throw e;</span>
+<span class="nc" id="L112">        } catch (final Exception e) {</span>
+<span class="nc" id="L113">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes determinant of provided matrix.
+     * Determinant can be seen geometrically as a measure of hyper-volume
+     * generated by the row/column vector contained within a given squared
+     * matrix.
+     *
+     * @param m Input matrix.
+     * @return Determinant of provided matrix.
+     * @throws WrongSizeException  Exception thrown if provided matrix is not
+     *                             squared.
+     * @throws DecomposerException Exception thrown if decomposition fails for
+     *                             any reason.
+     */
+    public static double det(final Matrix m) throws WrongSizeException,
+            DecomposerException {
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        if (m.getRows() != m.getColumns()) {</span>
+<span class="fc" id="L133">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc" id="L136">        final LUDecomposer decomposer = new LUDecomposer(m);</span>
+        try {
+<span class="fc" id="L138">            decomposer.decompose();</span>
+<span class="fc" id="L139">            return decomposer.determinant();</span>
+<span class="nc" id="L140">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L141">            throw e;</span>
+<span class="nc" id="L142">        } catch (final Exception e) {</span>
+<span class="nc" id="L143">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Solves a linear system of equations of the form: m * x = b.
+     * Where x is the returned matrix containing the solution, m is the matrix
+     * of the linear system of equations and b is the parameters matrix.
+     *
+     * @param m      Matrix of the linear system of equations.
+     * @param b      Parameters matrix.
+     * @param result Matrix where solution of the linear system of equations
+     *               will be stored. Provided matrix will be resized if needed
+     * @throws WrongSizeException           Exception thrown if provided matrix m has less
+     *                                      rows than columns, or if provided matrix b has a number of rows different
+     *                                      than the number of rows of m.
+     * @throws RankDeficientMatrixException Exception thrown if provided matrix
+     *                                      m is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition fails for
+     *                                      any reason.
+     */
+    public static void solve(final Matrix m, final Matrix b, final Matrix result)
+            throws WrongSizeException, RankDeficientMatrixException,
+            DecomposerException {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">        if (m.getRows() == m.getColumns()) {</span>
+<span class="fc" id="L168">            final LUDecomposer decomposer = new LUDecomposer(m);</span>
+            try {
+<span class="fc" id="L170">                decomposer.decompose();</span>
+<span class="fc" id="L171">                decomposer.solve(b, result);</span>
+<span class="nc" id="L172">            } catch (final WrongSizeException | DecomposerException e) {</span>
+<span class="nc" id="L173">                throw e;</span>
+<span class="fc" id="L174">            } catch (final SingularMatrixException e) {</span>
+<span class="fc" id="L175">                throw new RankDeficientMatrixException(e);</span>
+<span class="nc" id="L176">            } catch (final Exception e) {</span>
+<span class="nc" id="L177">                throw new DecomposerException(e);</span>
+<span class="fc" id="L178">            }</span>
+<span class="fc" id="L179">        } else {</span>
+<span class="fc" id="L180">            final EconomyQRDecomposer decomposer = new EconomyQRDecomposer(m);</span>
+            try {
+<span class="fc" id="L182">                decomposer.decompose();</span>
+<span class="fc" id="L183">                decomposer.solve(b, result);</span>
+<span class="fc" id="L184">            } catch (final WrongSizeException | RankDeficientMatrixException e) {</span>
+<span class="fc" id="L185">                throw e;</span>
+<span class="nc" id="L186">            } catch (final Exception e) {</span>
+<span class="nc" id="L187">                throw new DecomposerException(e);</span>
+<span class="fc" id="L188">            }</span>
+        }
+<span class="fc" id="L190">    }</span>
+
+    /**
+     * Solves a linear system of equations of the form: m * x = b.
+     * Where x is the returned matrix containing the solution, m is the matrix
+     * of the linear system of equations and b is the parameters matrix.
+     *
+     * @param m Matrix of the linear system of equations.
+     * @param b Parameters matrix.
+     * @return Solution of the linear system of equations.
+     * @throws WrongSizeException           Exception thrown if provided matrix m has less
+     *                                      rows than columns, or if provided matrix b has a number of rows different
+     *                                      than the number of rows of m.
+     * @throws RankDeficientMatrixException Exception thrown if provided matrix
+     *                                      m is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition fails for
+     *                                      any reason.
+     */
+    public static Matrix solve(final Matrix m, final Matrix b) throws WrongSizeException,
+            RankDeficientMatrixException, DecomposerException {
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (m.getRows() == m.getColumns()) {</span>
+<span class="fc" id="L211">            final LUDecomposer decomposer = new LUDecomposer(m);</span>
+            try {
+<span class="fc" id="L213">                decomposer.decompose();</span>
+<span class="fc" id="L214">                return decomposer.solve(b);</span>
+<span class="nc" id="L215">            } catch (final WrongSizeException | DecomposerException e) {</span>
+<span class="nc" id="L216">                throw e;</span>
+<span class="fc" id="L217">            } catch (final SingularMatrixException e) {</span>
+<span class="fc" id="L218">                throw new RankDeficientMatrixException(e);</span>
+<span class="nc" id="L219">            } catch (final Exception e) {</span>
+<span class="nc" id="L220">                throw new DecomposerException(e);</span>
+            }
+        } else {
+<span class="fc" id="L223">            final EconomyQRDecomposer decomposer = new EconomyQRDecomposer(m);</span>
+            try {
+<span class="fc" id="L225">                decomposer.decompose();</span>
+<span class="fc" id="L226">                return decomposer.solve(b);</span>
+<span class="fc" id="L227">            } catch (final WrongSizeException | RankDeficientMatrixException e) {</span>
+<span class="fc" id="L228">                throw e;</span>
+<span class="nc" id="L229">            } catch (final Exception e) {</span>
+<span class="nc" id="L230">                throw new DecomposerException(e);</span>
+            }
+        }
+    }
+
+    /**
+     * Solves a linear system of equations of the form m * x = b, where b is
+     * assumed to be the parameters column vector, x is the returned matrix
+     * containing the solution and m is the matrix of the linear system of
+     * equations.
+     *
+     * @param m      Matrix of the linear system of equations.
+     * @param b      Parameters column vector.
+     * @param result Solution of the linear system of equations.
+     *               m is rank deficient.
+     * @throws DecomposerException Exception thrown if decomposition fails for
+     *                             any reason.
+     */
+    public static void solve(final Matrix m, final double[] b, final double[] result)
+            throws DecomposerException {
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (m.getRows() == m.getColumns()) {</span>
+<span class="fc" id="L251">            final LUDecomposer decomposer = new LUDecomposer(m);</span>
+            try {
+<span class="fc" id="L253">                decomposer.decompose();</span>
+<span class="fc" id="L254">                System.arraycopy(decomposer.solve(Matrix.newFromArray(b,</span>
+<span class="fc" id="L255">                        true)).toArray(true), 0, result, 0, result.length);</span>
+<span class="nc" id="L256">            } catch (final DecomposerException e) {</span>
+<span class="nc" id="L257">                throw e;</span>
+<span class="fc" id="L258">            } catch (final Exception e) {</span>
+<span class="fc" id="L259">                throw new DecomposerException(e);</span>
+<span class="fc" id="L260">            }</span>
+<span class="fc" id="L261">        } else {</span>
+<span class="fc" id="L262">            final EconomyQRDecomposer decomposer = new EconomyQRDecomposer(m);</span>
+            try {
+<span class="fc" id="L264">                decomposer.decompose();</span>
+<span class="fc" id="L265">                System.arraycopy(decomposer.solve(Matrix.newFromArray(b,</span>
+<span class="fc" id="L266">                        true)).toArray(true), 0, result, 0, result.length);</span>
+<span class="fc" id="L267">            } catch (final Exception e) {</span>
+<span class="fc" id="L268">                throw new DecomposerException(e);</span>
+<span class="fc" id="L269">            }</span>
+        }
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Solves a linear system of equations of the form: m * x = b.
+     * Where x is the returned array containing the solution, m is the matrix
+     * of the linear system of equations and b is the parameters array.
+     *
+     * @param m Matrix of the linear system of equations.
+     * @param b Parameters array.
+     * @return Solution of the linear system of equations.
+     * m is rank deficient.
+     * @throws DecomposerException Exception thrown if decomposition fails for
+     *                             any reason.
+     */
+    public static double[] solve(final Matrix m, double[] b)
+            throws DecomposerException {
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        if (m.getRows() == m.getColumns()) {</span>
+<span class="fc" id="L288">            final LUDecomposer decomposer = new LUDecomposer(m);</span>
+            try {
+<span class="fc" id="L290">                decomposer.decompose();</span>
+<span class="fc" id="L291">                return decomposer.solve(Matrix.newFromArray(b, true)).toArray(</span>
+                        true);
+<span class="nc" id="L293">            } catch (final DecomposerException e) {</span>
+<span class="nc" id="L294">                throw e;</span>
+<span class="fc" id="L295">            } catch (final Exception e) {</span>
+<span class="fc" id="L296">                throw new DecomposerException(e);</span>
+            }
+        } else {
+<span class="fc" id="L299">            final EconomyQRDecomposer decomposer = new EconomyQRDecomposer(m);</span>
+            try {
+<span class="fc" id="L301">                decomposer.decompose();</span>
+<span class="fc" id="L302">                return decomposer.solve(Matrix.newFromArray(b, true)).toArray(</span>
+                        true);
+<span class="fc" id="L304">            } catch (final Exception e) {</span>
+<span class="fc" id="L305">                throw new DecomposerException(e);</span>
+            }
+        }
+    }
+
+    /**
+     * Computes Frobenius norm of provided input matrix.
+     *
+     * @param m Input matrix.
+     * @return Frobenius norm
+     */
+    public static double normF(final Matrix m) {
+<span class="fc" id="L317">        return FrobeniusNormComputer.norm(m);</span>
+    }
+
+    /**
+     * Computes Frobenius norm of provided array.
+     *
+     * @param array Input array.
+     * @return Frobenius norm.
+     */
+    public static double normF(final double[] array) {
+<span class="fc" id="L327">        return FrobeniusNormComputer.norm(array);</span>
+    }
+
+    /**
+     * Computes infinity norm of provided input matrix.
+     *
+     * @param m Input matrix.
+     * @return Infinity norm.
+     */
+    public static double normInf(final Matrix m) {
+<span class="fc" id="L337">        return InfinityNormComputer.norm(m);</span>
+    }
+
+    /**
+     * Computes infinity norm of provided input matrix.
+     *
+     * @param array Input array.
+     * @return Infinity norm.
+     */
+    public static double normInf(final double[] array) {
+<span class="fc" id="L347">        return InfinityNormComputer.norm(array);</span>
+    }
+
+    /**
+     * Computes two norm of provided input matrix.
+     *
+     * @param m Input matrix.
+     * @return Two norm.
+     * @throws DecomposerException Exception thrown if decomposition fails
+     *                             for any reason.
+     */
+    public static double norm2(final Matrix m) throws DecomposerException {
+<span class="fc" id="L359">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);</span>
+        try {
+<span class="fc" id="L361">            decomposer.decompose();</span>
+<span class="fc" id="L362">            return decomposer.getNorm2();</span>
+<span class="nc" id="L363">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L364">            throw e;</span>
+<span class="nc" id="L365">        } catch (final Exception e) {</span>
+<span class="nc" id="L366">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes two norm of provided input array.
+     *
+     * @param array Input array.
+     * @return Two norm
+     * @throws DecomposerException Exception thrown if decomposition fails
+     *                             for any reason.
+     */
+    public static double norm2(final double[] array) throws DecomposerException {
+<span class="fc" id="L379">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(</span>
+<span class="fc" id="L380">                Matrix.newFromArray(array, true));</span>
+        try {
+<span class="fc" id="L382">            decomposer.decompose();</span>
+<span class="fc" id="L383">            return decomposer.getNorm2();</span>
+<span class="nc" id="L384">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L385">            throw e;</span>
+<span class="nc" id="L386">        } catch (final Exception e) {</span>
+<span class="nc" id="L387">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes one norm of provided input matrix.
+     *
+     * @param m Input matrix.
+     * @return One norm.
+     */
+    public static double norm1(final Matrix m) {
+<span class="fc" id="L398">        return OneNormComputer.norm(m);</span>
+    }
+
+    /**
+     * Computes one norm of provided input matrix.
+     *
+     * @param array Input array.
+     * @return One norm.
+     */
+    public static double norm1(final double[] array) {
+<span class="fc" id="L408">        return OneNormComputer.norm(array);</span>
+    }
+
+    /**
+     * Computes matrix inverse if provided matrix is squared, or pseudo-inverse
+     * otherwise and stores the result in provided result matrix. Result matrix
+     * will be resized if needed
+     *
+     * @param m      Matrix to be inverted.
+     * @param result Matrix where matrix inverse is stored.
+     * @throws WrongSizeException           Exception thrown if provided matrix m has less
+     *                                      rows than columns.
+     * @throws RankDeficientMatrixException Exception thrown if provided matrix
+     *                                      m is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition to
+     *                                      compute inverse fails for any other reason.
+     */
+    public static void inverse(final Matrix m, final Matrix result)
+            throws WrongSizeException, RankDeficientMatrixException,
+            DecomposerException {
+<span class="fc" id="L428">        final int rows = m.getRows();</span>
+<span class="fc" id="L429">        final int columns = m.getColumns();</span>
+<span class="pc bpc" id="L430" title="1 of 4 branches missed.">        if (result.getRows() != columns || result.getColumns() != rows) {</span>
+            // resize result matrix
+<span class="fc" id="L432">            result.resize(columns, rows);</span>
+        }
+<span class="fc" id="L434">        Utils.solve(m, Matrix.identity(rows, rows), result);</span>
+<span class="fc" id="L435">    }</span>
+
+    /**
+     * Computes matrix inverse if provided matrix is squared, or pseudo-inverse
+     * otherwise.
+     *
+     * @param m Matrix to be inverted.
+     * @return Matrix inverse.
+     * @throws WrongSizeException           Exception thrown if provided matrix m has less
+     *                                      rows than columns.
+     * @throws RankDeficientMatrixException Exception thrown if provided matrix
+     *                                      m is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition to
+     *                                      compute inverse fails for any other reason.
+     */
+    public static Matrix inverse(final Matrix m) throws WrongSizeException,
+            RankDeficientMatrixException, DecomposerException {
+<span class="fc" id="L452">        final int rows = m.getRows();</span>
+<span class="fc" id="L453">        return Utils.solve(m, Matrix.identity(rows, rows));</span>
+    }
+
+    /**
+     * Computes array pseudo-inverse considering it as a column matrix and
+     * stores the result in provided result matrix. Result matrix will be
+     * resized if needed
+     *
+     * @param array  array to be inverted
+     * @param result Array pseudo inverse
+     * @throws WrongSizeException           never thrown
+     * @throws RankDeficientMatrixException Exception thrown if provided array
+     *                                      is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition to compute
+     *                                      inverse fails for any other reason.
+     */
+    public static void inverse(final double[] array, final Matrix result)
+            throws WrongSizeException, RankDeficientMatrixException,
+            DecomposerException {
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        if (result.getRows() != array.length ||</span>
+<span class="nc bnc" id="L473" title="All 2 branches missed.">                result.getColumns() != array.length) {</span>
+            // resize result matrix
+<span class="fc" id="L475">            result.resize(array.length, array.length);</span>
+        }
+<span class="fc" id="L477">        Utils.solve(Matrix.newFromArray(array, true),</span>
+<span class="fc" id="L478">                Matrix.identity(array.length, array.length), result);</span>
+
+<span class="fc" id="L480">    }</span>
+
+    /**
+     * Computes array pseudo-inverse considering it as a column matrix.
+     *
+     * @param array array to be inverted
+     * @return Array pseudo inverse
+     * @throws WrongSizeException           never thrown
+     * @throws RankDeficientMatrixException Exception thrown if provided array
+     *                                      is rank deficient.
+     * @throws DecomposerException          Exception thrown if decomposition to compute
+     *                                      inverse fails for any other reason.
+     */
+    public static Matrix inverse(final double[] array) throws WrongSizeException,
+            RankDeficientMatrixException, DecomposerException {
+<span class="fc" id="L495">        final int length = array.length;</span>
+<span class="fc" id="L496">        final Matrix identity = Matrix.identity(length, length);</span>
+<span class="fc" id="L497">        return Utils.solve(Matrix.newFromArray(array, true), identity);</span>
+    }
+
+    /**
+     * Computes Moore-Penrose pseudo-inverse of provided matrix.
+     * Moore-Penrose pseudo-inverse always exists for any matrix regardless of
+     * its size, and can be computed as: pinv(A) = inv(A'*A)*A' in Matlab
+     * notation.
+     * However, for computation efficiency, Singular Value Decomposition is
+     * used instead, obtaining the following expression: pinv(A) =
+     * V * pinv(W) * U'. Where W is easily invertible since it is a diagonal
+     * matrix taking into account that the inverse for singular values close to
+     * zero (for a given tolerance) is zero, whereas for the rest is their
+     * reciprocal.
+     * In other words pinv(W)(i,i) = 1./W(i,i) for W(i,i) != 0 or zero
+     * otherwise.
+     * Notice that for invertible squared matrices, the pseudo-inverse is equal
+     * to the inverse.
+     * Also notice that pseudo-inverse can be used to solve overdetermined
+     * systems of linear equations with least minimum square error (LMSE).
+     * Finally notice that Utils.inverse(Matrix) also can return a
+     * pseudo-inverse, however, this method since it uses SVD decomposition is
+     * numerically more stable at the expense of being computationally more
+     * expensive.
+     *
+     * @param m Input matrix.
+     * @return Moore-Penrose matrix pseudo-inverse.
+     * @throws DecomposerException Exception thrown if matrix cannot be
+     *                             inverted, usually because matrix contains numerically unstable values
+     *                             such as NaN or inf.
+     * @see SingularValueDecomposer#solve(double[]) to
+     * solve systems of linear equations, as it can be more efficient specially
+     * when several systems need to be solved using the same input system
+     * matrix.
+     */
+    public static Matrix pseudoInverse(final Matrix m) throws DecomposerException {
+<span class="fc" id="L533">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(m);</span>
+        try {
+<span class="fc" id="L535">            decomposer.decompose();</span>
+<span class="fc" id="L536">            final Matrix u = decomposer.getU();</span>
+<span class="fc" id="L537">            final Matrix v = decomposer.getV();</span>
+<span class="fc" id="L538">            final double[] s = decomposer.getSingularValues();</span>
+<span class="fc" id="L539">            final int rows = m.getRows();</span>
+<span class="fc" id="L540">            final int cols = m.getColumns();</span>
+<span class="fc" id="L541">            final double threshold = EPSILON * Math.max(rows, cols) * s[0];</span>
+<span class="fc" id="L542">            final Matrix invW = new Matrix(cols, cols);</span>
+<span class="fc" id="L543">            invW.initialize(0.0);</span>
+            double value;
+<span class="fc bfc" id="L545" title="All 2 branches covered.">            for (int n = 0; n &lt; cols; n++) {</span>
+<span class="fc" id="L546">                value = s[n];</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">                if (value &gt; threshold) {</span>
+<span class="fc" id="L548">                    invW.setElementAt(n, n, 1.0 / value);</span>
+                }
+            }
+            // V * invW * U', where U' is transposed of U
+<span class="fc" id="L552">            u.transpose();</span>
+<span class="fc" id="L553">            return v.multiplyAndReturnNew(invW.multiplyAndReturnNew(u));</span>
+<span class="nc" id="L554">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L555">            throw e;</span>
+<span class="nc" id="L556">        } catch (final Exception e) {</span>
+<span class="nc" id="L557">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes Moore-Penrose pseudo-inverse of provided array considering it as
+     * a column matrix.
+     *
+     * @param array Input array
+     * @return More-Penrose pseudo-inverse
+     * @throws DecomposerException Exception thrown if matrix cannot be
+     *                             inverted, usually because matrix contains numerically unstable values
+     *                             such as NaN or inf.
+     * @see #pseudoInverse(Matrix)
+     */
+    public static Matrix pseudoInverse(final double[] array)
+            throws DecomposerException {
+<span class="fc" id="L574">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(</span>
+<span class="fc" id="L575">                Matrix.newFromArray(array, true));</span>
+        try {
+<span class="fc" id="L577">            decomposer.decompose();</span>
+<span class="fc" id="L578">            final Matrix u = decomposer.getU();</span>
+<span class="fc" id="L579">            final Matrix v = decomposer.getV();</span>
+<span class="fc" id="L580">            final double[] s = decomposer.getSingularValues();</span>
+<span class="fc" id="L581">            final int rows = array.length;</span>
+<span class="fc" id="L582">            final int cols = 1;</span>
+<span class="fc" id="L583">            final double threshold = EPSILON * Math.max(rows, cols) * s[0];</span>
+<span class="fc" id="L584">            final Matrix invW = new Matrix(cols, cols);</span>
+<span class="fc" id="L585">            invW.initialize(0.0);</span>
+            double value;
+<span class="fc bfc" id="L587" title="All 2 branches covered.">            for (int n = 0; n &lt; cols; n++) {</span>
+<span class="fc" id="L588">                value = s[n];</span>
+<span class="pc bpc" id="L589" title="1 of 2 branches missed.">                if (value &gt; threshold) {</span>
+<span class="fc" id="L590">                    invW.setElementAt(n, n, 1.0 / value);</span>
+                }
+            }
+            // V * invW * U', where U' is transposed of U
+<span class="fc" id="L594">            u.transpose();</span>
+<span class="fc" id="L595">            return v.multiplyAndReturnNew(invW.multiplyAndReturnNew(u));</span>
+<span class="nc" id="L596">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L597">            throw e;</span>
+<span class="nc" id="L598">        } catch (final Exception e) {</span>
+<span class="nc" id="L599">            throw new DecomposerException(e);</span>
+        }
+    }
+
+    /**
+     * Computes the skew-symmetric matrix of provided vector of length 3 and
+     * stores the result in provided matrix.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     *
+     * @param array  Array of length 3 that will be used to compute the skew-
+     *               symmetric matrix.
+     * @param result Matrix where skew matrix is stored. Provided matrix will be
+     *               resized if needed
+     * @throws WrongSizeException Exception thrown if provided array doesn't
+     *                            have length equal to 3.
+     */
+    public static void skewMatrix(final double[] array, final Matrix result)
+            throws WrongSizeException {
+<span class="pc bpc" id="L630" title="1 of 2 branches missed.">        if (array.length != 3) {</span>
+<span class="nc" id="L631">            throw new WrongSizeException(&quot;array length must be 3&quot;);</span>
+        }
+
+<span class="pc bpc" id="L634" title="2 of 4 branches missed.">        if (result.getRows() != 3 || result.getColumns() != 3) {</span>
+<span class="nc" id="L635">            result.resize(3, 3);</span>
+        }
+<span class="fc" id="L637">        result.initialize(0.0);</span>
+
+<span class="fc" id="L639">        result.setElementAt(0, 1, -array[2]);</span>
+<span class="fc" id="L640">        result.setElementAt(0, 2, array[1]);</span>
+<span class="fc" id="L641">        result.setElementAt(1, 0, array[2]);</span>
+<span class="fc" id="L642">        result.setElementAt(1, 2, -array[0]);</span>
+<span class="fc" id="L643">        result.setElementAt(2, 0, -array[1]);</span>
+<span class="fc" id="L644">        result.setElementAt(2, 1, array[0]);</span>
+<span class="fc" id="L645">    }</span>
+
+    /**
+     * Computes the skew-symmetric matrix of provided vector of length 3 and
+     * stores the result in provided matrix.
+     * If provided, jacobian is also set.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     *
+     * @param array    Array of length 3 that will be used to compute the skew-
+     *                 symmetric matrix.
+     * @param result   Matrix where skew matrix is stored. Provided matrix will be
+     *                 resized if needed
+     * @param jacobian matrix where jacobian will be stored. Must be 9x3.
+     * @throws WrongSizeException if provided array doesn't have length 3 or
+     *                            if jacobian is not 9x3 (if provided).
+     */
+    public static void skewMatrix(final double[] array, final Matrix result,
+                                  final Matrix jacobian) throws WrongSizeException {
+<span class="pc bpc" id="L676" title="1 of 4 branches missed.">        if (jacobian != null &amp;&amp; (jacobian.getRows() != 9 ||</span>
+<span class="pc bpc" id="L677" title="1 of 2 branches missed.">                jacobian.getColumns() != 3)) {</span>
+<span class="fc" id="L678">            throw new WrongSizeException(&quot;jacobian must be 9x3&quot;);</span>
+        }
+
+<span class="fc" id="L681">        skewMatrix(array, result);</span>
+
+<span class="pc bpc" id="L683" title="1 of 2 branches missed.">        if (jacobian != null) {</span>
+<span class="fc" id="L684">            jacobian.initialize(0.0);</span>
+<span class="fc" id="L685">            jacobian.setElementAt(5, 0, 1.0);</span>
+<span class="fc" id="L686">            jacobian.setElementAt(7, 0, -1.0);</span>
+
+<span class="fc" id="L688">            jacobian.setElementAt(2, 1, -1.0);</span>
+<span class="fc" id="L689">            jacobian.setElementAt(6, 1, 1.0);</span>
+
+<span class="fc" id="L691">            jacobian.setElementAt(1, 2, 1.0);</span>
+<span class="fc" id="L692">            jacobian.setElementAt(3, 2, -1.0);</span>
+        }
+<span class="fc" id="L694">    }</span>
+
+    /**
+     * Computes the skew-symmetric matrix of provided vector of length 3.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     *
+     * @param array Array of length 3 that will be used to compute the skew-
+     *              symmetric matrix.
+     * @return Skew matrix.
+     * @throws WrongSizeException Exception thrown if provided array doesn't
+     *                            have length equal to 3.
+     */
+    public static Matrix skewMatrix(final double[] array) throws WrongSizeException {
+<span class="fc" id="L720">        final Matrix sk = new Matrix(3, 3);</span>
+<span class="fc" id="L721">        skewMatrix(array, sk);</span>
+<span class="fc" id="L722">        return sk;</span>
+    }
+
+    /**
+     * Internal method to compute skew matrix
+     *
+     * @param m          Matrix of size 3x1 or 1x3 that will be used to compute the
+     *                   skew-symmetric matrix.
+     * @param result     Matrix where skew matrix is stored
+     * @param columnwise boolean indicating whether m is column-wise
+     * @throws WrongSizeException Exception thrown if provided m matrix doesn't
+     *                            have proper size
+     */
+    private static void internalSkewMatrix(final Matrix m, final Matrix result,
+                                           final boolean columnwise) throws WrongSizeException {
+<span class="pc bpc" id="L737" title="2 of 4 branches missed.">        if (result.getRows() != 3 || result.getColumns() != 3) {</span>
+            // resize result
+<span class="nc" id="L739">            result.resize(3, 3);</span>
+        }
+
+<span class="fc" id="L742">        result.initialize(0.0);</span>
+
+<span class="fc" id="L744">        result.setElementAt(0, 1, -m.getElementAtIndex(2, columnwise));</span>
+<span class="fc" id="L745">        result.setElementAt(0, 2, m.getElementAtIndex(1, columnwise));</span>
+<span class="fc" id="L746">        result.setElementAt(1, 0, m.getElementAtIndex(2, columnwise));</span>
+<span class="fc" id="L747">        result.setElementAt(1, 2, -m.getElementAtIndex(0, columnwise));</span>
+<span class="fc" id="L748">        result.setElementAt(2, 0, -m.getElementAtIndex(1, columnwise));</span>
+<span class="fc" id="L749">        result.setElementAt(2, 1, m.getElementAtIndex(0, columnwise));</span>
+<span class="fc" id="L750">    }</span>
+
+    /**
+     * Computes the skew-symmetric matrix of provided matrix of size 3x1 or
+     * 13.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     * Result is stored into provided result matrix, which will be resized if
+     * needed
+     *
+     * @param m      Matrix of size 3x1 or 1x3 that will be used to compute the
+     *               skew-symmetric matrix.
+     * @param result Matrix where skew matrix will be stored.
+     * @throws WrongSizeException Exception thrown if provided matrix is not 3x1
+     *                            or 1x3.
+     */
+    public static void skewMatrix(final Matrix m, final Matrix result)
+            throws WrongSizeException {
+        boolean columnwise;
+<span class="pc bpc" id="L781" title="2 of 4 branches missed.">        if (m.getRows() == 3 &amp;&amp; m.getColumns() == 1) {</span>
+<span class="fc" id="L782">            columnwise = false;</span>
+<span class="nc bnc" id="L783" title="All 4 branches missed.">        } else if (m.getRows() == 1 &amp;&amp; m.getColumns() == 3) {</span>
+<span class="nc" id="L784">            columnwise = true;</span>
+        } else {
+<span class="nc" id="L786">            throw new WrongSizeException(&quot;m matrix must be 3x1 or 1x3&quot;);</span>
+        }
+<span class="fc" id="L788">        internalSkewMatrix(m, result, columnwise);</span>
+<span class="fc" id="L789">    }</span>
+
+    /**
+     * Computes the skew-symmetric matrix of provided matrix of size 3x1 or
+     * 13.
+     * If provided, jacobian is also set.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     * Result is stored into provided result matrix, which will be resized if
+     * needed
+     *
+     * @param m        Matrix of size 3x1 or 1x3 that will be used to compute the
+     *                 skew-symmetric matrix.
+     * @param result   Matrix where skew matrix will be stored.
+     * @param jacobian matrix where jacobian will be stored. Must be 9x3.
+     * @throws WrongSizeException if provided matrix is not 3x1 or 1x3 or
+     *                            if jacobian is not 9x3 (if provided).
+     */
+    public static void skewMatrix(final Matrix m, final Matrix result, final Matrix jacobian)
+            throws WrongSizeException {
+<span class="pc bpc" id="L821" title="1 of 4 branches missed.">        if (jacobian != null &amp;&amp; (jacobian.getRows() != 9 ||</span>
+<span class="pc bpc" id="L822" title="1 of 2 branches missed.">                jacobian.getColumns() != 3)) {</span>
+<span class="fc" id="L823">            throw new WrongSizeException(&quot;jacobian must be 9x3&quot;);</span>
+        }
+
+<span class="fc" id="L826">        skewMatrix(m, result);</span>
+
+<span class="pc bpc" id="L828" title="1 of 2 branches missed.">        if (jacobian != null) {</span>
+<span class="fc" id="L829">            jacobian.initialize(0.0);</span>
+<span class="fc" id="L830">            jacobian.setElementAt(5, 0, 1.0);</span>
+<span class="fc" id="L831">            jacobian.setElementAt(7, 0, -1.0);</span>
+
+<span class="fc" id="L833">            jacobian.setElementAt(2, 1, -1.0);</span>
+<span class="fc" id="L834">            jacobian.setElementAt(6, 1, 1.0);</span>
+
+<span class="fc" id="L836">            jacobian.setElementAt(1, 2, 1.0);</span>
+<span class="fc" id="L837">            jacobian.setElementAt(3, 2, -1.0);</span>
+        }
+<span class="fc" id="L839">    }</span>
+
+    /**
+     * Computes the skew-symmetric matrix of provided matrix of size 3x1 or
+     * 13.
+     * Skew-symmetric matrices are specially useful if several cross-products
+     * need to be done for the same first vector over different vectors.
+     * That is, having a vector a and vectors b1...bn of size 3x1:
+     * c1 = a x b1
+     * c2 = a x b2
+     * ...
+     * cn = a x bn
+     * Instead of computing each product separately, the second factor can be
+     * converted in a matrix where each row contains one of the vectors on the
+     * second factor:
+     * B = [b1, b2, ..., bn];
+     * And all the cross products shown above can be computed as a single matrix
+     * multiplication in the form:
+     * C = skewMatrix(a) * B;
+     *
+     * @param m Matrix of size 3x1 or 1x3 that will be used to compute the
+     *          skew-symmetric matrix.
+     * @return Skew matrix.
+     * @throws WrongSizeException Exception thrown if provided array doesn't
+     *                            have length equal to 3.
+     */
+    public static Matrix skewMatrix(final Matrix m) throws WrongSizeException {
+        boolean columnwise;
+<span class="pc bpc" id="L867" title="2 of 4 branches missed.">        if (m.getRows() == 3 &amp;&amp; m.getColumns() == 1) {</span>
+<span class="fc" id="L868">            columnwise = false;</span>
+<span class="nc bnc" id="L869" title="All 4 branches missed.">        } else if (m.getRows() == 1 &amp;&amp; m.getColumns() == 3) {</span>
+<span class="nc" id="L870">            columnwise = true;</span>
+        } else {
+<span class="nc" id="L872">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc" id="L875">        final Matrix sk = new Matrix(3, 3);</span>
+<span class="fc" id="L876">        internalSkewMatrix(m, sk, columnwise);</span>
+<span class="fc" id="L877">        return sk;</span>
+    }
+
+    /**
+     * Computes the cross product of two vectors of length 3
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     *
+     * @param v1        Left vector in the crossProduct operation (A in axb)
+     * @param v2        Right vector in the crossProduct operation (b in axb)
+     * @param result    array where the cross product of vectors v1 and b2 will be
+     *                  stored.
+     * @param jacobian1 jacobian of v1. Must be 3x3.
+     * @param jacobian2 jacobian of v2. Must be 3x3.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3, or if jacobians are not 3x3.
+     * @see #Utils  for more information.
+     */
+    public static void crossProduct(
+            final double[] v1, final double[] v2, final double[] result,
+            final Matrix jacobian1, final Matrix jacobian2) throws WrongSizeException {
+
+<span class="pc bpc" id="L911" title="1 of 4 branches missed.">        if (jacobian1 != null &amp;&amp; (jacobian1.getRows() != 3 ||</span>
+<span class="pc bpc" id="L912" title="1 of 2 branches missed.">                jacobian1.getColumns() != 3)) {</span>
+<span class="fc" id="L913">            throw new WrongSizeException(</span>
+                    &quot;if provided jacobian of v1 is not 3x3&quot;);
+        }
+<span class="pc bpc" id="L916" title="1 of 4 branches missed.">        if (jacobian2 != null &amp;&amp; (jacobian2.getRows() != 3 ||</span>
+<span class="pc bpc" id="L917" title="1 of 2 branches missed.">                jacobian2.getColumns() != 3)) {</span>
+<span class="fc" id="L918">            throw new WrongSizeException(</span>
+                    &quot;if provided jacobian of v2 is not 3x3&quot;);
+        }
+
+<span class="fc" id="L922">        crossProduct(v1, v2, result);</span>
+
+<span class="pc bpc" id="L924" title="1 of 2 branches missed.">        if (jacobian1 != null) {</span>
+<span class="fc" id="L925">            skewMatrix(v1, jacobian1);</span>
+<span class="fc" id="L926">            jacobian1.multiplyByScalar(-1.0);</span>
+        }
+
+<span class="pc bpc" id="L929" title="1 of 2 branches missed.">        if (jacobian2 != null) {</span>
+<span class="fc" id="L930">            skewMatrix(v2, jacobian2);</span>
+        }
+<span class="fc" id="L932">    }</span>
+
+    /**
+     * Computes the cross product of two vectors of length 3
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     *
+     * @param v1     Left vector in the crossProduct operation (A in axb)
+     * @param v2     Right vector in the crossProduct operation (b in axb)
+     * @param result array where the cross product of vectors v1 and b2 will be
+     *               stored.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3.
+     * @see #Utils  for more information.
+     */
+    public static void crossProduct(final double[] v1, final double[] v2, final double[] result)
+            throws WrongSizeException {
+<span class="pc bpc" id="L961" title="2 of 6 branches missed.">        if (v1.length != 3 || v2.length != 3 || result.length != 3) {</span>
+<span class="fc" id="L962">            throw new WrongSizeException(</span>
+                    &quot;v1, v2 and result must have length 3&quot;);
+        }
+
+<span class="fc" id="L966">        final Matrix skm = Utils.skewMatrix(v1);</span>
+<span class="fc" id="L967">        skm.multiply(Matrix.newFromArray(v2));</span>
+
+<span class="fc" id="L969">        final double[] buffer = skm.getBuffer();</span>
+<span class="fc" id="L970">        System.arraycopy(buffer, 0, result, 0, buffer.length);</span>
+<span class="fc" id="L971">    }</span>
+
+    /**
+     * Computes the cross product of two vectors of length 3
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     *
+     * @param v1 Left vector in the crossProduct operation (A in axb)
+     * @param v2 Right vector in the crossProduct operation (b in axb)
+     * @return Vector containing the cross product of vectors v1 and b2.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3.
+     * @see #Utils  for more information.
+     */
+    public static double[] crossProduct(final double[] v1, final double[] v2)
+            throws WrongSizeException {
+<span class="pc bpc" id="L999" title="2 of 4 branches missed.">        if (v1.length != 3 || v2.length != 3) {</span>
+<span class="nc" id="L1000">            throw new WrongSizeException(&quot;v1, v2 must have length 3&quot;);</span>
+        }
+
+<span class="fc" id="L1003">        final Matrix skm = Utils.skewMatrix(v1);</span>
+<span class="fc" id="L1004">        skm.multiply(Matrix.newFromArray(v2));</span>
+
+<span class="fc" id="L1006">        return skm.toArray();</span>
+    }
+
+    /**
+     * Computes the cross product of two vectors of length 3
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     *
+     * @param v1        Left vector in the crossProduct operation (A in axb)
+     * @param v2        Right vector in the crossProduct operation (b in axb)
+     * @param jacobian1 jacobian of v1. Must be 3x3.
+     * @param jacobian2 jacobian of v2. Must be 3x3.
+     * @return Vector containing the cross product of vectors v1 and b2.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3, or if jacobians are not 3x3.
+     */
+    public static double[] crossProduct(
+            final double[] v1, final double[] v2, final Matrix jacobian1, final Matrix jacobian2)
+            throws WrongSizeException {
+
+<span class="pc bpc" id="L1038" title="1 of 4 branches missed.">        if (jacobian1 != null &amp;&amp; (jacobian1.getRows() != 3 ||</span>
+<span class="pc bpc" id="L1039" title="1 of 2 branches missed.">                jacobian1.getColumns() != 3)) {</span>
+<span class="fc" id="L1040">            throw new WrongSizeException(</span>
+                    &quot;if provided jacobian of v1 is not 3x3&quot;);
+        }
+<span class="pc bpc" id="L1043" title="2 of 4 branches missed.">        if (jacobian2 != null &amp;&amp; (jacobian2.getRows() != 3 ||</span>
+<span class="nc bnc" id="L1044" title="All 2 branches missed.">                jacobian2.getColumns() != 3)) {</span>
+<span class="fc" id="L1045">            throw new WrongSizeException(</span>
+                    &quot;if provided jacobian of v2 is not 3x3&quot;);
+        }
+
+<span class="nc bnc" id="L1049" title="All 2 branches missed.">        if (jacobian1 != null) {</span>
+<span class="nc" id="L1050">            skewMatrix(v1, jacobian1);</span>
+<span class="nc" id="L1051">            jacobian1.multiplyByScalar(-1.0);</span>
+        }
+
+<span class="nc bnc" id="L1054" title="All 2 branches missed.">        if (jacobian2 != null) {</span>
+<span class="nc" id="L1055">            skewMatrix(v2, jacobian2);</span>
+        }
+
+<span class="nc" id="L1058">        return crossProduct(v1, v2);</span>
+    }
+
+    /**
+     * Computes the cross product of one vector of length 3 and N vectors of
+     * length 3.
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     * The result is stored into provided result matrix, which will be resized
+     * if needed
+     *
+     * @param v      Left operand in crossProduct operation
+     * @param m      Right operand in crossProduct operation, matrix containing a
+     *               vector in every row.
+     * @param result Matrix where the cross products of vector v and the vectors
+     *               contained in matrix m will be stored.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3 or if number of rows of provided matrix isn't 3.
+     * @see Utils#skewMatrix(Matrix)  for more information.
+     */
+    public static void crossProduct(final double[] v, final Matrix m, final Matrix result)
+            throws WrongSizeException {
+<span class="fc bfc" id="L1092" title="All 4 branches covered.">        if (v.length != 3 || m.getColumns() != 3) {</span>
+<span class="fc" id="L1093">            throw new WrongSizeException();</span>
+        }
+<span class="fc" id="L1095">        Utils.skewMatrix(v).multiply(m, result);</span>
+<span class="fc" id="L1096">    }</span>
+
+    /**
+     * Computes the cross product of one vector of length 3 and N vectors of
+     * length 3.
+     * The cross product of two vectors a and b is denoted as 'axb' or 'a^b',
+     * resulting in a perpendicular vector to both a and b vectors. This implies
+     * the following relation:
+     * c·a = 0
+     * c·b = 0
+     * A cross product can be calculated as the determinant of this matrix
+     * |i   j   k |
+     * |a0  a1  a2|
+     * |b0  b1  b2|
+     * Resulting:
+     * a x b = (a1b2 - a2b1) i + (a2b0 - a0b2) j + (a0b1 - a1b0) k =
+     * = (a1b2 - a2b1, a2b0 - a0b2, a0b1 - a1b0)
+     * This implementation does not use the determinant to compute the cross
+     * product. A symmetric-skew matrix will be computed and used instead.
+     *
+     * @param v Left operand in crossProduct operation
+     * @param m Right operand in crossProduct operation, matrix containing a
+     *          vector in every row.
+     * @return Matrix containing the cross products of vector v and the vectors
+     * contained in matrix m.
+     * @throws WrongSizeException Exception thrown if provided vectors don't
+     *                            have length 3 or if number of rows of provided matrix isn't 3.
+     * @see Utils#skewMatrix(Matrix)  for more information.
+     */
+    public static Matrix crossProduct(final double[] v, final Matrix m)
+            throws WrongSizeException {
+<span class="fc bfc" id="L1127" title="All 4 branches covered.">        if (v.length != 3 || m.getColumns() != 3) {</span>
+<span class="fc" id="L1128">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc" id="L1131">        final Matrix skm = Utils.skewMatrix(v);</span>
+<span class="fc" id="L1132">        skm.multiply(m);</span>
+
+<span class="fc" id="L1134">        return skm;</span>
+    }
+
+    /**
+     * Check if the matrix is symmetric.
+     *
+     * @param m         Input matrix.
+     * @param threshold Threshold value to determine if a matrix is symmetric.
+     *                  This value is typically zero or close to zero.
+     * @return Boolean relation whether the matrix is symmetric or not.
+     * @throws IllegalArgumentException Raised if provided threshold is negative
+     */
+    public static boolean isSymmetric(final Matrix m, final double threshold) {
+
+<span class="pc bpc" id="L1148" title="1 of 2 branches missed.">        if (threshold &lt; MIN_THRESHOLD) {</span>
+<span class="nc" id="L1149">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1152">        final int length = m.getRows();</span>
+<span class="pc bpc" id="L1153" title="1 of 2 branches missed.">        if (length != m.getColumns()) {</span>
+<span class="nc" id="L1154">            return false;</span>
+        }
+
+<span class="fc bfc" id="L1157" title="All 2 branches covered.">        for (int j = 0; j &lt; length; j++) {</span>
+<span class="fc bfc" id="L1158" title="All 2 branches covered.">            for (int i = j + 1; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L1159" title="All 2 branches covered.">                if (Math.abs(m.getElementAt(j, i) -</span>
+<span class="fc" id="L1160">                        m.getElementAt(i, j)) &gt; threshold) {</span>
+<span class="fc" id="L1161">                    return false;</span>
+                }
+            }
+        }
+<span class="fc" id="L1165">        return true;</span>
+    }
+
+    /**
+     * Check if the matrix is symmetric. DEFAULT_SYMMETRIC_THRESHOLD is used
+     * as threshold.
+     *
+     * @param m Input matrix.
+     * @return Boolean relation whether the matrix is symmetric or not.
+     */
+    public static boolean isSymmetric(final Matrix m) {
+<span class="fc" id="L1176">        return isSymmetric(m, DEFAULT_SYMMETRIC_THRESHOLD);</span>
+    }
+
+    /**
+     * Checks if the matrix is orthogonal (its transpose is its inverse).
+     * Orthogonal matrices must be square and non-singular
+     *
+     * @param m         Input matrix
+     * @param threshold Threshold value to determine if a matrix is orthogonal.
+     *                  This value is typically zero or close to zero.
+     * @return True if matrix is orthogonal, false otherwise.
+     * @throws IllegalArgumentException Raised if provided threshold is negative
+     */
+    public static boolean isOrthogonal(final Matrix m, final double threshold) {
+
+<span class="fc bfc" id="L1191" title="All 2 branches covered.">        if (threshold &lt; MIN_THRESHOLD) {</span>
+<span class="fc" id="L1192">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1195">        final int length = m.getRows();</span>
+<span class="fc bfc" id="L1196" title="All 2 branches covered.">        if (length != m.getColumns()) {</span>
+<span class="fc" id="L1197">            return false;</span>
+        }
+
+        try {
+            // to get faster computation it is better to try m' * m
+<span class="fc" id="L1202">            final Matrix tmp = m.transposeAndReturnNew();</span>
+<span class="fc" id="L1203">            tmp.multiply(m);</span>
+
+<span class="fc bfc" id="L1205" title="All 2 branches covered.">            for (int j = 0; j &lt; length; j++) {</span>
+<span class="fc bfc" id="L1206" title="All 2 branches covered.">                for (int i = j + 1; i &lt; length; i++) {</span>
+<span class="fc bfc" id="L1207" title="All 2 branches covered.">                    if (Math.abs(tmp.getElementAt(i, j)) &gt; threshold) {</span>
+<span class="fc" id="L1208">                        return false;</span>
+                    }
+                }
+            }
+<span class="fc" id="L1212">            return true;</span>
+
+<span class="nc" id="L1214">        } catch (final WrongSizeException e) {</span>
+<span class="nc" id="L1215">            return false;</span>
+        }
+    }
+
+    /**
+     * Checks if the matrix is orthogonal (its transpose is its inverse).
+     * DEFAULT_ORTHOGONAL_THRESHOLD is used as threshold. Orthogonal matrices
+     * must be square and non-singular
+     *
+     * @param m Input matrix.
+     * @return True if matrix is orthogonal, false otherwise.
+     */
+    public static boolean isOrthogonal(final Matrix m) {
+<span class="fc" id="L1228">        return isOrthogonal(m, DEFAULT_ORTHOGONAL_THRESHOLD);</span>
+    }
+
+    /**
+     * Checks if the matrix is orthonormal (it is orthogonal and its Frobenius
+     * norm is one)
+     *
+     * @param m         Input matrix
+     * @param threshold Threshold value to determine if a matrix is orthonormal.
+     *                  This value is typically zero or close to zero.
+     * @return True if matrix is orthonormal, false otherwise.
+     * @throws IllegalArgumentException Raised if provided threshold is negative
+     */
+    public static boolean isOrthonormal(final Matrix m, final double threshold) {
+<span class="fc bfc" id="L1242" title="All 2 branches covered.">        return isOrthogonal(m, threshold) &amp;&amp;</span>
+<span class="fc bfc" id="L1243" title="All 2 branches covered.">                (Math.abs(Utils.normF(m) - 1.0) &lt; threshold);</span>
+    }
+
+    /**
+     * Checks if the matrix is orthonormal up to DEFAULT_ORTHOGONAL_THRESHOLD
+     * (it is orthogonal and its Frobenius norm is one)
+     *
+     * @param m Input matrix
+     * @return True if matrix is orthonormal, false otherwise.
+     */
+    public static boolean isOrthonormal(final Matrix m) {
+<span class="fc" id="L1254">        return isOrthonormal(m, DEFAULT_ORTHOGONAL_THRESHOLD);</span>
+    }
+
+    /**
+     * Computes the dot product of provided arrays as the sum of the product of
+     * the elements of both arrays.
+     *
+     * @param firstOperand  first operand.
+     * @param secondOperand second operand.
+     * @return dot product.
+     * @throws IllegalArgumentException if first and second operands arrays
+     *                                  don't have the same length.
+     */
+    public static double dotProduct(final double[] firstOperand,
+                                    final double[] secondOperand) {
+<span class="fc" id="L1269">        return ArrayUtils.dotProduct(firstOperand, secondOperand);</span>
+    }
+
+    /**
+     * Computes the dot product of provided arrays as the sum of the product of
+     * the elements of both arrays.
+     *
+     * @param firstOperand   first operand.
+     * @param secondOperand  second operand.
+     * @param jacobianFirst  matrix where jacobian of first operand will be
+     *                       stored. Must be a column matrix having the same number of rows as the
+     *                       first operand length.
+     * @param jacobianSecond matrix where jacobian of second operand will be
+     *                       stored. Must be a column matrix having the same number of rows as the
+     *                       second operand length.
+     * @return dot product.
+     * @throws IllegalArgumentException if first and second operands don't have
+     *                                  the same length or if jacobian matrices are not column vectors having the
+     *                                  same length as their respective operands.
+     */
+    public static double dotProduct(
+            final double[] firstOperand, final double[] secondOperand,
+            final Matrix jacobianFirst, final Matrix jacobianSecond) {
+<span class="fc" id="L1292">        return ArrayUtils.dotProduct(firstOperand, secondOperand, jacobianFirst,</span>
+                jacobianSecond);
+    }
+
+    /**
+     * Computes the dot product of provided matrices, as the sum of the product
+     * of the elements on both matrices, assuming that both represent column
+     * vectors.
+     *
+     * @param firstOperand  first operand.
+     * @param secondOperand second operand.
+     * @return dot product.
+     * @throws WrongSizeException if first operand columns are not equal to
+     *                            second operand rows, or if first operand rows is not one, or if second
+     *                            operand columns is not one.
+     */
+    public static double dotProduct(final Matrix firstOperand, final Matrix secondOperand)
+            throws WrongSizeException {
+<span class="fc bfc" id="L1310" title="All 2 branches covered.">        if (firstOperand.getColumns() != secondOperand.getRows() ||</span>
+<span class="pc bpc" id="L1311" title="2 of 4 branches missed.">                firstOperand.getRows() != 1 || secondOperand.getColumns() != 1) {</span>
+<span class="fc" id="L1312">            throw new WrongSizeException(&quot;first operand must be 1xN, and &quot;</span>
+                    + &quot;second operand must be Nx1&quot;);
+        }
+
+<span class="fc" id="L1316">        return dotProduct(firstOperand.getBuffer(), secondOperand.getBuffer());</span>
+    }
+
+    /**
+     * Computes the dot product of provided matrices, as the sum of the product
+     * of the elements on both matrices, assuming that both represent column
+     * vectors.
+     *
+     * @param firstOperand   first operand. Must be 1xN.
+     * @param secondOperand  second operand. Must be Nx1.
+     * @param jacobianFirst  matrix where jacobian of first operand will be
+     *                       stored. Must be a column matrix having the same number of rows as the
+     *                       first operand length. Must be Nx1.
+     * @param jacobianSecond matrix where jacobian of second operand will be
+     *                       stored. Must be a column matrix having the same number of rows as the
+     *                       second operand length. Must be Nx1.
+     * @return dot product.
+     * @throws WrongSizeException       if first operand columns are not equal to
+     *                                  second operand rows, or if first operand rows is not one, or if second
+     *                                  operand columns is not one.
+     * @throws IllegalArgumentException if jacobian matrices are not column
+     *                                  vectors having the same length as their respective operands.
+     */
+    public static double dotProduct(final Matrix firstOperand, final Matrix secondOperand,
+                                    final Matrix jacobianFirst, final Matrix jacobianSecond)
+            throws WrongSizeException {
+<span class="fc bfc" id="L1342" title="All 2 branches covered.">        if (firstOperand.getColumns() != secondOperand.getRows() ||</span>
+<span class="pc bpc" id="L1343" title="2 of 4 branches missed.">                firstOperand.getRows() != 1 || secondOperand.getColumns() != 1) {</span>
+<span class="fc" id="L1344">            throw new WrongSizeException(&quot;first operand must be 1xN, and &quot;</span>
+                    + &quot;second operand must be Nx1&quot;);
+        }
+
+<span class="fc" id="L1348">        return dotProduct(firstOperand.getBuffer(), secondOperand.getBuffer(),</span>
+                jacobianFirst, jacobianSecond);
+    }
+
+
+    /**
+     * Computes the Schur complement of a symmetric matrix.
+     * For a matrix M of size sxs having the typical partition
+     * M = [A B ; B' C]
+     * where A is posxpos, B is posx(s - pos) and C is (s-pos)x(s-pos)
+     * Then pos indicates the position that delimits the separation between
+     * these sub-matrices in the diagonal.
+     * If fromStart is true, then Schur complement of A is computed and result
+     * will have size (s-pos)x(s-pos).
+     * If fromStart if false, then Schur complement of C is computed and result
+     * will have size posxpos.
+     * &lt;p&gt;
+     * Definitions and rationale:
+     * If M is a symmetrical matrix partitioned as:
+     * M = [M_11 M_12 ; M_12' M_22]
+     * then the Schur complement of M_11 is
+     * S = M_22 - M_12 ¡ * M_11^-1 * M_12
+     * The optionally returned inverse block is just iA = M_11^-1
+     * whose name comes from 'inverse of A', A given by the popular partition
+     * of M = [A B ; B' C], therefore A = M_11.
+     * If M is symmetrical and positive, then using the Cholesky decomposition
+     * M = [R_11' 0 ; R_12' R_22] * [R_11 R_12 ; 0 R_22]
+     * leads to
+     * S = R_22' * R_22
+     * iA = (R_11' * R_11)^-1 = R_11^-1 * R_11^-T
+     * which constitutes and efficient and stable way to compute the Schur
+     * complement. The square root factors R_22 and R_11^_1 can be obtained by
+     * setting the optional flag sqrt.
+     * The Schur complement has applications for solving linear equations, and
+     * applications to probability theory to compute conditional covariances.
+     *
+     * @param m         matrix to compute the Schur complement from
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param sqrt      true to return the square root of the Schur complement, which
+     *                  is an upper triangular matrix, false to return the full Schur complement,
+     *                  which is S'*S.
+     * @param result    instance where the Schur complement will be stored. If
+     *                  needed this instance will be resized.
+     * @param iA        instance where the inverse block will be stored, if provided.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(final Matrix m, int pos, final boolean fromStart,
+                              final boolean sqrt, final Matrix result, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1404">        final int rows = m.getRows();</span>
+<span class="fc" id="L1405">        final int cols = m.getColumns();</span>
+<span class="fc bfc" id="L1406" title="All 2 branches covered.">        if (rows != cols) {</span>
+<span class="fc" id="L1407">            throw new IllegalArgumentException(&quot;matrix must be square&quot;);</span>
+        }
+<span class="fc bfc" id="L1409" title="All 2 branches covered.">        if (pos &gt;= rows) {</span>
+<span class="fc" id="L1410">            throw new IllegalArgumentException(&quot;pos must be lower than rows&quot;);</span>
+        }
+<span class="fc bfc" id="L1412" title="All 2 branches covered.">        if (pos == 0) {</span>
+<span class="fc" id="L1413">            throw new IllegalArgumentException(&quot;pos must be greater than 0&quot;);</span>
+        }
+
+        try {
+            final Matrix m2;
+<span class="fc bfc" id="L1418" title="All 2 branches covered.">            if (fromStart) {</span>
+                // if position is taken from origin, no reordering is needed
+<span class="fc" id="L1420">                m2 = m;</span>
+            } else {
+                // if position is taken from pos to end, then reordering is needed
+
+                // create index positions to reorder matrix to decompose using
+                // Cholesky
+<span class="fc" id="L1426">                final int[] index = new int[rows];</span>
+<span class="fc" id="L1427">                final int complSize = rows - pos;</span>
+<span class="fc bfc" id="L1428" title="All 2 branches covered.">                for (int i = 0, value = pos; i &lt; complSize; i++, value++) {</span>
+<span class="fc" id="L1429">                    index[i] = value;</span>
+                }
+<span class="fc bfc" id="L1431" title="All 2 branches covered.">                for (int i = complSize, j = 0; i &lt; rows; i++, j++) {</span>
+<span class="fc" id="L1432">                    index[i] = j;</span>
+                }
+
+<span class="fc" id="L1435">                m2 = new Matrix(rows, rows);</span>
+<span class="fc bfc" id="L1436" title="All 2 branches covered.">                for (int j = 0; j &lt; rows; j++) {</span>
+<span class="fc bfc" id="L1437" title="All 2 branches covered.">                    for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L1438">                        m2.setElementAt(i, j, m.getElementAt(index[i],</span>
+                                index[j]));
+                    }
+                }
+
+<span class="fc" id="L1443">                pos = rows - pos;</span>
+            }
+
+<span class="fc" id="L1446">            final CholeskyDecomposer decomposer = new CholeskyDecomposer(m2);</span>
+<span class="fc" id="L1447">            decomposer.decompose();</span>
+
+            // pick the upper right matrix of cholesky
+<span class="fc" id="L1450">            final Matrix r = decomposer.getR();</span>
+
+            // s, which is the square root of Schur complement and is the result,
+            // is an upper right matrix because it is a sub-matrix of r
+<span class="fc" id="L1454">            final int sizeMinus1 = rows - 1;</span>
+<span class="fc" id="L1455">            r.getSubmatrix(pos, pos, sizeMinus1, sizeMinus1, result);</span>
+
+<span class="fc bfc" id="L1457" title="All 2 branches covered.">            if (!sqrt) {</span>
+                // if the full version of the Schur complement is required
+                // we multiply by its transpose S = S'*S
+<span class="fc" id="L1460">                final Matrix transS = result.transposeAndReturnNew();</span>
+<span class="fc" id="L1461">                transS.multiply(result); //transS is now S'*S</span>
+<span class="fc" id="L1462">                result.copyFrom(transS);</span>
+            }
+
+<span class="fc bfc" id="L1465" title="All 2 branches covered.">            if (iA != null) {</span>
+                // minor of r is the square root of inverse block
+<span class="fc" id="L1467">                final int posMinus1 = pos - 1;</span>
+<span class="fc" id="L1468">                r.getSubmatrix(0, 0, posMinus1, posMinus1, iA);</span>
+<span class="fc" id="L1469">                Utils.inverse(iA, iA);</span>
+                // to obtain full inverse block iA we need to multiply it by its
+                // transpose iA = iA * iA'
+<span class="fc" id="L1472">                final Matrix transiA = iA.transposeAndReturnNew();</span>
+<span class="fc" id="L1473">                iA.multiply(transiA);</span>
+            }
+<span class="fc" id="L1475">        } catch (final DecomposerException | RankDeficientMatrixException e) {</span>
+            // if matrix is numerically unstable or singular
+<span class="fc" id="L1477">            throw e;</span>
+<span class="nc" id="L1478">        } catch (final AlgebraException ignore) {</span>
+            // Cholesky will not raise any other exception
+<span class="fc" id="L1480">        }</span>
+<span class="fc" id="L1481">    }</span>
+
+    /**
+     * Computes the Schur complement of a symmetric matrix, returning always the
+     * full Schur complement.
+     *
+     * @param m         matrix to compute the Schur complement from
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param result    instance where the Schur complement will be stored. If
+     *                  needed this instance will be resized.
+     * @param iA        instance where the inverse block will be stored, if provided.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(
+            final Matrix m, final int pos, final boolean fromStart,
+            final Matrix result, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1506">        schurc(m, pos, fromStart, false, result, iA);</span>
+<span class="fc" id="L1507">    }</span>
+
+    /**
+     * Computes the Schur complement of the sub-matrix A within a symmetric
+     * matrix, returning always the full Schur complement.
+     *
+     * @param m      matrix to compute the Schur complement from
+     * @param pos    position to delimit the Schur complement.
+     * @param result instance where the Schur complement will be stored. If
+     *               needed this instance will be resized.
+     * @param iA     instance where the inverse block will be stored, if provided.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(final Matrix m, final int pos, final Matrix result, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1528">        schurc(m, pos, true, result, iA);</span>
+<span class="fc" id="L1529">    }</span>
+
+    /**
+     * Computes the Schur complement of a symmetric matrix.
+     *
+     * @param m         matrix to compute the Schur complement from.
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param sqrt      true to return the square root of the Schur complement, which
+     *                  is an upper triangular matrix, false to return the full Schur complement,
+     *                  which is S'*S.
+     * @param iA        instance where the inverse block will be stored, if provided.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(
+            final Matrix m, final int pos, final boolean fromStart, final boolean sqrt, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1554">        final int rows = m.getRows();</span>
+<span class="fc" id="L1555">        final int cols = m.getColumns();</span>
+<span class="fc bfc" id="L1556" title="All 2 branches covered.">        if (rows != cols) {</span>
+<span class="fc" id="L1557">            throw new IllegalArgumentException(&quot;matrix must be square&quot;);</span>
+        }
+<span class="fc bfc" id="L1559" title="All 2 branches covered.">        if (pos &gt;= rows) {</span>
+<span class="fc" id="L1560">            throw new IllegalArgumentException(&quot;pos must be lower than rows&quot;);</span>
+        }
+<span class="fc bfc" id="L1562" title="All 2 branches covered.">        if (pos == 0) {</span>
+<span class="fc" id="L1563">            throw new IllegalArgumentException(&quot;pos must be greater than 0&quot;);</span>
+        }
+
+<span class="fc bfc" id="L1566" title="All 2 branches covered.">        final int size = fromStart ? pos : rows - pos;</span>
+<span class="fc" id="L1567">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L1569">            result = new Matrix(size, size);</span>
+<span class="nc" id="L1570">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L1572">        }</span>
+
+<span class="fc" id="L1574">        schurc(m, pos, fromStart, sqrt, result, iA);</span>
+<span class="fc" id="L1575">        return result;</span>
+    }
+
+    /**
+     * Computes the Schur complement of a symmetric matrix, returning always the
+     * full Schur complement.
+     *
+     * @param m         matrix to compute the Schur complement from
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param iA        instance where the inverse block will be stored, if provided.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrice&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(
+            final Matrix m, final int pos, final boolean fromStart, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1599">        return schurcAndReturnNew(m, pos, fromStart, false, iA);</span>
+    }
+
+    /**
+     * Computes the Schur complement of the sub-matrix A within a symmetric
+     * matrix, returning always the full Schur complement.
+     *
+     * @param m   matrix to compute the Schur complement from
+     * @param pos position to delimit the Schur complement.
+     * @param iA  instance where the inverse block will be stored, if provided.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException     if m is not square, pos is greater or
+     *                                      equal than matrix size, or pos is zero.
+     * @throws DecomposerException          if m is numerically unstable.
+     * @throws RankDeficientMatrixException if iA matrix is singular or
+     *                                      numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(final Matrix m, final int pos, final Matrix iA)
+            throws DecomposerException, RankDeficientMatrixException {
+<span class="fc" id="L1620">        return schurcAndReturnNew(m, pos, true, iA);</span>
+    }
+
+    /**
+     * Computes the Schur complement of a symmetric matrix.
+     *
+     * @param m         matrix to compute the Schur complement from.
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param sqrt      true to return the square root of the Schur complement, which
+     *                  is an upper triangular matrix, false to return the full Schur complement,
+     *                  which is S'*S.
+     * @param result    instance where the Schur complement will be stored. If
+     *                  needed this instance will be resized.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(final Matrix m, final int pos, final boolean fromStart,
+                              final boolean sqrt, final Matrix result) throws DecomposerException {
+        try {
+<span class="fc" id="L1644">            schurc(m, pos, fromStart, sqrt, result, null);</span>
+<span class="nc" id="L1645">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1647">        }</span>
+<span class="fc" id="L1648">    }</span>
+
+    /**
+     * Computes the Schur complement of a symmetric matrix, returning always the
+     * full Schur complement.
+     *
+     * @param m         matrix to compute the Schur complement from
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param result    instance where the Schur complement will be stored. If
+     *                  needed this instance will be resized.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(final Matrix m, final int pos, final boolean fromStart,
+                              final Matrix result) throws DecomposerException {
+        try {
+<span class="fc" id="L1669">            schurc(m, pos, fromStart, result, null);</span>
+<span class="nc" id="L1670">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1672">        }</span>
+<span class="fc" id="L1673">    }</span>
+
+    /**
+     * Computes the Schur complement of the sub-matrix A within a symmetric
+     * matrix, returning always the full Schur complement.
+     *
+     * @param m      matrix to compute the Schur complement from
+     * @param pos    position to delimit the Schur complement.
+     * @param result instance where the Schur complement will be stored. If
+     *               needed this instance will be resized.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static void schurc(final Matrix m, final int pos, final Matrix result)
+            throws DecomposerException {
+        try {
+<span class="fc" id="L1692">            schurc(m, pos, result, null);</span>
+<span class="nc" id="L1693">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1695">        }</span>
+<span class="fc" id="L1696">    }</span>
+
+    /**
+     * Computes the Schur complement of a symmetric matrix.
+     *
+     * @param m         matrix to compute the Schur complement from.
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @param sqrt      true to return the square root of the Schur complement, which
+     *                  is an upper triangular matrix, false to return the full Schur complement,
+     *                  which is S'*S.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(
+            final Matrix m, final int pos, final boolean fromStart, final boolean sqrt)
+            throws DecomposerException {
+<span class="fc" id="L1718">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L1720">            result = schurcAndReturnNew(m, pos, fromStart, sqrt, null);</span>
+<span class="nc" id="L1721">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1723">        }</span>
+
+<span class="fc" id="L1725">        return result;</span>
+    }
+
+    /**
+     * Computes the Schur complement of a symmetric matrix, returning always the
+     * full Schur complement.
+     *
+     * @param m         matrix to compute the Schur complement from
+     * @param pos       position to delimit the Schur complement.
+     * @param fromStart true to compute Schur complement of A, false to compute
+     *                  Schur complement of C.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(
+            final Matrix m, final int pos, final boolean fromStart) throws DecomposerException {
+<span class="fc" id="L1745">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L1747">            result = schurcAndReturnNew(m, pos, fromStart, null);</span>
+<span class="nc" id="L1748">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1750">        }</span>
+
+<span class="fc" id="L1752">        return result;</span>
+    }
+
+    /**
+     * Computes the Schur complement of the sub-matrix A within a symmetric
+     * matrix, returning always the full Schur complement.
+     *
+     * @param m   matrix to compute the Schur complement from
+     * @param pos position to delimit the Schur complement.
+     * @return a new matrix containing the Schur complement.
+     * @throws IllegalArgumentException if m is not square, pos is greater or
+     *                                  equal than matrix size, or pos is zero.
+     * @throws DecomposerException      if m is numerically unstable.
+     * @see #schurc(com.irurueta.algebra.Matrix, int, boolean, boolean, com.irurueta.algebra.Matrix, com.irurueta.algebra.Matrix)
+     * @see &lt;a href=&quot;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&quot;&gt;http://scicomp.stackexchange.com/questions/5050/cholesky-factorization-of-block-matrices&lt;/a&gt;
+     */
+    public static Matrix schurcAndReturnNew(final Matrix m, final int pos)
+            throws DecomposerException {
+<span class="fc" id="L1770">        Matrix result = null;</span>
+        try {
+<span class="fc" id="L1772">            result = schurcAndReturnNew(m, pos, null);</span>
+<span class="nc" id="L1773">        } catch (final RankDeficientMatrixException ignore) {</span>
+            // if no iA is provided, this exception is never raised.
+<span class="fc" id="L1775">        }</span>
+
+<span class="fc" id="L1777">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

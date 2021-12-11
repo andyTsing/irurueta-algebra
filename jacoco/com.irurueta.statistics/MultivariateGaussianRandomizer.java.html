@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MultivariateGaussianRandomizer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.statistics</a> &gt; <span class="el_source">MultivariateGaussianRandomizer.java</span></div><h1>MultivariateGaussianRandomizer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2016 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.irurueta.statistics;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.CholeskyDecomposer;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
+
+import java.util.Random;
+
+/**
+ * Generates pseudo-random values following a multivariate Gaussian distribution
+ * having the specified mean and covariance. By default mean is equal to zero
+ * and the covariance is equal to the identity (unitary standard deviation).
+ */
+public class MultivariateGaussianRandomizer {
+
+    /**
+     * Contains mean values to be used for random value generation.
+     */
+    private double[] mMean;
+
+    /**
+     * Covariance matrix.
+     */
+    private Matrix mCovariance;
+
+    /**
+     * Lower triangular Cholesky decomposition of covariance matrix.
+     */
+    private Matrix mL;
+
+    /**
+     * Instance in charge of generating pseudo-random values. Secure instances
+     * can be used if the generated values need to be ensured &quot;more&quot; random at
+     * the expense of higher computational cost.
+     */
+    private final Random mInternalRandom;
+
+    /**
+     * Constructor.
+     */
+    public MultivariateGaussianRandomizer() {
+<span class="fc" id="L59">        this(new Random());</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Constructor.
+     * Because neither mean or covariance are provided, default values will be
+     * used instead.
+     *
+     * @param internalRandom internal random instance in charge of generating
+     *                       pseudo-random values.
+     * @throws NullPointerException thrown if provided internal random is null.
+     */
+<span class="fc" id="L71">    public MultivariateGaussianRandomizer(final Random internalRandom) {</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        if (internalRandom == null) {</span>
+<span class="fc" id="L73">            throw new NullPointerException();</span>
+        }
+
+<span class="fc" id="L76">        mInternalRandom = internalRandom;</span>
+<span class="fc" id="L77">        mMean = new double[1];</span>
+        try {
+<span class="fc" id="L79">            mCovariance = mL = Matrix.identity(1, 1);</span>
+<span class="nc" id="L80">        } catch (final WrongSizeException ignore) {</span>
+            // never thrown
+<span class="fc" id="L82">        }</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param mean       mean to be set.
+     * @param covariance covariance to be set.
+     * @throws WrongSizeException               if mean length is not compatible with
+     *                                          covariance size. Mean length must be equal to size of square covariance
+     *                                          matrix.
+     * @throws InvalidCovarianceMatrixException if provided covariance matrix is
+     *                                          not symmetric positive definite.
+     */
+    public MultivariateGaussianRandomizer(final double[] mean, final Matrix covariance)
+            throws WrongSizeException, InvalidCovarianceMatrixException {
+<span class="fc" id="L98">        this(new Random(), mean, covariance);</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param internalRandom internal random instance in charge of generating
+     *                       pseudo-random values.
+     * @param mean           mean to be set.
+     * @param covariance     covariance to be set.
+     * @throws WrongSizeException               if mean length is not compatible with
+     *                                          covariance size. Mean length must be equal to size of square covariance
+     *                                          matrix.
+     * @throws InvalidCovarianceMatrixException if provided covariance matrix is
+     *                                          not symmetric positive definite.
+     * @throws NullPointerException             thrown if provided internal random is null.
+     */
+    public MultivariateGaussianRandomizer(final Random internalRandom, final double[] mean,
+                                          final Matrix covariance) throws WrongSizeException,
+<span class="fc" id="L117">            InvalidCovarianceMatrixException {</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (internalRandom == null) {</span>
+<span class="nc" id="L119">            throw new NullPointerException();</span>
+        }
+
+<span class="fc" id="L122">        mInternalRandom = internalRandom;</span>
+<span class="fc" id="L123">        setMeanAndCovariance(mean, covariance);</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Returns mean value to be used for Gaussian random value generation.
+     *
+     * @return mean value.
+     */
+    public double[] getMean() {
+<span class="fc" id="L132">        return mMean;</span>
+    }
+
+    /**
+     * Returns covariance to be used for Gaussian random value generation.
+     *
+     * @return covariance.
+     */
+    public Matrix getCovariance() {
+<span class="fc" id="L141">        return mCovariance;</span>
+    }
+
+    /**
+     * Sets mean and covariance to generate multivariate Gaussian random values.
+     *
+     * @param mean       mean to be set.
+     * @param covariance covariance to be set.
+     * @throws WrongSizeException               if mean length is not compatible with
+     *                                          covariance size. Mean length must be equal to size of square covariance
+     *                                          matrix.
+     * @throws InvalidCovarianceMatrixException if provided covariance matrix is
+     *                                          not symmetric positive definite.
+     */
+    public final void setMeanAndCovariance(final double[] mean, final Matrix covariance)
+            throws WrongSizeException, InvalidCovarianceMatrixException {
+<span class="fc" id="L157">        final int length = mean.length;</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (covariance.getRows() != length ||</span>
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">                covariance.getColumns() != length) {</span>
+<span class="fc" id="L160">            throw new WrongSizeException(&quot;mean must have same covariance size&quot;);</span>
+        }
+
+        try {
+<span class="fc" id="L164">            final CholeskyDecomposer decomposer = new CholeskyDecomposer(covariance);</span>
+<span class="fc" id="L165">            decomposer.decompose();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            if (!decomposer.isSPD()) {</span>
+<span class="fc" id="L167">                throw new InvalidCovarianceMatrixException(</span>
+                        &quot;covariance matrix must be symmetric positive &quot; +
+                                &quot;definite (non singular)&quot;);
+            }
+
+<span class="fc" id="L172">            mMean = mean;</span>
+<span class="fc" id="L173">            mCovariance = covariance;</span>
+
+<span class="fc" id="L175">            mL = decomposer.getL();</span>
+<span class="nc" id="L176">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L177">            throw new InvalidCovarianceMatrixException(</span>
+                    &quot;covariance matrix must be square&quot;, e);
+<span class="fc" id="L179">        }</span>
+<span class="fc" id="L180">    }</span>
+
+    /**
+     * Generate next set of multivariate Gaussian random values having current
+     * mean and covariance of this instance.
+     *
+     * @param values array where generated random values will be stored.
+     * @throws IllegalArgumentException if provided array length does not have the same length
+     *                                  as provided mean array.
+     */
+    public void next(final double[] values) {
+<span class="fc" id="L191">        final int n = values.length;</span>
+
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (n != mMean.length) {</span>
+<span class="nc" id="L194">            throw new IllegalArgumentException(&quot;values must have mean length&quot;);</span>
+        }
+
+        // generate initial Gaussian values with zero mean and unitary standard
+        // deviation
+<span class="fc" id="L199">        final double[] tmp = new double[n];</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L201">            tmp[i] = mInternalRandom.nextGaussian();</span>
+        }
+
+        // multiply square root of covariance (its Lower triangular Cholesky
+        // decomposition) by the generated values and add mean
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L207">            values[i] = 0.0;</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">            for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">                if (i &gt;= j) {</span>
+                    // only evaluate lower triangular portion
+<span class="fc" id="L212">                    values[i] += mL.getElementAt(i, j) * tmp[j];</span>
+                }
+            }
+
+            // add mean
+<span class="fc" id="L217">            values[i] += mMean[i];</span>
+        }
+<span class="fc" id="L219">    }</span>
+
+    /**
+     * Generate next set of multivariate Gaussian random values having current
+     * mean and covariance of this instance.
+     *
+     * @return a new array containing generated random values.
+     */
+    public double[] next() {
+<span class="fc" id="L228">        final double[] values = new double[mMean.length];</span>
+<span class="fc" id="L229">        next(values);</span>
+<span class="fc" id="L230">        return values;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<rss version="0.91">
+  <channel>
+    <title>com.irurueta:irurueta-algebra - Checkstyle report</title>
+    <link>https://github.com/albertoirurueta/irurueta-algebra</link>
+    <description>com.irurueta:irurueta-algebra - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2017 - 2021</copyright>
+    <item>
+      <title>File: 35,
+             Errors: 160,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html</link>
+      <description>
+        <p>Click <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NotAvailableException.java">com/irurueta/algebra/NotAvailableException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.RankDeficientMatrixException.java">com/irurueta/algebra/RankDeficientMatrixException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.SingularMatrixException.java">com/irurueta/algebra/SingularMatrixException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.Complex.java">com/irurueta/algebra/Complex.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  14
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NonSymmetricPositiveDefiniteMatrixException.java">com/irurueta/algebra/NonSymmetricPositiveDefiniteMatrixException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.LockedException.java">com/irurueta/algebra/LockedException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.statistics.MultivariateGaussianRandomizer.java">com/irurueta/statistics/MultivariateGaussianRandomizer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.OneNormComputer.java">com/irurueta/algebra/OneNormComputer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.LUDecomposer.java">com/irurueta/algebra/LUDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.build-info.properties">com/irurueta/algebra/build-info.properties</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NormType.java">com/irurueta/algebra/NormType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.package-info.java">com/irurueta/algebra/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.QRDecomposer.java">com/irurueta/algebra/QRDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  10
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.statistics.MultivariateNormalDist.java">com/irurueta/statistics/MultivariateNormalDist.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.BuildInfo.java">com/irurueta/algebra/BuildInfo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.DecomposerType.java">com/irurueta/algebra/DecomposerType.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.InfinityNormComputer.java">com/irurueta/algebra/InfinityNormComputer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NoConvergenceException.java">com/irurueta/algebra/NoConvergenceException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.GaussJordanElimination.java">com/irurueta/algebra/GaussJordanElimination.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.DecomposerException.java">com/irurueta/algebra/DecomposerException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.EconomyQRDecomposer.java">com/irurueta/algebra/EconomyQRDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.FrobeniusNormComputer.java">com/irurueta/algebra/FrobeniusNormComputer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.ArrayUtils.java">com/irurueta/algebra/ArrayUtils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.Utils.java">com/irurueta/algebra/Utils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  63
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.statistics.InvalidCovarianceMatrixException.java">com/irurueta/statistics/InvalidCovarianceMatrixException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.AlgebraException.java">com/irurueta/algebra/AlgebraException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  5
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.Decomposer.java">com/irurueta/algebra/Decomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.SingularValueDecomposer.java">com/irurueta/algebra/SingularValueDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  6
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.statistics.package-info.java">com/irurueta/statistics/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NotReadyException.java">com/irurueta/algebra/NotReadyException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.NormComputer.java">com/irurueta/algebra/NormComputer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.RQDecomposer.java">com/irurueta/algebra/RQDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  4
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.CholeskyDecomposer.java">com/irurueta/algebra/CholeskyDecomposer.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.Matrix.java">com/irurueta/algebra/Matrix.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  19
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="https://github.com/albertoirurueta/irurueta-algebra/checkstyle.html#com.irurueta.algebra.WrongSizeException.java">com/irurueta/algebra/WrongSizeException.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

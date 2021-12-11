@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InfinityNormComputer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">InfinityNormComputer.java</span></div><h1>InfinityNormComputer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Class in charge of computing infinity norms of vectors and matrices.
+ * Infinity norm is defined as the maximum row sum on a matrix or vector.
+ * &lt;p&gt;
+ * For the case of arrays, this library considers arrays as column matrices
+ * with one column and array length rows, hence absolute value of first element
+ * in array is returned as infinity norm.
+ */
+public class InfinityNormComputer extends NormComputer {
+
+    /**
+     * Constructor of this class.
+     */
+    public InfinityNormComputer() {
+<span class="fc" id="L32">        super();</span>
+<span class="fc" id="L33">    }</span>
+
+    /**
+     * Returns norm type being used by this class.
+     *
+     * @return Norm type being used by this class.
+     */
+    @Override
+    public NormType getNormType() {
+<span class="fc" id="L42">        return NormType.INFINITY_NORM;</span>
+    }
+
+    /**
+     * Computes norm of provided matrix.
+     *
+     * @param m matrix being used for norm computation.
+     * @return norm of provided matrix.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static double norm(final Matrix m) {
+<span class="fc" id="L53">        final int rows = m.getRows();</span>
+<span class="fc" id="L54">        final int columns = m.getColumns();</span>
+        double rowSum;
+<span class="fc" id="L56">        double maxRowSum = 0.0;</span>
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L59">            rowSum = 0.0;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc" id="L61">                rowSum += Math.abs(m.getElementAt(i, j));</span>
+            }
+
+<span class="fc" id="L64">            maxRowSum = Math.max(rowSum, maxRowSum);</span>
+        }
+
+<span class="fc" id="L67">        return maxRowSum;</span>
+    }
+
+    /**
+     * Computes norm of provided array and stores the jacobian into provided
+     * instance.
+     *
+     * @param array    array being used for norm computation.
+     * @param jacobian instance where jacobian will be stored. Must be 1xN,
+     *                 where N is length of array.
+     * @return norm of provided vector.
+     * @throws WrongSizeException if provided jacobian is not 1xN, where N is
+     *                            length of array.
+     */
+    public static double norm(final double[] array, final Matrix jacobian)
+            throws WrongSizeException {
+<span class="pc bpc" id="L83" title="1 of 4 branches missed.">        if (jacobian != null &amp;&amp; (jacobian.getRows() != 1 ||</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">                jacobian.getColumns() != array.length)) {</span>
+<span class="fc" id="L85">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc" id="L88">        final double norm = InfinityNormComputer.norm(array);</span>
+
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">        if (jacobian != null) {</span>
+<span class="fc" id="L91">            jacobian.fromArray(array);</span>
+<span class="fc" id="L92">            jacobian.multiplyByScalar(1.0 / norm);</span>
+        }
+
+<span class="fc" id="L95">        return norm;</span>
+    }
+
+    /**
+     * Computes norm of provided matrix.
+     *
+     * @param m Matrix being used for norm computation.
+     * @return Norm of provided matrix.
+     */
+    @Override
+    public double getNorm(final Matrix m) {
+<span class="fc" id="L106">        return norm(m);</span>
+    }
+
+    /**
+     * Computes norm of provided array.
+     *
+     * @param array array being used for norm computation.
+     * @return norm of provided vector.
+     */
+    public static double norm(final double[] array) {
+<span class="fc" id="L116">        return Math.abs(array[0]);</span>
+    }
+
+    /**
+     * Computes norm of provided array.
+     *
+     * @param array Array being used for norm computation.
+     * @return Norm of provided vector.
+     */
+    @Override
+    public double getNorm(final double[] array) {
+<span class="fc" id="L127">        return norm(array);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

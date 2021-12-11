@@ -1,0 +1,508 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Complex.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">Complex.java</span></div><h1>Complex.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Class defining a Complex number having real and imaginary parts.
+ */
+public class Complex implements Serializable, Cloneable {
+
+    /**
+     * Real part of the complex number.
+     */
+    private double real;
+
+    /**
+     * Imaginary part of the complex number.
+     */
+    private double imaginary;
+
+    /**
+     * Constructor. Sets both real and imaginary parts to zero.
+     */
+<span class="fc" id="L39">    public Complex() {</span>
+<span class="fc" id="L40">        real = imaginary = 0.0;</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Creates new Complex number having provided real value and an
+     * imaginary part equal to zero.
+     *
+     * @param real Real part.
+     */
+<span class="fc" id="L49">    public Complex(final double real) {</span>
+<span class="fc" id="L50">        this.real = real;</span>
+<span class="fc" id="L51">        imaginary = 0.0;</span>
+<span class="fc" id="L52">    }</span>
+
+    /**
+     * Creates new Complex number having provided real and imaginary parts.
+     *
+     * @param real      Real part.
+     * @param imaginary Imaginary part.
+     */
+<span class="fc" id="L60">    public Complex(final double real, final double imaginary) {</span>
+<span class="fc" id="L61">        this.real = real;</span>
+<span class="fc" id="L62">        this.imaginary = imaginary;</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Creates new Complex number by copying provided value.
+     *
+     * @param initValue Initial value to be copied.
+     */
+<span class="fc" id="L70">    public Complex(final Complex initValue) {</span>
+<span class="fc" id="L71">        this.real = initValue.real;</span>
+<span class="fc" id="L72">        this.imaginary = initValue.imaginary;</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Returns real part of complex number.
+     *
+     * @return Real part.
+     */
+    public double getReal() {
+<span class="fc" id="L81">        return real;</span>
+    }
+
+    /**
+     * Sets real part of complex number.
+     *
+     * @param real Real part.
+     */
+    public void setReal(final double real) {
+<span class="fc" id="L90">        this.real = real;</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Returns imaginary part of complex number.
+     *
+     * @return Imaginary part.
+     */
+    public double getImaginary() {
+<span class="fc" id="L99">        return imaginary;</span>
+    }
+
+    /**
+     * Sets imaginary part of complex number.
+     *
+     * @param imaginary Imaginary part.
+     */
+    public void setImaginary(final double imaginary) {
+<span class="fc" id="L108">        this.imaginary = imaginary;</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Sets both real and imaginary parts of this complex number.
+     *
+     * @param real      Real part.
+     * @param imaginary Imaginary part.
+     */
+    public void setRealAndImaginary(final double real, final double imaginary) {
+<span class="fc" id="L118">        this.real = real;</span>
+<span class="fc" id="L119">        this.imaginary = imaginary;</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Returns modulus of current complex number, which is equal to the
+     * length of the vector formed by the real and imaginary parts.
+     *
+     * @return Modulus.
+     */
+    public double getModulus() {
+<span class="fc" id="L129">        return Math.sqrt(real * real + imaginary * imaginary);</span>
+    }
+
+    /**
+     * Returns phase of current complex number, in radians.
+     * Phase is equal to the angle of the vector formed by the real and
+     * imaginary parts.
+     *
+     * @return Phase in radians.
+     */
+    public double getPhase() {
+<span class="fc" id="L140">        return Math.atan2(imaginary, real);</span>
+    }
+
+    /**
+     * Sets both modulus and phase of this complex number.
+     *
+     * @param modulus Modulus to be set.
+     * @param phase   Phase to be set in radians.
+     */
+    public void setModulusAndPhase(final double modulus, final double phase) {
+<span class="fc" id="L150">        real = modulus * Math.cos(phase);</span>
+<span class="fc" id="L151">        imaginary = modulus * Math.sin(phase);</span>
+<span class="fc" id="L152">    }</span>
+
+    /**
+     * Computes the complex conjugate of this instance and stores the
+     * result into provided complex instance.
+     * The complex conjugate is obtained by negating the sign of the
+     * imaginary part.
+     *
+     * @param result Complex instance where conjugate is stored.
+     */
+    public void conjugate(final Complex result) {
+<span class="fc" id="L163">        result.real = real;</span>
+<span class="fc" id="L164">        result.imaginary = -imaginary;</span>
+<span class="fc" id="L165">    }</span>
+
+    /**
+     * Computes the complex conjugate of this instance and returns the
+     * result as a new instance.
+     *
+     * @return Complex conjugate.
+     */
+    public Complex conjugateAndReturnNew() {
+<span class="fc" id="L174">        final Complex result = new Complex();</span>
+<span class="fc" id="L175">        conjugate(result);</span>
+<span class="fc" id="L176">        return result;</span>
+    }
+
+    /**
+     * Changes this instance into its complex conjugate.
+     */
+    public void conjugate() {
+<span class="fc" id="L183">        conjugate(this);</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Adds this instance with provided complex value and stores the result
+     * in provided instance
+     *
+     * @param other  Complex to be added to current instance.
+     * @param result Complex instance where result is stored.
+     */
+    public void add(final Complex other, final Complex result) {
+<span class="fc" id="L194">        result.real = real + other.real;</span>
+<span class="fc" id="L195">        result.imaginary = imaginary + other.imaginary;</span>
+<span class="fc" id="L196">    }</span>
+
+    /**
+     * Adds this instance to provided complex and returns the result as a new
+     * instance.
+     *
+     * @param other Complex to be added to current instance.
+     * @return Result of summation.
+     */
+    public Complex addAndReturnNew(final Complex other) {
+<span class="fc" id="L206">        final Complex result = new Complex();</span>
+<span class="fc" id="L207">        add(other, result);</span>
+<span class="fc" id="L208">        return result;</span>
+    }
+
+    /**
+     * Adds provided complex into this instance
+     *
+     * @param other Complex to be added to current instance.
+     */
+    public void add(final Complex other) {
+<span class="fc" id="L217">        add(other, this);</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * Subtracts provided instance from this instance and stores the result
+     * in provided instance.
+     *
+     * @param other  Complex to be subtracted from this instance.
+     * @param result Complex instance where result is stored.
+     */
+    public void subtract(final Complex other, final Complex result) {
+<span class="fc" id="L228">        result.real = real - other.real;</span>
+<span class="fc" id="L229">        result.imaginary = imaginary - other.imaginary;</span>
+<span class="fc" id="L230">    }</span>
+
+    /**
+     * Subtracts provided instance from this instance and returns the result
+     * as a new instance
+     *
+     * @param other Complex to be subtracted from current instance.
+     * @return Result of subtraction.
+     */
+    public Complex subtractAndReturnNew(final Complex other) {
+<span class="fc" id="L240">        final Complex result = new Complex();</span>
+<span class="fc" id="L241">        subtract(other, result);</span>
+<span class="fc" id="L242">        return result;</span>
+    }
+
+    /**
+     * Subtracts provided complex from this instance.
+     *
+     * @param other Complex to be subtracted from current instance.
+     */
+    public void subtract(final Complex other) {
+<span class="fc" id="L251">        subtract(other, this);</span>
+<span class="fc" id="L252">    }</span>
+
+    /**
+     * Multiplies this instance with provided instance and stores the result
+     * in provided instance.
+     *
+     * @param other  Complex to be multiplied to this instance
+     * @param result Complex instance where result is stored.
+     */
+    public void multiply(final Complex other, final Complex result) {
+<span class="fc" id="L262">        final double tmpReal = (real * other.real) - (imaginary * other.imaginary);</span>
+<span class="fc" id="L263">        final double tmpImaginary = (imaginary * other.real) +</span>
+                (real * other.imaginary);
+
+<span class="fc" id="L266">        result.real = tmpReal;</span>
+<span class="fc" id="L267">        result.imaginary = tmpImaginary;</span>
+<span class="fc" id="L268">    }</span>
+
+    /**
+     * Multiplies provided instance with this instance and returns the result
+     * as a new instance.
+     *
+     * @param other Complex to be multiplied to current instance.
+     * @return Result of multiplication.
+     */
+    public Complex multiplyAndReturnNew(final Complex other) {
+<span class="fc" id="L278">        final Complex result = new Complex();</span>
+<span class="fc" id="L279">        multiply(other, result);</span>
+<span class="fc" id="L280">        return result;</span>
+    }
+
+    /**
+     * Multiplies provided complex with this instance.
+     *
+     * @param other Complex to be multiplied to this instance.
+     */
+    public void multiply(final Complex other) {
+<span class="fc" id="L289">        multiply(other, this);</span>
+<span class="fc" id="L290">    }</span>
+
+    /**
+     * Divides this instance by provided instance and stores the result in
+     * provided instance.
+     *
+     * @param other  Complex to divide this instance by.
+     * @param result Complex instance where result is stored.
+     */
+    public void divide(final Complex other, final Complex result) {
+<span class="fc" id="L300">        final double tmpReal = ((real * other.real) + (imaginary * other.imaginary)) /</span>
+                ((other.real * other.real) +
+                        (other.imaginary * other.imaginary));
+<span class="fc" id="L303">        final double tmpImaginary = ((imaginary * other.real) -</span>
+                (real * other.imaginary)) /
+                ((other.real * other.real) +
+                        (other.imaginary * other.imaginary));
+
+<span class="fc" id="L308">        result.real = tmpReal;</span>
+<span class="fc" id="L309">        result.imaginary = tmpImaginary;</span>
+<span class="fc" id="L310">    }</span>
+
+    /**
+     * Divides this instance by provided instance and returns the result as
+     * a new instance.
+     *
+     * @param other Complex to divide this instance by.
+     * @return Result of division.
+     */
+    public Complex divideAndReturnNew(final Complex other) {
+<span class="fc" id="L320">        final Complex result = new Complex();</span>
+<span class="fc" id="L321">        divide(other, result);</span>
+<span class="fc" id="L322">        return result;</span>
+    }
+
+    /**
+     * Divides this instance by provided complex.
+     *
+     * @param other Complex to divide this instance by.
+     */
+    public void divide(final Complex other) {
+<span class="fc" id="L331">        divide(other, this);</span>
+<span class="fc" id="L332">    }</span>
+
+    /**
+     * Multiplies this instance by provided scalar value (multiplying both
+     * real and imaginary parts by provided value) and stores the result in
+     * provided complex instance.
+     *
+     * @param scalar Value to multiply this instance by.
+     * @param result Complex where result of multiplication is stored.
+     */
+    public void multiplyByScalar(final double scalar, final Complex result) {
+<span class="fc" id="L343">        result.real = scalar * real;</span>
+<span class="fc" id="L344">        result.imaginary = scalar * imaginary;</span>
+<span class="fc" id="L345">    }</span>
+
+    /**
+     * Multiplies this instance by provided scalar value (multiplying both
+     * real and imaginary parts by provided value) and returns the result
+     * as a new instance.
+     *
+     * @param scalar Value to multiply this instance by.
+     * @return Result of multiplication by scalar.
+     */
+    public Complex multiplyByScalarAndReturnNew(final double scalar) {
+<span class="fc" id="L356">        final Complex result = new Complex();</span>
+<span class="fc" id="L357">        multiplyByScalar(scalar, result);</span>
+<span class="fc" id="L358">        return result;</span>
+    }
+
+    /**
+     * Multiplies this instance by provided scalar
+     *
+     * @param scalar Value to multiply this instance by.
+     */
+    public void multiplyByScalar(final double scalar) {
+<span class="fc" id="L367">        multiplyByScalar(scalar, this);</span>
+<span class="fc" id="L368">    }</span>
+
+    /**
+     * Computes the power of this instance by provided exponent and stores
+     * the result in provided instance.
+     *
+     * @param exponent Exponent to power this instance by.
+     * @param result   Complex where the power is stored.
+     */
+    public void pow(final double exponent, final Complex result) {
+<span class="fc" id="L378">        result.setModulusAndPhase(Math.pow(getModulus(), exponent),</span>
+<span class="fc" id="L379">                getPhase() * exponent);</span>
+<span class="fc" id="L380">    }</span>
+
+    /**
+     * Computes the power of this instance by provided exponent and returns
+     * the result as a new instance.
+     *
+     * @param exponent Exponent to power this instance by.
+     * @return Complex where the power is stored.
+     */
+    public Complex powAndReturnNew(final double exponent) {
+<span class="fc" id="L390">        final Complex result = new Complex();</span>
+<span class="fc" id="L391">        pow(exponent, result);</span>
+<span class="fc" id="L392">        return result;</span>
+    }
+
+    /**
+     * Computes the power of this instance by provided exponent
+     *
+     * @param exponent Exponent to power this instance by.
+     */
+    public void pow(final double exponent) {
+<span class="fc" id="L401">        pow(exponent, this);</span>
+<span class="fc" id="L402">    }</span>
+
+    /**
+     * Computes the squared root of this instance and returns the result as
+     * a new instance.
+     *
+     * @param result Complex where squared root is stored.
+     */
+    public void sqrt(final Complex result) {
+<span class="fc" id="L411">        pow(0.5, result);</span>
+<span class="fc" id="L412">    }</span>
+
+    /**
+     * Computes the squared root of this instance and returns the result as a
+     * new instance.
+     *
+     * @return Squared root of this instance.
+     */
+    public Complex sqrtAndReturnNew() {
+<span class="fc" id="L421">        final Complex result = new Complex();</span>
+<span class="fc" id="L422">        sqrt(result);</span>
+<span class="fc" id="L423">        return result;</span>
+    }
+
+    /**
+     * Computes the squared root of this instance
+     */
+    public void sqrt() {
+<span class="fc" id="L430">        sqrt(this);</span>
+<span class="fc" id="L431">    }</span>
+
+    /**
+     * Determines whether two Complex objects are equal or not.
+     * Two Complex are considered to be equal if both their real and imaginary
+     * parts are equal.
+     *
+     * @param obj Object to compare.
+     * @return True if both Complex objects are equal.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L443" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L444">            return true;</span>
+        }
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L447">            return false;</span>
+        }
+<span class="fc bfc" id="L449" title="All 2 branches covered.">        if (!(obj instanceof Complex)) {</span>
+<span class="fc" id="L450">            return false;</span>
+        }
+
+<span class="fc" id="L453">        final Complex other = (Complex) obj;</span>
+<span class="fc" id="L454">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Computes the hashcode of this instance.
+     *
+     * @return Hashcode
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L464">        return Objects.hash(real, imaginary);</span>
+    }
+
+    /**
+     * Determines whether two Complex objects are equal or not up to a certain
+     * level of tolerance in both their real and imaginary parts. When the
+     * difference in both their real and imaginary parts is below the tolerance
+     * level, then both instances are considered to be equal.
+     *
+     * @param other     Other Complex to compare.
+     * @param tolerance Margin of tolerance.
+     * @return Returns true if both Complex instances are considered to be
+     * equal.
+     */
+    public boolean equals(final Complex other, final double tolerance) {
+<span class="fc bfc" id="L479" title="All 2 branches covered.">        if (Math.abs(real - other.real) &gt; tolerance) {</span>
+<span class="fc" id="L480">            return false;</span>
+        }
+<span class="pc bpc" id="L482" title="1 of 2 branches missed.">        return Math.abs(imaginary - other.imaginary) &lt;= tolerance;</span>
+    }
+
+    /**
+     * Makes a copy of this instance having the same real and imaginary parts.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails.
+     */
+    @Override
+    public Complex clone() throws CloneNotSupportedException {
+<span class="nc" id="L493">        final Complex result = (Complex) super.clone();</span>
+<span class="nc" id="L494">        result.setRealAndImaginary(real, imaginary);</span>
+<span class="nc" id="L495">        return result;</span>
+    }
+
+    /**
+     * Copies provided value into current instance.
+     *
+     * @param value Value to copy from.
+     */
+    public void copyFrom(final Complex value) {
+<span class="fc" id="L504">        this.real = value.real;</span>
+<span class="fc" id="L505">        this.imaginary = value.imaginary;</span>
+<span class="fc" id="L506">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

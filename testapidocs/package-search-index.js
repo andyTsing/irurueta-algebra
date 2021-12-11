@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.irurueta"},{"l":"com.irurueta.algebra"},{"l":"com.irurueta.statistics"}]

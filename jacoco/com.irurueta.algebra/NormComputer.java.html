@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NormComputer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">NormComputer.java</span></div><h1>NormComputer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Class in charge of computing norms of arrays and matrices.
+ * Norms can be computed in different ways depending on the desired norm
+ * measure. For that purpose subclass implementations of this class attempt to
+ * work on different norm types.
+ * By default Frobenius norm is used for arrays and matrices, which consists
+ * on computing the square root of summation of all the squared elements within
+ * a given matrix or array.
+ */
+public abstract class NormComputer {
+    /**
+     * Constant defining default norm type to be used.
+     */
+<span class="fc" id="L31">    public static final NormType DEFAULT_NORM_TYPE = NormType.FROBENIUS_NORM;</span>
+
+    /**
+     * Constructor of this class.
+     */
+<span class="fc" id="L36">    protected NormComputer() {</span>
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * Returns norm type being used by this class.
+     *
+     * @return Norm type being used by this class.
+     */
+    public abstract NormType getNormType();
+
+    /**
+     * Computes norm of provided matrix.
+     *
+     * @param m Matrix being used for norm computation.
+     * @return Norm of provided matrix.
+     */
+    public abstract double getNorm(final Matrix m);
+
+    /**
+     * Computes norm of provided array.
+     *
+     * @param array Array being used for norm computation.
+     * @return Norm of provided vector.
+     */
+    public abstract double getNorm(final double[] array);
+
+    /**
+     * Computes norm of provided array and stores the jacobian into provided
+     * instance.
+     *
+     * @param array    array being used for norm computation.
+     * @param jacobian instance where jacobian will be stored. Must be 1xN,
+     *                 where N is length of array.
+     * @return norm of provided vector.
+     * @throws WrongSizeException if provided jacobian is not 1xN, where N is
+     *                            length of array.
+     */
+    public double getNorm(final double[] array, final Matrix jacobian)
+            throws WrongSizeException {
+<span class="pc bpc" id="L75" title="1 of 4 branches missed.">        if (jacobian != null &amp;&amp; (jacobian.getRows() != 1 ||</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">                jacobian.getColumns() != array.length)) {</span>
+<span class="fc" id="L77">            throw new WrongSizeException(&quot;jacobian must be 1xN, where &quot; +</span>
+                    &quot;N is length of array&quot;);
+        }
+
+<span class="fc" id="L81">        final double norm = getNorm(array);</span>
+
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (jacobian != null) {</span>
+<span class="fc" id="L84">            jacobian.fromArray(array);</span>
+<span class="fc" id="L85">            jacobian.multiplyByScalar(1.0 / norm);</span>
+        }
+
+<span class="fc" id="L88">        return norm;</span>
+    }
+
+    /**
+     * Factory method. Returns a new instance of NormComputer prepared to
+     * compute norms using provided NormType.
+     *
+     * @param normType Norm type to be used by returned instance.
+     * @return New instance of NormComputer.
+     */
+    public static NormComputer create(final NormType normType) {
+<span class="fc bfc" id="L99" title="All 3 branches covered.">        switch (normType) {</span>
+            case INFINITY_NORM:
+<span class="fc" id="L101">                return new InfinityNormComputer();</span>
+            case ONE_NORM:
+<span class="fc" id="L103">                return new OneNormComputer();</span>
+            case FROBENIUS_NORM:
+            default:
+<span class="fc" id="L106">                return new FrobeniusNormComputer();</span>
+        }
+    }
+
+    /**
+     * Factory method. Returns a new instance of NormComputer prepared to
+     * compute norms using provided NormType.
+     *
+     * @return New instance of NormComputer.
+     */
+    public static NormComputer create() {
+<span class="fc" id="L117">        return create(DEFAULT_NORM_TYPE);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

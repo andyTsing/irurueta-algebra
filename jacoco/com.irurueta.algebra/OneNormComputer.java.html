@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OneNormComputer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">OneNormComputer.java</span></div><h1>OneNormComputer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Class in charge of computing one norms of arrays and matrices.
+ * One norm is defined as the maximum column sum on a matrix or array.
+ * For the case of arrays, this library considers arrays as column matrices
+ * with one column and array length rows.
+ */
+public class OneNormComputer extends NormComputer {
+
+    /**
+     * Constructor of this class.
+     */
+    public OneNormComputer() {
+<span class="fc" id="L30">        super();</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Returns norm type being used by this class.
+     *
+     * @return Norm type being used by this class.
+     */
+    @Override
+    public NormType getNormType() {
+<span class="fc" id="L40">        return NormType.ONE_NORM;</span>
+    }
+
+    /**
+     * Computes norm of provided matrix.
+     *
+     * @param m matrix being used for norm computation.
+     * @return norm of provided matrix.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    public static double norm(final Matrix m) {
+<span class="fc" id="L51">        final int rows = m.getRows();</span>
+<span class="fc" id="L52">        final int columns = m.getColumns();</span>
+        double colSum;
+<span class="fc" id="L54">        double maxColSum = 0.0;</span>
+
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc" id="L57">            colSum = 0.0;</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L59">                colSum += Math.abs(m.getElementAt(i, j));</span>
+            }
+
+<span class="fc" id="L62">            maxColSum = Math.max(colSum, maxColSum);</span>
+        }
+
+<span class="fc" id="L65">        return maxColSum;</span>
+    }
+
+    /**
+     * Computes norm of provided matrix.
+     *
+     * @param m Matrix being used for norm computation.
+     * @return Norm of provided matrix.
+     */
+    @Override
+    public double getNorm(final Matrix m) {
+<span class="fc" id="L76">        return norm(m);</span>
+    }
+
+    /**
+     * Computes norm of provided array.
+     *
+     * @param array array being used for norm computation.
+     * @return norm of provided vector.
+     */
+    public static double norm(final double[] array) {
+<span class="fc" id="L86">        double colSum = 0.0;</span>
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (final double value : array) {</span>
+<span class="fc" id="L89">            colSum += Math.abs(value);</span>
+        }
+
+<span class="fc" id="L92">        return colSum;</span>
+    }
+
+    /**
+     * Computes norm of provided array and stores the jacobian into provided
+     * instance.
+     *
+     * @param array    array being used for norm computation.
+     * @param jacobian instance where jacobian will be stored. Must be 1xN,
+     *                 where N is length of array.
+     * @return norm of provided vector.
+     * @throws WrongSizeException if provided jacobian is not 1xN, where N is
+     *                            length of array.
+     */
+    public static double norm(final double[] array, final Matrix jacobian)
+            throws WrongSizeException {
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (jacobian != null &amp;&amp; (jacobian.getRows() != 1 ||</span>
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                jacobian.getColumns() != array.length)) {</span>
+<span class="fc" id="L110">            throw new WrongSizeException(&quot;jacobian must be 1xN, where &quot; +</span>
+                    &quot;N is length of array&quot;);
+        }
+
+<span class="fc" id="L114">        final double norm = norm(array);</span>
+
+<span class="pc bpc" id="L116" title="1 of 2 branches missed.">        if (jacobian != null) {</span>
+<span class="fc" id="L117">            jacobian.fromArray(array);</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (norm != 0.0) {</span>
+<span class="fc" id="L119">                jacobian.multiplyByScalar(1.0 / norm);</span>
+            } else {
+<span class="fc" id="L121">                jacobian.initialize(Double.MAX_VALUE);</span>
+            }
+        }
+
+<span class="fc" id="L125">        return norm;</span>
+    }
+
+    /**
+     * Computes norm of provided array.
+     *
+     * @param array Array being used for norm computation.
+     * @return Norm of provided vector.
+     */
+    @Override
+    public double getNorm(final double[] array) {
+<span class="fc" id="L136">        return norm(array);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

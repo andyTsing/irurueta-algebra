@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EconomyQRDecomposer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">EconomyQRDecomposer.java</span></div><h1>EconomyQRDecomposer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * This decomposer computes economy QR decomposition, which is faster than
+ * typical QR decomposition.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class EconomyQRDecomposer extends Decomposer {
+
+    /**
+     * Constant defining default round error when determining full rank of
+     * matrices. This value is zero by default
+     */
+    public static final double DEFAULT_ROUND_ERROR = 0.0;
+
+    /**
+     * Constant defining minimum allowed round error value when determining full
+     * rank of matrices.
+     */
+    public static final double MIN_ROUND_ERROR = 0.0;
+
+    /**
+     * Internal matrix containing results of decomposition.
+     */
+    private Matrix qr;
+
+    /**
+     * Internal array containing diagonal of R.
+     */
+    private double[] rDiag;
+
+    /**
+     * Constructor of this class.
+     */
+    public EconomyQRDecomposer() {
+<span class="fc" id="L51">        super();</span>
+<span class="fc" id="L52">        qr = null;</span>
+<span class="fc" id="L53">        rDiag = null;</span>
+<span class="fc" id="L54">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     */
+    public EconomyQRDecomposer(final Matrix inputMatrix) {
+<span class="fc" id="L62">        super(inputMatrix);</span>
+<span class="fc" id="L63">        qr = null;</span>
+<span class="fc" id="L64">        rDiag = null;</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Returns decomposer type corresponding to Economy QR decomposition.
+     *
+     * @return Decomposer type.
+     */
+    @Override
+    public DecomposerType getDecomposerType() {
+<span class="fc" id="L74">        return DecomposerType.QR_ECONOMY_DECOMPOSITION;</span>
+    }
+
+    /**
+     * Sets reference to input matrix to be decomposed.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     * @throws LockedException Exception thrown if attempting to call this
+     *                         method while this instance remains locked.
+     */
+    @Override
+    public void setInputMatrix(final Matrix inputMatrix) throws LockedException {
+<span class="fc" id="L86">        super.setInputMatrix(inputMatrix);</span>
+<span class="fc" id="L87">        qr = null;</span>
+<span class="fc" id="L88">        rDiag = null;</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Returns boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     * Attempting to retrieve decomposition results when not available, will
+     * probably raise a NotAvailableException.
+     *
+     * @return Boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     */
+    @Override
+    public boolean isDecompositionAvailable() {
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        return qr != null;</span>
+    }
+
+    /**
+     * This method computes QR matrix decomposition, which consists on factoring
+     * provided input matrix into an orthogonal matrix (Q) and an upper
+     * triangular matrix (R).
+     * In other words, if input matrix is A, then: A = Q * R
+     * Note: During execution of this method, this instance will be locked.
+     * Note: After execution of this method, QR decomposition will be available
+     * and operations such as retrieving Q and R matrices or solving systems of
+     * linear equations will be able to be done. Attempting to call any of such
+     * operations before calling this method will raise a NotAvailableException
+     * because they require computation of QR decomposition first.
+     *
+     * @throws NotReadyException Exception thrown if attempting to call this
+     *                           method when this instance is not ready (i.e. no input matrix has been
+     *                           provided).
+     * @throws LockedException   Exception thrown if this decomposer is already
+     *                           locked before calling this method. Notice that this method will actually
+     *                           lock this instance while it is being executed.
+     */
+    @Override
+    public void decompose() throws NotReadyException, LockedException {
+
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L128">            throw new NotReadyException();</span>
+        }
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L131">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L134">        locked = true;</span>
+
+<span class="fc" id="L136">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L137">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L138">        qr = new Matrix(inputMatrix);</span>
+
+<span class="fc" id="L140">        rDiag = new double[columns];</span>
+        double nrm;
+        double s;
+
+        // Main loop
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        for (int k = 0; k &lt; columns; k++) {</span>
+            // Compute 2-norm of k-th column without under/overflow
+<span class="fc" id="L147">            nrm = 0.0;</span>
+
+<span class="fc bfc" id="L149" title="All 2 branches covered.">            for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L150">                nrm = Math.sqrt(nrm * nrm +</span>
+<span class="fc" id="L151">                        Math.pow(qr.getElementAt(i, k), 2.0));</span>
+            }
+
+<span class="fc bfc" id="L154" title="All 2 branches covered.">            if (nrm != 0.0) {</span>
+                // Form k-th Householder vector
+<span class="fc bfc" id="L156" title="All 2 branches covered.">                if (qr.getElementAt(k, k) &lt; 0.0) {</span>
+<span class="fc" id="L157">                    nrm = -nrm;</span>
+                }
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L161">                    qr.setElementAt(i, k, qr.getElementAt(i, k) / nrm);</span>
+                }
+<span class="fc" id="L163">                qr.setElementAt(k, k, qr.getElementAt(k, k) + 1.0);</span>
+
+                // Apply transformation to remaining columns
+<span class="fc bfc" id="L166" title="All 2 branches covered.">                for (int j = k + 1; j &lt; columns; j++) {</span>
+<span class="fc" id="L167">                    s = 0.0;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">                    for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L169">                        s += qr.getElementAt(i, k) * qr.getElementAt(i, j);</span>
+                    }
+<span class="fc" id="L171">                    s = -s / qr.getElementAt(k, k);</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">                    for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L173">                        qr.setElementAt(i, j, qr.getElementAt(i, j) +</span>
+<span class="fc" id="L174">                                s * qr.getElementAt(i, k));</span>
+                    }
+                }
+            }
+
+<span class="fc" id="L179">            rDiag[k] = -nrm;</span>
+        }
+
+<span class="fc" id="L182">        locked = false;</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Returns boolean indicating whether provided input matrix has full rank or
+     * not.
+     * Squared matrices having full rank also have determinant different from
+     * zero.
+     * Note: Because of rounding errors, testing whether a matrix has full rank
+     * or not, might obtain unreliable results especially for non-square
+     * matrices. In such cases matrices usually tend to be considered as full
+     * rank even when they are not.
+     *
+     * @return Boolean indicating whether provided input matrix has full rank or
+     * not.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing QR decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @throws WrongSizeException    Exception thrown if provided rounding error is
+     *                               lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public boolean isFullRank() throws NotAvailableException,
+            WrongSizeException {
+<span class="nc" id="L206">        return isFullRank(DEFAULT_ROUND_ERROR);</span>
+    }
+
+    /**
+     * Returns boolean indicating whether provided input matrix has full rank or
+     * not.
+     * Squared matrices having full rank also have determinant different from
+     * zero.
+     * Note: Because of rounding errors, testing whether a matrix has full rank
+     * or not, might obtain unreliable results especially for non-square
+     * matrices. In such cases matrices usually tend to be considered as full
+     * rank even when they are not.
+     *
+     * @param roundingError Determines the amount of margin given to determine
+     *                      whether a matrix has full rank or not due to rounding errors. If not
+     *                      provided, by default rounding error is set to zero, but this value can
+     *                      be relaxed if needed.
+     * @return Boolean indicating whether provided input matrix has full rank or
+     * not.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing QR decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided input matrix has
+     *                                  less rows than columns.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public boolean isFullRank(final double roundingError)
+            throws NotAvailableException, WrongSizeException {
+
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L238">            throw new NotAvailableException();</span>
+        }
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (roundingError &lt; MIN_ROUND_ERROR) {</span>
+<span class="fc" id="L241">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L244">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L245">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (rows &lt; columns) {</span>
+<span class="fc" id="L248">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L252" title="All 2 branches covered.">            if (Math.abs(rDiag[j]) &lt; roundingError) {</span>
+<span class="fc" id="L253">                return false;</span>
+            }
+        }
+<span class="fc" id="L256">        return true;</span>
+    }
+
+    /**
+     * Computes the Householder vectors and store them in provided matrix.
+     * Provided matrix will be resized if needed
+     *
+     * @param h Matrix where Householder vectors will be stored
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing QR decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public void getH(final Matrix h) throws NotAvailableException {
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L271">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L274">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L275">        final int columns = inputMatrix.getColumns();</span>
+<span class="pc bpc" id="L276" title="2 of 4 branches missed.">        if (h.getRows() != rows || h.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L278">                h.resize(rows, columns);</span>
+<span class="nc" id="L279">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L281">            }</span>
+        }
+
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L286" title="All 2 branches covered.">                if (i &gt;= j) {</span>
+<span class="fc" id="L287">                    h.setElementAt(i, j, qr.getElementAt(i, j));</span>
+                } else {
+<span class="fc" id="L289">                    h.setElementAt(i, j, 0.0);</span>
+                }
+            }
+        }
+<span class="fc" id="L293">    }</span>
+
+    /**
+     * Returns the Householder vectors.
+     *
+     * @return Lower trapezoidal matrix whose columns define the reflections.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing QR decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getH() throws NotAvailableException {
+<span class="fc" id="L305">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L306">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L307">        Matrix out = null;</span>
+        try {
+<span class="fc" id="L309">            out = new Matrix(rows, columns);</span>
+<span class="nc" id="L310">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L312">        }</span>
+<span class="fc" id="L313">        getH(out);</span>
+<span class="fc" id="L314">        return out;</span>
+    }
+
+    /**
+     * Computes upper triangular factor matrix and stores it into provided
+     * matrix.
+     * QR decomposition decomposes input matrix into Q (orthogonal matrix) and
+     * R, which is an upper triangular matrix.
+     *
+     * @param r Upper triangular factor matrix
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing QR decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public void getR(final Matrix r) throws NotAvailableException {
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L331">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L333">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L334">        final int rows = inputMatrix.getRows();</span>
+
+<span class="pc bpc" id="L336" title="2 of 4 branches missed.">        if (r.getRows() != columns || r.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L338">                r.resize(columns, columns);</span>
+<span class="nc" id="L339">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L341">            }</span>
+        }
+
+<span class="fc bfc" id="L344" title="All 2 branches covered.">        for (int i = 0; i &lt; columns; i++) {</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">            if (i &lt; rows) {</span>
+<span class="fc bfc" id="L346" title="All 2 branches covered.">                for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">                    if (i &lt; j) {</span>
+<span class="fc" id="L348">                        r.setElementAt(i, j, qr.getElementAt(i, j));</span>
+<span class="fc bfc" id="L349" title="All 2 branches covered.">                    } else if (i == j) {</span>
+<span class="fc" id="L350">                        r.setElementAt(i, j, rDiag[i]);</span>
+                    } else {
+<span class="fc" id="L352">                        r.setElementAt(i, j, 0.0);</span>
+                    }
+                }
+            } else {
+<span class="fc bfc" id="L356" title="All 2 branches covered.">                for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc" id="L357">                    r.setElementAt(i, j, 0.0);</span>
+                }
+            }
+        }
+<span class="fc" id="L361">    }</span>
+
+    /**
+     * Return upper triangular factor matrix.
+     * QR decomposition decomposes input matrix into Q (orthogonal matrix) and
+     * R, which is an upper triangular matrix.
+     *
+     * @return Upper triangular factor matrix
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing QR decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getR() throws NotAvailableException {
+<span class="fc" id="L375">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L376">        Matrix out = null;</span>
+        try {
+<span class="fc" id="L378">            out = new Matrix(columns, columns);</span>
+<span class="nc" id="L379">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L381">        }</span>
+<span class="fc" id="L382">        getR(out);</span>
+<span class="fc" id="L383">        return out;</span>
+    }
+
+    /**
+     * Computes the economy-sized orthogonal factor matrix and stores it into
+     * provided matrix.
+     * QR decomposition decomposes input matrix into Q, which is an orthogonal
+     * matrix and R (upper triangular matrix).
+     *
+     * @param q Orthogonal factor matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     * @throws WrongSizeException    Exception thrown if provided input matrix has
+     *                               less rows than columns.
+     * @see #decompose()
+     */
+    public void getQ(final Matrix q) throws NotAvailableException, WrongSizeException {
+<span class="fc bfc" id="L399" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L400">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L403">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L404">        final int columns = inputMatrix.getColumns();</span>
+        double s;
+
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        if (rows &lt; columns) {</span>
+<span class="fc" id="L408">            throw new WrongSizeException();</span>
+        }
+
+<span class="pc bpc" id="L411" title="2 of 4 branches missed.">        if (q.getRows() != rows || q.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L413">                q.resize(rows, columns);</span>
+<span class="nc" id="L414">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L416">            }</span>
+        }
+
+<span class="fc bfc" id="L419" title="All 2 branches covered.">        for (int k = columns - 1; k &gt;= 0; k--) {</span>
+<span class="fc bfc" id="L420" title="All 2 branches covered.">            for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L421">                q.setElementAt(i, k, 0.0);</span>
+            }
+<span class="fc" id="L423">            q.setElementAt(k, k, 1.0);</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">            for (int j = k; j &lt; columns; j++) {</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">                if (qr.getElementAt(k, k) != 0) {</span>
+<span class="fc" id="L426">                    s = 0.0;</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">                    for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L428">                        s += qr.getElementAt(i, k) * q.getElementAt(i, j);</span>
+                    }
+
+<span class="fc" id="L431">                    s = -s / qr.getElementAt(k, k);</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">                    for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L433">                        q.setElementAt(i, j, q.getElementAt(i, j) +</span>
+<span class="fc" id="L434">                                s * qr.getElementAt(i, k));</span>
+                    }
+                }
+            }
+        }
+<span class="fc" id="L439">    }</span>
+
+    /**
+     * Return the economy-sized orthogonal factor matrix.
+     * QR decomposition decomposes input matrix into Q, which is an orthogonal
+     * matrix and R (upper triangular matrix).
+     *
+     * @return Orthogonal factor matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     * @throws WrongSizeException    Exception thrown if provided input matrix has
+     *                               less rows than columns.
+     * @see #decompose()
+     */
+    public Matrix getQ() throws NotAvailableException, WrongSizeException {
+<span class="fc" id="L453">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L454">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="fc" id="L456">        final Matrix out = new Matrix(rows, columns);</span>
+<span class="fc" id="L457">        getQ(out);</span>
+<span class="fc" id="L458">        return out;</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B, where A is the input matrix provided for QR decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vector/matrices without
+     * having to recompute QR decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must have at least as many rows as columns,
+     * otherwise a WrongSizeException will be raised as well. For input matrices
+     * having a higher number of rows than columns, the system of equations will
+     * be overdetermined and a least squares solution will be found.
+     * Note: If provided input matrix A is rank deficient, a
+     * RankDeficientMatrixException will be thrown.
+     * Note: In order to execute this method, a QR decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order to
+     * avoid this exception call decompose() method first.
+     *
+     * @param b      Parameters matrix that determine a linear system of equations.
+     *               Provided matrix must have the same number of rows as provided input
+     *               matrix for QR decomposition. Besides, each column on parameters matrix
+     *               will represent a new system of equations, whose solution will be returned
+     *               on appropriate column as an output of this method.
+     * @param result Matrix containing solution of linear system of equations on
+     *               each column for each column of provided matrix of parameters b. Provided
+     *               matrix will be resized if needed
+     * @throws NotAvailableException        Exception thrown if attempting to call this
+     *                                      method before computing QR decomposition. To avoid this exception call
+     *                                      decompose() method first.
+     * @throws WrongSizeException           Exception thrown if attempting to call this
+     *                                      method using an input matrix with less rows than columns; or if provided
+     *                                      parameters matrix (b) does not have the same number of rows as input
+     *                                      matrix being QR decomposed.
+     * @throws RankDeficientMatrixException Exception thrown if provided input
+     *                                      matrix to be QR decomposed is rank deficient. In this case linear system
+     *                                      of equations cannot be solved.
+     */
+    public void solve(final Matrix b, final Matrix result) throws NotAvailableException,
+            WrongSizeException, RankDeficientMatrixException {
+<span class="fc" id="L501">        solve(b, DEFAULT_ROUND_ERROR, result);</span>
+<span class="fc" id="L502">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B, where A is the input matrix provided for QR decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vector/matrices without
+     * having to recompute QR decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must have at least as many rows as columns,
+     * otherwise a WrongSizeException will be raised as well. For input matrices
+     * having a higher number of rows than columns, the system of equations will
+     * be overdetermined and a least squares solution will be found.
+     * Note: If provided input matrix A is rank deficient, a
+     * RankDeficientMatrixException will be thrown.
+     * Note: In order to execute this method, a QR decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order to
+     * avoid this exception call decompose() method first.
+     *
+     * @param b             Parameters matrix that determine a linear system of equations.
+     *                      Provided matrix must have the same number of rows as provided input
+     *                      matrix for QR decomposition. Besides, each column on parameters matrix
+     *                      will represent a new system of equations, whose solution will be returned
+     *                      on appropriate column as an output of this method.
+     * @param roundingError threshold to determine whether matrix b has full rank or not.
+     *                      By default this is typically a tiny value close to zero.
+     * @param result        Matrix containing solution of linear system of equations on
+     *                      each column for each column of provided matrix of parameters b. Provided
+     *                      matrix will be resized if needed
+     * @throws NotAvailableException        Exception thrown if attempting to call this
+     *                                      method before computing QR decomposition. To avoid this exception call
+     *                                      decompose() method first.
+     * @throws WrongSizeException           Exception thrown if attempting to call this
+     *                                      method using an input matrix with less rows than columns; or if provided
+     *                                      parameters matrix (b) does not have the same number of rows as input
+     *                                      matrix being QR decomposed.
+     * @throws RankDeficientMatrixException Exception thrown if provided input
+     *                                      matrix to be QR decomposed is rank deficient. In this case linear system
+     *                                      of equations cannot be solved.
+     * @throws IllegalArgumentException     if provided rounding error is negative.
+     */
+    public void solve(final Matrix b, final double roundingError, final Matrix result)
+            throws NotAvailableException, WrongSizeException,
+            RankDeficientMatrixException {
+
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L550">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L553">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L554">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L555">        final int rowsB = b.getRows();</span>
+<span class="fc" id="L556">        final int colsB = b.getColumns();</span>
+        double s;
+
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        if (rowsB != rows) {</span>
+<span class="fc" id="L560">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc bfc" id="L563" title="All 2 branches covered.">        if (roundingError &lt; MIN_ROUND_ERROR) {</span>
+<span class="fc" id="L564">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc bfc" id="L567" title="All 2 branches covered.">        if (rows &lt; columns) {</span>
+<span class="fc" id="L568">            throw new WrongSizeException();</span>
+        }
+<span class="fc bfc" id="L570" title="All 2 branches covered.">        if (!isFullRank(roundingError)) {</span>
+<span class="fc" id="L571">            throw new RankDeficientMatrixException();</span>
+        }
+
+        // Copy b into X
+<span class="fc" id="L575">        final Matrix x = new Matrix(b);</span>
+
+        // Compute Y = transpose(Q) * B
+<span class="fc bfc" id="L578" title="All 2 branches covered.">        for (int k = 0; k &lt; columns; k++) {</span>
+<span class="fc bfc" id="L579" title="All 2 branches covered.">            for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L580">                s = 0.0;</span>
+<span class="fc bfc" id="L581" title="All 2 branches covered.">                for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L582">                    s += qr.getElementAt(i, k) * x.getElementAt(i, j);</span>
+                }
+<span class="fc" id="L584">                s = -s / qr.getElementAt(k, k);</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">                for (int i = k; i &lt; rows; i++) {</span>
+<span class="fc" id="L586">                    x.setElementAt(i, j, x.getElementAt(i, j) +</span>
+<span class="fc" id="L587">                            s * qr.getElementAt(i, k));</span>
+                }
+            }
+        }
+
+        // Solve R * X = Y
+<span class="fc bfc" id="L593" title="All 2 branches covered.">        for (int k = columns - 1; k &gt;= 0; k--) {</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">            for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L595">                x.setElementAt(k, j, x.getElementAt(k, j) / rDiag[k]);</span>
+            }
+<span class="fc bfc" id="L597" title="All 2 branches covered.">            for (int i = 0; i &lt; k; i++) {</span>
+<span class="fc bfc" id="L598" title="All 2 branches covered.">                for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L599">                    x.setElementAt(i, j, x.getElementAt(i, j) -</span>
+<span class="fc" id="L600">                            x.getElementAt(k, j) * qr.getElementAt(i, k));</span>
+                }
+            }
+        }
+
+        // Pick only first columns rows of X in case of overdetermined systems
+        // (where rows &gt; columns), otherwise rows == columns and we pick them all
+<span class="pc bpc" id="L607" title="1 of 4 branches missed.">        if (result.getRows() != columns || result.getColumns() != colsB) {</span>
+            // resize result
+<span class="fc" id="L609">            result.resize(columns, colsB);</span>
+        }
+<span class="fc" id="L611">        result.setSubmatrix(0, 0, columns - 1, colsB - 1, x, 0, 0, columns - 1,</span>
+                colsB - 1);
+<span class="fc" id="L613">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B, where A is the input matrix provided for QR decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vector/matrices without
+     * having to recompute QR decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must have at least as many rows as columns,
+     * otherwise a WrongSizeException will be raised as well. For input matrices
+     * having a higher number of rows than columns, the system of equations will
+     * be overdetermined and a least squares solution will be found.
+     * Note: If provided input matrix A is rank deficient, a
+     * RankDeficientMatrixException will be thrown.
+     * Note: In order to execute this method, a QR decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order to
+     * avoid this exception call decompose() method first.
+     *
+     * @param b Parameters matrix that determine a linear system of equations.
+     *          Provided matrix must have the same number of rows as provided input
+     *          matrix for QR decomposition. Besides, each column on parameters matrix
+     *          will represent a new system of equations, whose solution will be returned
+     *          on appropriate column as an output of this method.
+     * @return Matrix containing solution of linear system of equations on each
+     * column for each column of provided matrix of parameters b.
+     * @throws NotAvailableException        Exception thrown if attempting to call this
+     *                                      method before computing QR decomposition. To avoid this exception call
+     *                                      decompose() method first.
+     * @throws WrongSizeException           Exception thrown if attempting to call this
+     *                                      method using an input matrix with less rows than columns; or if provided
+     *                                      parameters matrix (b) does not have the same number of rows as input
+     *                                      matrix being QR decomposed.
+     * @throws RankDeficientMatrixException Exception thrown if provided input
+     *                                      matrix to be QR decomposed is rank deficient. In this case linear system
+     *                                      of equations cannot be solved.
+     */
+    public Matrix solve(final Matrix b) throws NotAvailableException,
+            WrongSizeException, RankDeficientMatrixException {
+<span class="fc" id="L654">        return solve(b, DEFAULT_ROUND_ERROR);</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B, where A is the input matrix provided for QR decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vector/matrices without
+     * having to recompute QR decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must have at least as many rows as columns,
+     * otherwise a WrongSizeException will be raised as well. For input matrices
+     * having a higher number of rows than columns, the system of equations will
+     * be overdetermined and a least squares solution will be found.
+     * Note: If provided input matrix A is rank deficient, a
+     * RankDeficientMatrixException will be thrown.
+     * Note: In order to execute this method, a QR decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order to
+     * avoid this exception call decompose() method first.
+     *
+     * @param b             Parameters matrix that determine a linear system of equations.
+     *                      Provided matrix must have the same number of rows as provided input
+     *                      matrix for QR decomposition. Besides, each column on parameters matrix
+     *                      will represent a new system of equations, whose solution will be returned
+     *                      on appropriate column as an output of this method.
+     * @param roundingError Determines the amount of margin given to determine
+     *                      whether a matrix has full rank or not due to rounding errors. If not
+     *                      provided, by default rounding error is set to zero, but this value can be
+     *                      relaxed if needed.
+     * @return Matrix containing solution of linear system of equations on each
+     * column for each column of provided matrix of parameters b.
+     * @throws NotAvailableException        Exception thrown if attempting to call this
+     *                                      method before computing QR decomposition. To avoid this exception call
+     *                                      decompose() method first.
+     * @throws WrongSizeException           Exception thrown if attempting to call this
+     *                                      method using an input matrix with less rows than columns; or if provided
+     *                                      parameters matrix (b) does not have the same number of rows as input
+     *                                      matrix being QR decomposed.
+     * @throws RankDeficientMatrixException Exception thrown if provided input
+     *                                      matrix to be QR decomposed is rank deficient. In this case linear system
+     *                                      of equations cannot be solved.
+     * @throws IllegalArgumentException     Exception thrown if provided rounding
+     *                                      error is lower than minimum allowed value (MIN_ROUND_ERROR)
+     * @see #decompose()
+     */
+    public Matrix solve(final Matrix b, final double roundingError)
+            throws NotAvailableException, WrongSizeException,
+            RankDeficientMatrixException {
+
+<span class="fc" id="L705">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L706">        final int colsB = b.getColumns();</span>
+<span class="fc" id="L707">        final Matrix out = new Matrix(columns, colsB);</span>
+<span class="fc" id="L708">        solve(b, roundingError, out);</span>
+<span class="fc" id="L709">        return out;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GaussJordanElimination.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">GaussJordanElimination.java</span></div><h1>GaussJordanElimination.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2015 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Computes Gauss-Jordan elimination for provided matrix using full pivoting,
+ * which provides greater stability.
+ * Gauss-Jordan elimination can be used to compute matrix inversion or to
+ * solve linear systems of equations of the form A * x = b, where Gauss-Jordan
+ * elimination both inverts matrix A and finds solution x at the same time.
+ */
+public class GaussJordanElimination {
+
+    /**
+     * Constructor.
+     * Prevents instantiation.
+     */
+    private GaussJordanElimination() {
+    }
+
+    /**
+     * Computes Gauss-Jordan elimination by attempting to solve linear system
+     * of equations a * x = b. This method computes inverse of matrix a, and
+     * modifies provided matrix so that its inverse is stored in it after
+     * execution of this method. Likewise, this method modifies b so that
+     * solution x is stored on it after execution of this method.
+     * This method can only be used on squared a matrices.
+     *
+     * @param a linear system of equations matrix. Will contain its inverse
+     *          after execution of this method.
+     * @param b linear system of equations parameters. Will contain the solution
+     *          after execution of this method. If null is provided, solution is not
+     *          stored but matrix inverse is computed anyway. Each column of b is
+     *          considered a new linear system of equations and its solution x is
+     *          computed on the corresponding column of b.
+     * @throws SingularMatrixException if provided matrix a is found to be
+     *                                 singular.
+     * @throws WrongSizeException      if provided matrix a is not square.
+     */
+    public static void process(final Matrix a, final Matrix b)
+            throws SingularMatrixException, WrongSizeException {
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (a.getRows() != a.getColumns()) {</span>
+<span class="fc" id="L56">            throw new WrongSizeException();</span>
+        }
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (b != null &amp;&amp; b.getRows() != a.getRows()) {</span>
+<span class="fc" id="L59">            throw new WrongSizeException();</span>
+        }
+
+        int i;
+<span class="fc" id="L63">        int icol = 0;</span>
+<span class="fc" id="L64">        int irow = 0;</span>
+        int j;
+        int k;
+        int l;
+        int ll;
+<span class="fc" id="L69">        final int n = a.getRows();</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">        final int m = b != null ? b.getColumns() : 0;</span>
+
+        double big;
+        double dum;
+        double pivinv;
+        double value;
+<span class="fc" id="L76">        final int[] indxc = new int[n];</span>
+<span class="fc" id="L77">        final int[] indxr = new int[n];</span>
+<span class="fc" id="L78">        final int[] ipiv = new int[n];</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        for (j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L81">            ipiv[j] = 0;</span>
+        }
+<span class="fc bfc" id="L83" title="All 2 branches covered.">        for (i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L84">            big = 0.0;</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">            for (j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">                if (ipiv[j] != 1) {</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                    for (k = 0; k &lt; n; k++) {</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">                        if (ipiv[k] == 0) {</span>
+<span class="fc" id="L89">                            value = Math.abs(a.getElementAt(j, k));</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">                            if (value &gt;= big) {</span>
+<span class="fc" id="L91">                                big = value;</span>
+<span class="fc" id="L92">                                irow = j;</span>
+<span class="fc" id="L93">                                icol = k;</span>
+                            }
+                        }
+                    }
+                }
+            }
+<span class="fc" id="L99">            ++(ipiv[icol]);</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if (irow != icol) {</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">                for (l = 0; l &lt; n; l++) {</span>
+<span class="fc" id="L102">                    swap(a.getBuffer(), a.getBuffer(),</span>
+<span class="fc" id="L103">                            a.getIndex(irow, l),</span>
+<span class="fc" id="L104">                            a.getIndex(icol, l));</span>
+                }
+<span class="fc bfc" id="L106" title="All 2 branches covered.">                for (l = 0; l &lt; m; l++) {</span>
+<span class="fc" id="L107">                    swap(b.getBuffer(), b.getBuffer(),</span>
+<span class="fc" id="L108">                            b.getIndex(irow, l),</span>
+<span class="fc" id="L109">                            b.getIndex(icol, l));</span>
+                }
+            }
+<span class="fc" id="L112">            indxr[i] = irow;</span>
+<span class="fc" id="L113">            indxc[i] = icol;</span>
+<span class="fc" id="L114">            value = a.getElementAt(icol, icol);</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (value == 0.0) {</span>
+<span class="fc" id="L116">                throw new SingularMatrixException();</span>
+            }
+<span class="fc" id="L118">            pivinv = 1.0 / value;</span>
+<span class="fc" id="L119">            a.setElementAt(icol, icol, 1.0);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            for (l = 0; l &lt; n; l++) {</span>
+<span class="fc" id="L121">                a.setElementAt(icol, l, a.getElementAt(icol, l) * pivinv);</span>
+            }
+<span class="fc bfc" id="L123" title="All 2 branches covered.">            for (l = 0; l &lt; m; l++) {</span>
+<span class="fc" id="L124">                b.setElementAt(icol, l, b.getElementAt(icol, l) * pivinv);</span>
+            }
+<span class="fc bfc" id="L126" title="All 2 branches covered.">            for (ll = 0; ll &lt; n; ll++) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">                if (ll != icol) {</span>
+<span class="fc" id="L128">                    dum = a.getElementAt(ll, icol);</span>
+<span class="fc" id="L129">                    a.setElementAt(ll, icol, 0.0);</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">                    for (l = 0; l &lt; n; l++) {</span>
+<span class="fc" id="L131">                        a.setElementAt(ll, l, a.getElementAt(ll, l) -</span>
+<span class="fc" id="L132">                                a.getElementAt(icol, l) * dum);</span>
+                    }
+<span class="fc bfc" id="L134" title="All 2 branches covered.">                    for (l = 0; l &lt; m; l++) {</span>
+<span class="fc" id="L135">                        b.setElementAt(ll, l, b.getElementAt(ll, l) -</span>
+<span class="fc" id="L136">                                b.getElementAt(icol, l) * dum);</span>
+                    }
+                }
+            }
+        }
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        for (l = n - 1; l &gt;= 0; l--) {</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (indxr[l] != indxc[l]) {</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">                for (k = 0; k &lt; n; k++) {</span>
+<span class="fc" id="L144">                    swap(a.getBuffer(), a.getBuffer(),</span>
+<span class="fc" id="L145">                            a.getIndex(k, indxr[l]), a.getIndex(k, indxc[l]));</span>
+                }
+            }
+        }
+<span class="fc" id="L149">    }</span>
+
+    /**
+     * Computes Gauss-Jordan elimination by attempting to solve linear system
+     * of equations a * x = b. This method computes inverse of matrix a, and
+     * modifies provided matrix so that its inverse is stored in it after
+     * execution of this method. Likewise, this method modifies b so that
+     * solution x is stored on it after execution of this method.
+     * This method can only be used on squared a matrices.
+     *
+     * @param a linear system of equations matrix. Will contain its inverse
+     *          after execution of this method.
+     * @param b linear system of equations parameters. Will contain the solution
+     *          after execution of this method. If null is provided, solution is not
+     *          stored but matrix inverse is computed anyway.
+     * @throws SingularMatrixException if provided matrix a is found to be
+     *                                 singular.
+     * @throws WrongSizeException      if provided matrix a is not square.
+     */
+    public static void process(final Matrix a, final double[] b)
+            throws SingularMatrixException, WrongSizeException {
+<span class="pc bpc" id="L170" title="1 of 2 branches missed.">        final Matrix mb = b != null ? Matrix.newFromArray(b) : null;</span>
+<span class="fc" id="L171">        process(a, mb);</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (mb != null) {</span>
+<span class="fc" id="L173">            final double[] buffer = mb.getBuffer();</span>
+<span class="fc" id="L174">            System.arraycopy(buffer, 0, b, 0, b.length);</span>
+        }
+<span class="fc" id="L176">    }</span>
+
+    /**
+     * Computes inverse of matrix a. No solution of a linear system of equations
+     * is computed. This method modifies provided matrix storing the inverse
+     * on it after execution of this method
+     *
+     * @param a matrix to be inverted.
+     * @throws SingularMatrixException if provided matrix is found to be
+     *                                 singular
+     * @throws WrongSizeException      if provided matrix is not square
+     */
+    public static void inverse(final Matrix a)
+            throws SingularMatrixException, WrongSizeException {
+<span class="fc" id="L190">        process(a, (Matrix) null);</span>
+<span class="fc" id="L191">    }</span>
+
+    /**
+     * Swaps values in arrays at provided positions
+     *
+     * @param array1 1st array
+     * @param array2 2nd array
+     * @param pos1   1st position to be swapped
+     * @param pos2   2nd position to be swapped
+     */
+    private static void swap(final double[] array1, final double[] array2,
+                             final int pos1, final int pos2) {
+<span class="fc" id="L203">        final double value1 = array1[pos1];</span>
+<span class="fc" id="L204">        final double value2 = array2[pos2];</span>
+
+<span class="fc" id="L206">        array1[pos1] = value2;</span>
+<span class="fc" id="L207">        array2[pos1] = value1;</span>
+<span class="fc" id="L208">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

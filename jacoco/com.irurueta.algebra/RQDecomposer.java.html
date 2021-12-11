@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RQDecomposer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">RQDecomposer.java</span></div><h1>RQDecomposer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * This decomposer computes RQ decomposition, which consists on factoring
+ * provided input matrix into an upper triangular matrix (R) and an orthogonal
+ * matrix (Q). In other words, if input matrix is A, then A = R * Q
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class RQDecomposer extends Decomposer {
+
+    /**
+     * Internal QR decomposer used behind the scenes to compute RQ
+     * decomposition. Notice that QR and RQ decompositions are related and for
+     * that reason QRDecomposer is used
+     */
+    private final QRDecomposer internalDecomposer;
+
+    /**
+     * Constructor of this class.
+     */
+    public RQDecomposer() {
+<span class="fc" id="L37">        super();</span>
+<span class="fc" id="L38">        internalDecomposer = new QRDecomposer();</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     */
+    public RQDecomposer(final Matrix inputMatrix) {
+<span class="fc" id="L47">        super(inputMatrix);</span>
+<span class="fc" id="L48">        internalDecomposer = new QRDecomposer();</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Returns decomposer type corresponding to RQ decomposition.
+     *
+     * @return Decomposer type.
+     */
+    @Override
+    public DecomposerType getDecomposerType() {
+<span class="fc" id="L58">        return DecomposerType.RQ_DECOMPOSITION;</span>
+    }
+
+    /**
+     * Sets reference to input matrix to be decomposed.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     * @throws LockedException Exception thrown if attempting to call this
+     *                         method while this instance remains locked.
+     */
+    @Override
+    public void setInputMatrix(final Matrix inputMatrix) throws LockedException {
+<span class="fc" id="L70">        super.setInputMatrix(inputMatrix);</span>
+<span class="fc" id="L71">        internalDecomposer.setInputMatrix(inputMatrix);</span>
+<span class="fc" id="L72">    }</span>
+
+
+    /**
+     * Returns boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     * Attempting to retrieve decomposition results when not available, will
+     * probably raise a NotAvailableException.
+     *
+     * @return Boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     */
+    @Override
+    public boolean isDecompositionAvailable() {
+<span class="fc" id="L86">        return internalDecomposer.isDecompositionAvailable();</span>
+    }
+
+    /**
+     * This method computes RQ matrix decomposition, which consists on factoring
+     * provided input matrix into an upper triangular matrix (R) and an
+     * orthogonal matrix (Q).
+     * In other words, if input matrix is A, then: A = R * Q
+     * Note: During execution of this method, this instance will be locked, and
+     * hence attempting to set some parameters might raise a LockedException.
+     * Note: After execution of this method, RQ decomposition will be available
+     * and operations such as retrieving R and Q matrices will be able to be
+     * done. Attempting to call any of such operations before calling this
+     * method wil raise a NotAvailableException because they require computation
+     * of QR decomposition first.
+     *
+     * @throws NotReadyException   Exception thrown if attempting to call this
+     *                             method when this instance is not ready (i.e. no input matrix has been
+     *                             provided).
+     * @throws LockedException     Exception thrown if this decomposer is already
+     *                             locked before calling this method. Notice that this method will actually
+     *                             lock this instance while it is being executed.
+     * @throws DecomposerException Exception thrown if for any reason
+     *                             decomposition fails while being executed, like when provided input matrix
+     *                             has less rows than columns.
+     */
+    @Override
+    public void decompose() throws NotReadyException, LockedException,
+            DecomposerException {
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L117">            throw new NotReadyException();</span>
+        }
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L120">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L123">        Matrix tmp = null;</span>
+
+<span class="fc" id="L125">        locked = true;</span>
+
+<span class="fc" id="L127">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L128">        final int columns = inputMatrix.getColumns();</span>
+
+        try {
+<span class="fc" id="L131">            tmp = new Matrix(columns, rows);</span>
+
+<span class="fc bfc" id="L133" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">                for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L135">                    tmp.setElementAt(j, rows - i - 1,</span>
+<span class="fc" id="L136">                            inputMatrix.getElementAt(i, j));</span>
+                }
+            }
+<span class="nc" id="L139">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L141">        }</span>
+
+<span class="fc" id="L143">        internalDecomposer.setInputMatrix(tmp);</span>
+<span class="fc" id="L144">        internalDecomposer.decompose();</span>
+
+<span class="fc" id="L146">        locked = false;</span>
+<span class="fc" id="L147">    }</span>
+
+    /**
+     * Returns upper triangular factor matrix.
+     * RQ decomposition decomposes input matrix into R (upper triangular
+     * matrix), and Q, which is an orthogonal matrix.
+     *
+     * @return Upper triangular factor matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing RQ decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getR() throws NotAvailableException {
+
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L163">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L166">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L167">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="fc" id="L169">        final Matrix r2 = internalDecomposer.getR();</span>
+
+        // Left-right flipped identity
+        // Instance initialized to zero
+<span class="fc" id="L173">        Matrix flipI = null;</span>
+        try {
+<span class="fc" id="L175">            flipI = new Matrix(rows, rows);</span>
+
+<span class="fc" id="L177">            flipI.initialize(0.0);</span>
+
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            for (int j = 0; j &lt; rows; j++) {</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">                for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">                    if (i == rows - j - 1) flipI.setElementAt(i, j, 1.0);</span>
+                }
+            }
+<span class="nc" id="L184">        } catch (final WrongSizeException ignore) {</span>
+            //never happens
+<span class="fc" id="L186">        }</span>
+
+
+        // Big permutation
+<span class="fc" id="L190">        Matrix perm = null;</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">        if (flipI != null) {</span>
+            try {
+<span class="fc" id="L193">                perm = Matrix.identity(columns, columns);</span>
+
+                // Copy flipped identity into top-left corner
+<span class="fc" id="L196">                perm.setSubmatrix(0, 0,</span>
+                        rows - 1, rows - 1, flipI);
+
+<span class="fc" id="L199">                perm.multiply(r2); //perm * r2</span>
+<span class="fc" id="L200">                perm.multiply(flipI); //perm * r2 * flipI</span>
+<span class="fc" id="L201">                perm.transpose();</span>
+
+<span class="nc" id="L203">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L205">            }</span>
+        }
+<span class="fc" id="L207">        return perm;</span>
+    }
+
+    /**
+     * Returns the economy-sized orthogonal factor matrix.
+     * RQ decomposition decomposes input matrix into R, which is an upper
+     * triangular matrix and Q (orthogonal matrix)
+     *
+     * @return Orthogonal factor matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing RQ decomposition. To avoid this exception call
+     *                               decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getQ() throws NotAvailableException {
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L223">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L226">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L227">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="fc" id="L229">        final Matrix q2 = internalDecomposer.getQ();</span>
+
+        // Left-right flipped identity
+        // Instance initialized to zero
+<span class="fc" id="L233">        Matrix flipI = null;</span>
+        try {
+<span class="fc" id="L235">            flipI = new Matrix(rows, rows);</span>
+
+<span class="fc" id="L237">            flipI.initialize(0.0);</span>
+
+<span class="fc bfc" id="L239" title="All 2 branches covered.">            for (int j = 0; j &lt; rows; j++) {</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">                for (int i = 0; i &lt; rows; i++) {</span>
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">                    if (i == rows - j - 1) {</span>
+<span class="fc" id="L242">                        flipI.setElementAt(i, j, 1.0);</span>
+                    }
+                }
+            }
+<span class="nc" id="L246">        } catch (final WrongSizeException ignore) {</span>
+            //never happens
+<span class="fc" id="L248">        }</span>
+
+
+        // Big permutation
+<span class="fc" id="L252">        Matrix perm = null;</span>
+        try {
+<span class="fc" id="L254">            perm = Matrix.identity(columns, columns);</span>
+
+            // Copy flipped identity into top-left corner
+<span class="fc" id="L257">            perm.setSubmatrix(0, 0,</span>
+                    rows - 1, rows - 1, flipI);
+
+<span class="nc" id="L260">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L262">        }</span>
+
+
+<span class="fc" id="L265">        Matrix q = null;</span>
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">        if (perm != null) {</span>
+            try {
+<span class="fc" id="L268">                q = q2.multiplyAndReturnNew(perm); // qTrans = q2 * perm</span>
+<span class="fc" id="L269">                q.transpose();</span>
+<span class="nc" id="L270">            } catch (final WrongSizeException ignore) {</span>
+                //never happens
+<span class="fc" id="L272">            }</span>
+        }
+
+<span class="fc" id="L275">        return q;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

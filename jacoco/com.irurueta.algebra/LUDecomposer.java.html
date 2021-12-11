@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LUDecomposer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">LUDecomposer.java</span></div><h1>LUDecomposer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * This class allows decomposition of matrices using LU decomposition, which
+ * consists on retrieving two triangular matrices (lower triangular and upper
+ * triangular) as a decomposition of provided input matrix.
+ * In other words, if input matrix is A, then: A = L * U, where L is lower
+ * triangular matrix and U is upper triangular matrix.
+ * LU decomposition is a useful and fast way of solving systems of linear
+ * equations, computing determinants or finding whether a matrix is singular.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class LUDecomposer extends Decomposer {
+
+    /**
+     * Constant defining default round error when determining singularity of
+     * matrices. This value is zero by default.
+     */
+    public static final double DEFAULT_ROUND_ERROR = 0.0;
+
+    /**
+     * Constant defining minimum allowed round error value when determining
+     * singularity of matrices.
+     */
+    public static final double MIN_ROUND_ERROR = 0.0;
+
+    /**
+     * Internal matrix containing results of decomposition.
+     */
+    private Matrix lu;
+
+    /**
+     * Internal array containing pivotings after decomposition.
+     */
+    int[] piv;
+
+    /**
+     * Member containing pivot sign after decomposition.
+     */
+    int pivSign;
+
+    /**
+     * Constructor of this class.
+     */
+    public LUDecomposer() {
+<span class="fc" id="L61">        super();</span>
+<span class="fc" id="L62">        lu = null;</span>
+<span class="fc" id="L63">        piv = null;</span>
+<span class="fc" id="L64">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed
+     */
+    public LUDecomposer(final Matrix inputMatrix) {
+<span class="fc" id="L72">        super(inputMatrix);</span>
+<span class="fc" id="L73">        lu = null;</span>
+<span class="fc" id="L74">        piv = null;</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Returns decomposer type corresponding to LU decomposition
+     *
+     * @return Decomposer type
+     */
+    @Override
+    public DecomposerType getDecomposerType() {
+<span class="fc" id="L84">        return DecomposerType.LU_DECOMPOSITION;</span>
+    }
+
+    /**
+     * Sets reference to input matrix to be decomposed.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     * @throws LockedException Exception thrown if attempting to call this
+     *                         method while this instance remains locked.
+     */
+    @Override
+    public void setInputMatrix(final Matrix inputMatrix) throws LockedException {
+<span class="fc" id="L96">        super.setInputMatrix(inputMatrix);</span>
+<span class="fc" id="L97">        lu = null;</span>
+<span class="fc" id="L98">        piv = null;</span>
+<span class="fc" id="L99">    }</span>
+
+    /**
+     * Returns boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     * Attempting to retrieve decomposition results when not available, will
+     * probably raise a NotAvailableException
+     *
+     * @return Boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     */
+    @Override
+    public boolean isDecompositionAvailable() {
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        return lu != null;</span>
+    }
+
+    /**
+     * This method computes LU matrix decomposition, which consists on
+     * retrieving two triangular matrices (Lower triangular and Upper
+     * triangular) as a decomposition of provided input matrix.
+     * In other words, if input matrix is A, then: A = L * U
+     * Note: During execution of this method, this instance will be locked,
+     * and hence attempting to set some parameters might raise a
+     * LockedException.
+     * Note: After execution of this method, LU decomposition will be
+     * available and operations such as retrieving L and U matrices or
+     * computing determinants among others will be able to be done.
+     * Attempting to call any of such operations before calling this method
+     * will raise a NotAvailableException because they require computation of
+     * LU decomposition first.
+     *
+     * @throws NotReadyException   Exception thrown if attempting to call this
+     *                             method when this instance is not ready (i.e. no input matrix has been
+     *                             provided).
+     * @throws LockedException     Exception thrown if attempting to call this
+     *                             method when this instance is not ready (i.e. no input matrix has been
+     *                             provided).
+     * @throws DecomposerException Exception thrown if for any reason
+     *                             decomposition fails while executing, like when convergence of results
+     *                             can not be obtained, etc.
+     */
+    @Override
+    public void decompose() throws NotReadyException, LockedException,
+            DecomposerException {
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L145">            throw new NotReadyException();</span>
+        }
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L148">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L151">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L152">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">        if (columns &gt; rows) {</span>
+<span class="nc" id="L155">            throw new DecomposerException();</span>
+        }
+
+<span class="fc" id="L158">        locked = true;</span>
+
+        // copy matrix contents
+<span class="fc" id="L161">        lu = new Matrix(inputMatrix);</span>
+
+<span class="fc" id="L163">        piv = new int[rows];</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc" id="L165">            piv[i] = i;</span>
+        }
+
+<span class="fc" id="L168">        pivSign = 1;</span>
+
+        // Main loop
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        for (int k = 0; k &lt; columns; k++) {</span>
+            // Find pivot
+<span class="fc" id="L173">            int p = k;</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            for (int i = k + 1; i &lt; rows; i++) {</span>
+<span class="fc" id="L175">                p = Math.abs(lu.getElementAt(i, k)) &gt;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">                        Math.abs(lu.getElementAt(p, k)) ? i : p;</span>
+            }
+            // Exchange if necessary
+<span class="fc bfc" id="L179" title="All 2 branches covered.">            if (p != k) {</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">                for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc" id="L181">                    final double t = lu.getElementAt(p, j);</span>
+<span class="fc" id="L182">                    lu.setElementAt(p, j, lu.getElementAt(k, j));</span>
+<span class="fc" id="L183">                    lu.setElementAt(k, j, t);</span>
+                }
+<span class="fc" id="L185">                final int t = piv[p];</span>
+<span class="fc" id="L186">                piv[p] = piv[k];</span>
+<span class="fc" id="L187">                piv[k] = t;</span>
+<span class="fc" id="L188">                pivSign = -pivSign;</span>
+            }
+            // Compute multipliers and eliminate k-th column
+<span class="fc bfc" id="L191" title="All 2 branches covered.">            if (lu.getElementAt(k, k) != 0.0) {</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">                for (int i = k + 1; i &lt; rows; i++) {</span>
+<span class="fc" id="L193">                    lu.setElementAt(i, k, lu.getElementAt(i, k) /</span>
+<span class="fc" id="L194">                            lu.getElementAt(k, k));</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">                    for (int j = k + 1; j &lt; columns; j++) {</span>
+<span class="fc" id="L196">                        lu.setElementAt(i, j, lu.getElementAt(i, j) -</span>
+<span class="fc" id="L197">                                lu.getElementAt(i, k) * lu.getElementAt(k, j));</span>
+                    }
+                }
+            }
+        }
+
+<span class="fc" id="L203">        locked = false;</span>
+<span class="fc" id="L204">    }</span>
+
+    /**
+     * Return boolean indicating whether provided input matrix is singular
+     * or not after computing LU decomposition. Returns true if singular and
+     * false otherwise.
+     * A matrix is defined as singular if its determinant is zero, hence
+     * provided input matrix must be square (even though LU decomposition can be
+     * computed for non-square matrices), otherwise a WrongSizeException will
+     * be raised when calling this method. LU decomposition can be used to avoid
+     * determinant computation by means of pivoting, because LU decomposition
+     * obtains two triangular matrices, and the determinant of a triangular
+     * matrix is just the product of the diagonal elements. Hence, if any
+     * element on the diagonal of LU decomposition is zero, determinant will be
+     * zero and input matrix will be singular.
+     *
+     * @return Boolean indicating whether provided input matrix is singular
+     * or not.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR)
+     * @see #decompose()
+     */
+    public boolean isSingular() throws NotAvailableException,
+            WrongSizeException {
+<span class="fc" id="L233">        return isSingular(DEFAULT_ROUND_ERROR);</span>
+    }
+
+    /**
+     * Return boolean indicating whether provided input matrix is singular
+     * or not after computing LU decomposition. Returns true if singular and
+     * false otherwise.
+     * A matrix is defined as singular if its determinant is zero, hence
+     * provided input matrix must be square (even though LU decomposition can be
+     * computed for non-square matrices), otherwise a WrongSizeException will
+     * be raised when calling this method. LU decomposition can be used to avoid
+     * determinant computation by means of pivoting, because LU decomposition
+     * obtains two triangular matrices, and the determinant of a triangular
+     * matrix is just the product of the diagonal elements. Hence, if any
+     * element on the diagonal of LU decomposition is zero, determinant will be
+     * zero and input matrix will be singular.
+     *
+     * @param roundingError Determines the amount of margin given to determine
+     *                      whether a matrix is singular or not due to rounding errors. If not
+     *                      provided, by default rounding error is set to zero, but this value can be
+     *                      relaxed if needed.
+     * @return Boolean indicating whether provided input matrix is singular
+     * or not.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR)
+     * @see #decompose()
+     */
+    public boolean isSingular(final double roundingError)
+            throws NotAvailableException, WrongSizeException {
+
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L269">            throw new NotAvailableException();</span>
+        }
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (roundingError &lt; MIN_ROUND_ERROR) {</span>
+<span class="fc" id="L272">            throw new IllegalArgumentException();</span>
+        }
+
+        // A matrix is singular when its determinant is zero. Hence, in order to
+        // compute singularity matrix must be square
+<span class="fc" id="L277">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L278">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (rows != columns) {</span>
+<span class="fc" id="L280">            throw new WrongSizeException();</span>
+        }
+
+        // Since we have computed LU decomposition into triangular matrices. The
+        // determinant of a triangular matrix is the product of its diagonal
+        // elements. Hence, if any element in the diagonal is zero, input matrix
+        // will be singular.
+<span class="fc bfc" id="L287" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L288" title="All 2 branches covered.">            if (lu.getElementAt(j, j) == 0.0) {</span>
+<span class="fc" id="L289">                return true;</span>
+            }
+        }
+<span class="fc" id="L292">        return false;</span>
+    }
+
+    /**
+     * Fills provided matrix instance with the Lower triangular matrix
+     * resulting from LU decomposition before correcting any possible pivots.
+     * Hence, this matrix is only ensured to be Lower triangular.
+     * In other words, this matrix does not ensure the product A = L * U, to
+     * achieve this, we need to apply pivot correction.
+     * A pivot corrected version of this matrix can be obtained by calling
+     * method getL().
+     *
+     * @param pivottedL Lower triangular matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #getL()
+     * @see #decompose()
+     */
+    public void getPivottedL(final Matrix pivottedL) throws NotAvailableException {
+
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L314">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L317">        final int rows = lu.getRows();</span>
+<span class="fc" id="L318">        final int columns = lu.getColumns();</span>
+
+<span class="pc bpc" id="L320" title="2 of 4 branches missed.">        if (pivottedL.getRows() != rows || pivottedL.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L322">                pivottedL.resize(rows, columns);</span>
+<span class="nc" id="L323">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L325">            }</span>
+        }
+
+<span class="fc bfc" id="L328" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">                if (i &gt; j) {</span>
+<span class="fc" id="L331">                    pivottedL.setElementAt(i, j, lu.getElementAt(i, j));</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">                } else if (i == j) {</span>
+<span class="fc" id="L333">                    pivottedL.setElementAt(i, j, 1.0);</span>
+                } else {
+<span class="fc" id="L335">                    pivottedL.setElementAt(i, j, 0.0);</span>
+                }
+            }
+        }
+<span class="fc" id="L339">    }</span>
+
+    /**
+     * Returns a new matrix instance containing the Lower triangular matrix
+     * resulting from LU decomposition before correcting any possible pivots.
+     * Hence, this matrix is only ensured to be Lower triangular.
+     * In other words, this matrix does not ensure the product A = L * U, to
+     * achieve this, we need to apply pivot correction.
+     * A pivot corrected version of this matrix can be obtained by calling
+     * method getL().
+     *
+     * @return Lower triangular matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #getL()
+     * @see #decompose()
+     */
+    public Matrix getPivottedL() throws NotAvailableException {
+
+<span class="fc bfc" id="L359" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L360">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L363">        final int rows = lu.getRows();</span>
+<span class="fc" id="L364">        final int columns = lu.getColumns();</span>
+
+<span class="fc" id="L366">        Matrix out = null;</span>
+        try {
+<span class="fc" id="L368">            out = new Matrix(rows, columns);</span>
+<span class="nc" id="L369">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L371">        }</span>
+<span class="fc" id="L372">        getPivottedL(out);</span>
+<span class="fc" id="L373">        return out;</span>
+    }
+
+    /**
+     * Fills provided matrix instance with the pivot corrected Lower
+     * triangular matrix resulting from LU decomposition for provided input
+     * matrix.
+     * Since this matrix is pivot corrected, it might not be completely
+     * triangular, except for some row pivotting.
+     * Notice that LU decomposition obtains matrices in the form of
+     * A = L * U, where A is provided input matrix, L is lower triangular
+     * matrix and U is upper triangular matrix.
+     *
+     * @param l the Lower triangular matrix resulting from LU
+     *          decomposition for provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #decompose()
+     */
+    public void getL(final Matrix l) throws NotAvailableException {
+<span class="pc bpc" id="L394" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L395">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L398">        final int rows = lu.getRows();</span>
+<span class="fc" id="L399">        final int columns = lu.getColumns();</span>
+
+<span class="pc bpc" id="L401" title="2 of 4 branches missed.">        if (l.getRows() != rows || l.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L403">                l.resize(rows, columns);</span>
+<span class="nc" id="L404">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L406">            }</span>
+        }
+
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        for (int i = 0; i &lt; rows; i++) {</span>
+<span class="fc bfc" id="L410" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">                if (i &gt; j) {</span>
+<span class="fc" id="L412">                    l.setElementAt(piv[i], j, lu.getElementAt(i, j));</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">                } else if (i == j) {</span>
+<span class="fc" id="L414">                    l.setElementAt(piv[i], j, 1.0);</span>
+                } else {
+<span class="fc" id="L416">                    l.setElementAt(piv[i], j, 0.0);</span>
+                }
+            }
+        }
+<span class="fc" id="L420">    }</span>
+
+    /**
+     * Returns a new matrix instance containing the pivot corrected Lower
+     * triangular matrix resulting from LU decomposition for provided input
+     * matrix.
+     * Since this matrix is pivot corrected, it might not be completely
+     * triangular, except for some row pivotting.
+     * Notice that LU decomposition obtains matrices in the form of
+     * A = L * U, where A is provided input matrix, L is lower triangular
+     * matrix and U is upper triangular matrix.
+     *
+     * @return Returns the Lower triangular matrix resulting from LU
+     * decomposition for provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getL() throws NotAvailableException {
+<span class="fc bfc" id="L440" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L441">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L444">        final int rows = lu.getRows();</span>
+<span class="fc" id="L445">        final int columns = lu.getColumns();</span>
+<span class="fc" id="L446">        Matrix out = null;</span>
+        try {
+<span class="fc" id="L448">            out = new Matrix(rows, columns);</span>
+<span class="nc" id="L449">        } catch (final WrongSizeException ignore) {</span>
+            //never happens
+<span class="fc" id="L451">        }</span>
+<span class="fc" id="L452">        getL(out);</span>
+<span class="fc" id="L453">        return out;</span>
+    }
+
+    /**
+     * Fills provided matrix instance with the Upper triangular matrix
+     * resulting from LU decomposition for provided input matrix.
+     * Notice that LU decomposition obtains matrices in the form A = L * U,
+     * where A is provided input matrix, L is lower triangular matrix and U
+     * is upper triangular matrix.
+     *
+     * @param u Returns the Upper triangular matrix resulting from LU
+     *          decomposition for provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #decompose()
+     */
+    public void getU(final Matrix u) throws NotAvailableException {
+<span class="pc bpc" id="L471" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L472">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L475">        final int columns = lu.getColumns();</span>
+
+<span class="pc bpc" id="L477" title="2 of 4 branches missed.">        if (u.getRows() != columns || u.getColumns() != columns) {</span>
+            try {
+<span class="nc" id="L479">                u.resize(columns, columns);</span>
+<span class="nc" id="L480">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="nc" id="L482">            }</span>
+        }
+<span class="fc bfc" id="L484" title="All 2 branches covered.">        for (int i = 0; i &lt; columns; i++) {</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">            for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L486" title="All 2 branches covered.">                if (i &lt;= j) {</span>
+<span class="fc" id="L487">                    u.setElementAt(i, j, lu.getElementAt(i, j));</span>
+                } else {
+<span class="fc" id="L489">                    u.setElementAt(i, j, 0.0);</span>
+                }
+            }
+        }
+<span class="fc" id="L493">    }</span>
+
+    /**
+     * Returns a new matrix instance containing the Upper triangular matrix
+     * resulting from LU decomposition for provided input matrix.
+     * Notice that LU decomposition obtains matrices in the form A = L * U,
+     * where A is provided input matrix, L is lower triangular matrix and U
+     * is upper triangular matrix.
+     *
+     * @return Returns the Upper triangular matrix resulting from LU
+     * decomposition for provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getU() throws NotAvailableException {
+<span class="fc bfc" id="L510" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L511">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L514">        final int columns = lu.getColumns();</span>
+<span class="fc" id="L515">        Matrix out = null;</span>
+        try {
+<span class="fc" id="L517">            out = new Matrix(columns, columns);</span>
+<span class="nc" id="L518">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L520">        }</span>
+<span class="fc" id="L521">        getU(out);</span>
+<span class="fc" id="L522">        return out;</span>
+    }
+
+    /**
+     * Returns pivot permutation vector.
+     *
+     * @return Pivot permutation vector.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     */
+    public int[] getPivot() throws NotAvailableException {
+
+<span class="fc bfc" id="L535" title="All 2 branches covered.">        if (!this.isDecompositionAvailable()) {</span>
+<span class="fc" id="L536">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L538">        return piv;</span>
+    }
+
+    /**
+     * Returns determinant of provided input matrix using LU decomposition as
+     * means to obtain it.
+     * Provided input matrix must be square (even though LU decomposition can
+     * be computed for non-square matrices), otherwise a WrongSizeException will
+     * be raised when calling this method.
+     * LU decomposition can be used to avoid determinant computation using other
+     * slow methods, because LU decomposition obtains two triangular matrices,
+     * and the determinant of a triangular matrix is just the product of the
+     * diagonal elements.
+     * Since the determinant of a matrix product is the product of determinants,
+     * then determinant of input matrix can be computed as the product of
+     * determinants of L and U.
+     * Finally, since L has ones on its diagonal, its determinant will be +-1,
+     * depending on the amount of pivots done on L, and determinant of U will be
+     * just the product of its diagonal elements.
+     *
+     * @return Determinant of provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing LU decomposition. To avoid this exception
+     *                               call decompose() method first.
+     * @throws WrongSizeException    Exception thrown if attempting to call this
+     *                               method using a non-square input matrix.
+     * @see #decompose()
+     */
+    public double determinant() throws NotAvailableException,
+            WrongSizeException {
+
+<span class="fc bfc" id="L569" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L570">            throw new NotAvailableException();</span>
+        }
+
+        // Determinants can only be computed on squared matrices
+<span class="fc" id="L574">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L575">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="fc bfc" id="L577" title="All 2 branches covered.">        if (rows != columns) {</span>
+<span class="fc" id="L578">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc" id="L581">        double d = pivSign;</span>
+<span class="fc bfc" id="L582" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc" id="L583">            d *= lu.getElementAt(j, j);</span>
+        }
+
+<span class="fc" id="L586">        return d;</span>
+    }
+
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B.
+     * Where A is the input matrix provided for LU decomposition, X is the
+     * solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vectors/matrices without
+     * having to recompute LU decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must be square, otherwise a
+     * WrongSizeException will be raised as well.
+     * Note: If provided input matrix A is singular, a SingularMatrixException
+     * will be thrown.
+     * Note: In order to execute this method, an LU decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order
+     * to avoid this exception call decompose() method first.
+     * Note: DEFAULT_ROUND_ERROR is used as rounding error
+     * Note: Solution of linear system of equations is stored in provided result
+     * matrix
+     *
+     * @param b      Parameters matrix that determine a linear system of equations.
+     *               Provided matrix must have the same number of rows as provided input
+     *               matrix for LU decomposition. Besides, each column on parameters matrix
+     *               will represent a new system of equations, whose solution will be returned
+     *               on appropriate column as an output of this method.
+     * @param result Matrix containing solution of linear system of equations on
+     *               each column for each column of provided parameters matrix b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix; or if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being LU
+     *                                  decomposed.
+     * @throws SingularMatrixException  Exception thrown if provided input matrix
+     *                                  to be LU decomposed is singular. In this case linear system of equations
+     *                                  cannot be solved.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public void solve(final Matrix b, final Matrix result) throws NotAvailableException,
+            WrongSizeException, SingularMatrixException {
+<span class="fc" id="L634">        solve(b, DEFAULT_ROUND_ERROR, result);</span>
+<span class="fc" id="L635">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B.
+     * Where A is the input matrix provided for LU decomposition, X is the
+     * solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vectors/matrices without
+     * having to recompute LU decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must be square, otherwise a
+     * WrongSizeException will be raised as well.
+     * Note: If provided input matrix A is singular, a SingularMatrixException
+     * will be thrown.
+     * Note: In order to execute this method, an LU decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order
+     * to avoid this exception call decompose() method first.
+     * Note: Solution of linear system of equations is stored in provided result
+     * matrix
+     *
+     * @param b             Parameters matrix that determine a linear system of equations.
+     *                      Provided matrix must have the same number of rows as provided input
+     *                      matrix for LU decomposition. Besides, each column on parameters matrix
+     *                      will represent a new system of equations, whose solution will be returned
+     *                      on appropriate column as an output of this method.
+     * @param roundingError Determines the amount of margin given to determine
+     *                      whether a matrix is singular or not due to rounding errors. If not
+     *                      provided, by default rounding error is set to zero, but this value can
+     *                      be relaxed if needed.
+     * @param result        Matrix containing solution of linear system of equations on
+     *                      each column for each column of provided parameters matrix b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix; or if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being LU
+     *                                  decomposed.
+     * @throws SingularMatrixException  Exception thrown if provided input matrix
+     *                                  to be LU decomposed is singular. In this case linear system of equations
+     *                                  cannot be solved.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public void solve(final Matrix b, final double roundingError, final Matrix result)
+            throws NotAvailableException, WrongSizeException,
+            SingularMatrixException {
+
+<span class="pc bpc" id="L686" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L687">            throw new NotAvailableException();</span>
+        }
+
+<span class="pc bpc" id="L690" title="1 of 2 branches missed.">        if (b.getRows() != inputMatrix.getRows()) {</span>
+<span class="nc" id="L691">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc bfc" id="L694" title="All 2 branches covered.">        if (roundingError &lt; MIN_ROUND_ERROR) {</span>
+<span class="fc" id="L695">            throw new IllegalArgumentException();</span>
+        }
+
+        // Copy right hand side with pivoting
+<span class="fc" id="L699">        final int rows = lu.getRows();</span>
+<span class="fc" id="L700">        final int columns = lu.getColumns();</span>
+<span class="fc" id="L701">        final int colsB = b.getColumns();</span>
+
+<span class="fc bfc" id="L703" title="All 2 branches covered.">        if (rows != columns) {</span>
+<span class="fc" id="L704">            throw new WrongSizeException();</span>
+        }
+<span class="fc bfc" id="L706" title="All 2 branches covered.">        if (isSingular(roundingError)) {</span>
+<span class="fc" id="L707">            throw new SingularMatrixException();</span>
+        }
+
+        // resize result matrix if needed
+<span class="pc bpc" id="L711" title="2 of 4 branches missed.">        if (result.getRows() != columns || result.getColumns() != colsB) {</span>
+<span class="nc" id="L712">            result.resize(columns, colsB);</span>
+        }
+<span class="fc" id="L714">        result.initialize(0.0);</span>
+
+<span class="fc bfc" id="L716" title="All 2 branches covered.">        for (int i = 0; i &lt; columns; i++) {</span>
+<span class="fc bfc" id="L717" title="All 2 branches covered.">            for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L718">                result.setElementAt(i, j, b.getElementAt(piv[i], j));</span>
+            }
+        }
+
+        // Solve L * Y = b(piv, :)
+<span class="fc bfc" id="L723" title="All 2 branches covered.">        for (int k = 0; k &lt; columns; k++) {</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">            for (int i = k + 1; i &lt; columns; i++) {</span>
+<span class="fc bfc" id="L725" title="All 2 branches covered.">                for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L726">                    result.setElementAt(i, j, result.getElementAt(i, j) -</span>
+<span class="fc" id="L727">                            result.getElementAt(k, j) * lu.getElementAt(i, k));</span>
+                }
+            }
+        }
+
+        // Solve U * X = Y
+<span class="fc bfc" id="L733" title="All 2 branches covered.">        for (int k = columns - 1; k &gt;= 0; k--) {</span>
+<span class="fc bfc" id="L734" title="All 2 branches covered.">            for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L735">                result.setElementAt(k, j, result.getElementAt(k, j) /</span>
+<span class="fc" id="L736">                        lu.getElementAt(k, k));</span>
+            }
+<span class="fc bfc" id="L738" title="All 2 branches covered.">            for (int i = 0; i &lt; k; i++) {</span>
+<span class="fc bfc" id="L739" title="All 2 branches covered.">                for (int j = 0; j &lt; colsB; j++) {</span>
+<span class="fc" id="L740">                    result.setElementAt(i, j, result.getElementAt(i, j) -</span>
+<span class="fc" id="L741">                            result.getElementAt(k, j) * lu.getElementAt(i, k));</span>
+                }
+            }
+        }
+<span class="fc" id="L745">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B.
+     * Where A is the input matrix provided for LU decomposition, X is the
+     * solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vectors/matrices without
+     * having to recompute LU decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must be square, otherwise a
+     * WrongSizeException will be raised as well.
+     * Note: If provided input matrix A is singular, a SingularMatrixException
+     * will be thrown.
+     * Note: In order to execute this method, an LU decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order
+     * to avoid this exception call decompose() method first.
+     * Note: DEFAULT_ROUND_ERROR is used as rounding error
+     *
+     * @param b Parameters matrix that determine a linear system of equations.
+     *          Provided matrix must have the same number of rows as provided input
+     *          matrix for LU decomposition. Besides, each column on parameters matrix
+     *          will represent a new system of equations, whose solution will be returned
+     *          on appropriate column as an output of this method.
+     * @return Matrix containing solution of linear system of equations on each
+     * column for each column of provided parameters matrix b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix; or if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being LU
+     *                                  decomposed.
+     * @throws SingularMatrixException  Exception thrown if provided input matrix
+     *                                  to be LU decomposed is singular. In this case linear system of equations
+     *                                  cannot be solved.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public Matrix solve(final Matrix b) throws NotAvailableException,
+            WrongSizeException, SingularMatrixException {
+<span class="fc" id="L789">        return solve(b, DEFAULT_ROUND_ERROR);</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form:
+     * A * X = B.
+     * Where A is the input matrix provided for LU decomposition, X is the
+     * solution to the system of equations, and B is the parameters
+     * vector/matrix.
+     * Note: This method can be reused for different b vectors/matrices without
+     * having to recompute LU decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: Provided input matrix A must be square, otherwise a
+     * WrongSizeException will be raised as well.
+     * Note: If provided input matrix A is singular, a SingularMatrixException
+     * will be thrown.
+     * Note: In order to execute this method, an LU decomposition must be
+     * available, otherwise a NotAvailableException will be raised. In order
+     * to avoid this exception call decompose() method first.
+     *
+     * @param b             Parameters matrix that determine a linear system of equations.
+     *                      Provided matrix must have the same number of rows as provided input
+     *                      matrix for LU decomposition. Besides, each column on parameters matrix
+     *                      will represent a new system of equations, whose solution will be returned
+     *                      on appropriate column as an output of this method.
+     * @param roundingError Determines the amount of margin given to determine
+     *                      whether a matrix is singular or not due to rounding errors. If not
+     *                      provided, by default rounding error is set to zero, but this value can
+     *                      be relaxed if needed.
+     * @return Matrix containing solution of linear system of equations on each
+     * column for each column of provided parameters matrix b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing LU decomposition. To avoid this exception call
+     *                                  decompose() method first.
+     * @throws WrongSizeException       Exception thrown if attempting to call this
+     *                                  method using a non-square input matrix; or if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being LU
+     *                                  decomposed.
+     * @throws SingularMatrixException  Exception thrown if provided input matrix
+     *                                  to be LU decomposed is singular. In this case linear system of equations
+     *                                  cannot be solved.
+     * @throws IllegalArgumentException Exception thrown if provided rounding
+     *                                  error is lower than minimum allowed value (MIN_ROUND_ERROR).
+     * @see #decompose()
+     */
+    public Matrix solve(final Matrix b, final double roundingError)
+            throws NotAvailableException, WrongSizeException,
+            SingularMatrixException {
+
+<span class="pc bpc" id="L839" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L840">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L843">        final int columns = lu.getColumns();</span>
+<span class="fc" id="L844">        final int colsB = b.getColumns();</span>
+<span class="fc" id="L845">        final Matrix out = new Matrix(columns, colsB);</span>
+<span class="fc" id="L846">        solve(b, roundingError, out);</span>
+<span class="fc" id="L847">        return out;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

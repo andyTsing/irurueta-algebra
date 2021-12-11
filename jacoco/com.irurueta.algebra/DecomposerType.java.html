@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DecomposerType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">DecomposerType.java</span></div><h1>DecomposerType.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Enumerator indicating the possible methods available for matrix decomposition.
+ */
+<span class="fc" id="L21">public enum DecomposerType {</span>
+    /**
+     * Defines LU decomposition, which decomposes a matrix into upper (U) and
+     * lower (L) triangular matrices.
+     */
+<span class="fc" id="L26">    LU_DECOMPOSITION,</span>
+
+    /**
+     * Defines QR decomposition, which decomposes a matrix into an orthogonal
+     * matrix (Q) and an upper triangular matrix (R).
+     */
+<span class="fc" id="L32">    QR_DECOMPOSITION,</span>
+
+    /**
+     * Defines Economy QR decomposition, which is a faster version of QR
+     * decomposition. Notice that economy sized version only works for matrices
+     * having rows &amp;lt; columns, while Q is a rows-by-columns and R is
+     * columns-by-columns in size.
+     */
+<span class="fc" id="L40">    QR_ECONOMY_DECOMPOSITION,</span>
+
+    /**
+     * Defines RQ decomposition, which decomposes a matrix into an upper
+     * diagonal matrix (R) and an orthogonal matrix (Q). RQ decomposition is
+     * very similar to QR and it is related to it through transposition by
+     * reversing order of factors R and Q respect to QR decomposition.
+     */
+<span class="fc" id="L48">    RQ_DECOMPOSITION,</span>
+
+    /**
+     * Defines Cholesky decomposition, which decomposes a square symmetric and
+     * positive definite matrix into a triangular factor (L) and its transposed
+     * (L').
+     */
+<span class="fc" id="L55">    CHOLESKY_DECOMPOSITION,</span>
+
+    /**
+     * Defines Singular Value Decomposition, which decomposes any rectangular
+     * matrix into 2 unary matrices (U, V) and 1 diagonal matrix containing
+     * singular values (D).
+     */
+<span class="fc" id="L62">    SINGULAR_VALUE_DECOMPOSITION</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

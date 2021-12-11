@@ -1,0 +1,1733 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SingularValueDecomposer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-algebra</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.algebra</a> &gt; <span class="el_source">SingularValueDecomposer.java</span></div><h1>SingularValueDecomposer.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2012 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.algebra;
+
+/**
+ * Computes Singular Value matrix decomposition, which consists
+ * on factoring provided input matrix into three factors consisting of 2
+ * unary matrices and 1 diagonal matrix containing singular values,
+ * following next expression: A = U * S * V'.
+ * Where A is provided input matrix of size m-by-n, U is an m-by-n unary
+ * matrix, S is an n-by-n diagonal matrix containing singular values, and V'
+ * denotes the transpose/conjugate of V and is an n-by-n unary matrix, for
+ * m &amp;lt; n.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public class SingularValueDecomposer extends Decomposer {
+
+    /**
+     * Constant defining default number of iterations to obtain convergence on
+     * singular value estimation.
+     */
+    public static final int DEFAULT_MAX_ITERS = 30;
+
+    /**
+     * Constant defining minimum number of iterations allowed to obtain
+     * convergence on singular value estimation.
+     */
+    public static final int MIN_ITERS = 1;
+
+    /**
+     * Constant defining minimum allowed value as threshold to determine
+     * whether a singular value is negligible or not.
+     */
+    public static final double MIN_THRESH = 0.0;
+
+    /**
+     * Constant defining machine precision.
+     */
+    public static final double EPS = 1e-12;
+
+    /**
+     * Internal storage of U.
+     */
+    private Matrix u;
+
+    /**
+     * Internal storage of V.
+     */
+    private Matrix v;
+
+    /**
+     * Internal storage of singular values.
+     */
+    private double[] w;
+
+    /**
+     * Contains epsilon value, which indicates an estimation of numerical
+     * precision given by this machine.
+     */
+    private final double eps;
+
+    /**
+     * Contains threshold used to determine whether a singular value can be
+     * neglected or not due to numerical precision errors. This can be used to
+     * determine effective rank of input matrix.
+     */
+    private double tsh;
+
+    /**
+     * Member containing maximum number of iterations to obtain convergence of
+     * singular values estimation.
+     * If singular values do not converge on provided maximum number of
+     * iterations, then a NoConvergenceException will be thrown when calling
+     * decompose() method.
+     */
+    private int maxIters;
+
+    /**
+     * Constructor of this class.
+     */
+    public SingularValueDecomposer() {
+<span class="fc" id="L95">        super();</span>
+<span class="fc" id="L96">        maxIters = DEFAULT_MAX_ITERS;</span>
+<span class="fc" id="L97">        u = v = null;</span>
+<span class="fc" id="L98">        w = null;</span>
+<span class="fc" id="L99">        eps = EPS;</span>
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param maxIters Determines maximum number of iterations to be done when
+     *                 decomposing input matrix into singular values so that singular values
+     *                 converge properly.
+     */
+    public SingularValueDecomposer(final int maxIters) {
+<span class="fc" id="L110">        super();</span>
+<span class="fc" id="L111">        this.maxIters = maxIters;</span>
+<span class="fc" id="L112">        u = v = null;</span>
+<span class="fc" id="L113">        w = null;</span>
+<span class="fc" id="L114">        eps = EPS;</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     */
+    public SingularValueDecomposer(final Matrix inputMatrix) {
+<span class="fc" id="L123">        super(inputMatrix);</span>
+<span class="fc" id="L124">        maxIters = DEFAULT_MAX_ITERS;</span>
+<span class="fc" id="L125">        u = v = null;</span>
+<span class="fc" id="L126">        w = null;</span>
+<span class="fc" id="L127">        eps = EPS;</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Constructor of this class.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     * @param maxIters    Determines maximum number of iterations to be done when
+     *                    decomposing input matrix into singular value so that singular values
+     *                    converge properly.
+     */
+    public SingularValueDecomposer(final Matrix inputMatrix, final int maxIters) {
+<span class="fc" id="L139">        super(inputMatrix);</span>
+<span class="fc" id="L140">        this.maxIters = maxIters;</span>
+<span class="fc" id="L141">        u = v = null;</span>
+<span class="fc" id="L142">        w = null;</span>
+<span class="fc" id="L143">        eps = EPS;</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Returns decomposer type corresponding to Singular Value decomposition.
+     *
+     * @return Decomposer type.
+     */
+    @Override
+    public DecomposerType getDecomposerType() {
+<span class="fc" id="L153">        return DecomposerType.SINGULAR_VALUE_DECOMPOSITION;</span>
+    }
+
+    /**
+     * Sets reference to input matrix to be decomposed.
+     *
+     * @param inputMatrix Reference to input matrix to be decomposed.
+     * @throws LockedException Exception thrown if attempting to call this
+     *                         method while this instance remains locked.
+     */
+    @Override
+    public void setInputMatrix(final Matrix inputMatrix) throws LockedException {
+<span class="fc" id="L165">        super.setInputMatrix(inputMatrix);</span>
+<span class="fc" id="L166">        u = v = null;</span>
+<span class="fc" id="L167">        w = null;</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Returns boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     * Attempting to retrieve decomposition results when not available, will
+     * probably raise a NotAvailableException
+     *
+     * @return Boolean indicating whether decomposition has been computed and
+     * results can be retrieved.
+     */
+    @Override
+    public boolean isDecompositionAvailable() {
+<span class="pc bpc" id="L181" title="2 of 6 branches missed.">        return u != null || v != null || w != null;</span>
+    }
+
+    /**
+     * This method computes Singular Value matrix decomposition, which consists
+     * on factoring provided input matrix into three factors consisting of 2
+     * unary matrices and 1 diagonal matrix containing singular values,
+     * following next expression: A = U * S * V'.
+     * Where A is provided input matrix of size m-by-n, U is an m-by-n unary
+     * matrix, S is an n-by-n diagonal matrix containing singular values, and V'
+     * denotes the transpose/conjugate of V and is an n-by-n unary matrix, for
+     * m &amp;lt; n.
+     * Note: Factors U, S and V will be accessible once Singular Value
+     * decomposition has been computed.
+     * Note: During execution of this method, Singular Value decomposition will
+     * be available and operations such as retrieving matrix factors, or
+     * computing rank of matrices among others will be able to be done.
+     * Attempting to call any of such operations before calling this method will
+     * raise a NotAvailableException because they require computation of
+     * SingularValue decomposition first.
+     *
+     * @throws NotReadyException   Exception thrown if attempting to call this
+     *                             method when this instance is not ready (i.e. no input matrix has been
+     *                             provided).
+     * @throws LockedException     Exception thrown if this decomposer is already
+     *                             locked before calling this method. Notice that this method will actually
+     *                             lock this instance while it is being executed.
+     * @throws DecomposerException Exception thrown if for any reason
+     *                             decomposition fails while being executed, like when convergence of
+     *                             results cannot be obtained, etc.
+     */
+    @Override
+    public void decompose() throws NotReadyException, LockedException,
+            DecomposerException {
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L217">            throw new NotReadyException();</span>
+        }
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L220">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L223">        locked = true;</span>
+
+<span class="fc" id="L225">        final int m = inputMatrix.getRows();</span>
+<span class="fc" id="L226">        final int n = inputMatrix.getColumns();</span>
+
+        // copy input matrix into U
+<span class="fc" id="L229">        u = new Matrix(inputMatrix);</span>
+<span class="fc" id="L230">        w = new double[n];</span>
+        try {
+<span class="fc" id="L232">            v = new Matrix(n, n);</span>
+<span class="nc" id="L233">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="fc" id="L235">        }</span>
+        try {
+<span class="fc" id="L237">            internalDecompose();</span>
+<span class="fc" id="L238">            reorder();</span>
+<span class="fc" id="L239">            setNegligibleSingularValueThreshold(0.5 * Math.sqrt(m + n + 1.0) *</span>
+                    w[0] * eps);
+<span class="fc" id="L241">            locked = false;</span>
+<span class="nc" id="L242">        } catch (final DecomposerException e) {</span>
+<span class="nc" id="L243">            u = v = null;</span>
+<span class="nc" id="L244">            w = null;</span>
+<span class="nc" id="L245">            locked = false;</span>
+<span class="nc" id="L246">            throw e;</span>
+<span class="fc" id="L247">        }</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Returns maximum number of iterations to be done in order to obtain
+     * convergence of singular values when computing input matrix Singular
+     * Value Decomposition.
+     *
+     * @return Maximum number of iterations to obtain singular values
+     * convergence.
+     */
+    public int getMaxIterations() {
+<span class="fc" id="L259">        return maxIters;</span>
+    }
+
+    /**
+     * SSets maximum number of iterations to be done in order to obtain
+     * convergence of singular values when computing input matrix Singular
+     * Value Decomposition.
+     * Note: This parameter should rarely be modified because default value
+     * is usually good enough.
+     * Note: If convergence of singular values is not achieved within provided
+     * maximum number of iterations, a DecomposerException will be thrown when
+     * calling decompose();
+     *
+     * @param maxIters Maximum number of iterations to obtain convergence of
+     *                 singular values. Provided value must be 1 or greater, otherwise an
+     *                 IllegalArgumentException will be thrown.
+     * @throws LockedException          Exception thrown if attempting to call this
+     *                                  method while this instance remains locked.
+     * @throws IllegalArgumentException Exception thrown if provided value
+     *                                  for maxIters is out of valid range of values.
+     */
+    public void setMaxIterations(final int maxIters) throws LockedException {
+<span class="pc bpc" id="L281" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L282">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        if (maxIters &lt; MIN_ITERS) {</span>
+<span class="fc" id="L285">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L288">        this.maxIters = maxIters;</span>
+<span class="fc" id="L289">    }</span>
+
+    /**
+     * Returns threshold to be used for determining whether a singular value is
+     * negligible or not.
+     * This threshold can be used to consider a singular value as zero or not,
+     * since small singular values might appear in places where they should be
+     * zero because of rounding errors and machine precision.
+     * Singular values considered as zero determine aspects such as rank,
+     * nullability, null-space or range space.
+     *
+     * @return Threshold to be used for determining whether a singular value
+     * is negligible or not.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition.
+     *                               To avoid this exception call decompose() method first.
+     */
+    public double getNegligibleSingularValueThreshold()
+            throws NotAvailableException {
+<span class="fc bfc" id="L308" title="All 2 branches covered.">        if (!isDecompositionAvailable()) {</span>
+<span class="fc" id="L309">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L311">        return tsh;</span>
+    }
+
+    /**
+     * Returns a new matrix instance containing the left singular vector (U
+     * factor) from Singular Value matrix decomposition, which consists
+     * on decomposing a matrix using the following expression:
+     * A = U * S * V'.
+     * Where A is provided input matrix of size m-by-n and U is an m-by-n
+     * unary matrix for m &amp;lt; n.
+     *
+     * @return Matrix instance containing the left singular vectors from a
+     * Singular Value decomposition.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition. To avoid
+     *                               this exception call decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getU() throws NotAvailableException {
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L331">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L333">        return u;</span>
+    }
+
+    /**
+     * Returns a new matrix instance containing the right singular vectors
+     * (V factor) from Singular Value matrix decomposition, which consists on
+     * decomposing a matrix using the following expression:
+     * A = U * S * V',
+     * Where A is provided input matrix of size m-by-n and V' denotes the
+     * transpose/conjugate of V, which is an n-by-n unary matrix for m &amp;lt; n.
+     *
+     * @return Matrix instance containing the right singular vectors from a
+     * Singular Value decomposition.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition. To avoid
+     *                               this exception call decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getV() throws NotAvailableException {
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L353">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L355">        return v;</span>
+    }
+
+    /**
+     * Returns a new vector instance containing all singular values after
+     * decomposition.
+     * Returned vector is equal to the diagonal of S matrix within expression:
+     * A = U * S * V' where A is provided input matrix and S is a diagonal
+     * matrix containing singular values on its diagonal.
+     *
+     * @return singular values.
+     * @throws NotAvailableException if decomposition has not yet been computed.
+     */
+    public double[] getSingularValues() throws NotAvailableException {
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L370">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L372">        return w;</span>
+    }
+
+    /**
+     * Copies diagonal matrix into provided instance containing all singular
+     * values on its diagonal after Singular Value matrix decomposition, which
+     * consists on decomposing a matrix using the following expression:
+     * A = U * S * V'.
+     * Where A is provided input matrix of size m-by-n and S is a diagonal
+     * matrix of size n-by-n for m &amp;lt; n.
+     *
+     * @param m matrix instance containing all singular values on its
+     *          diagonal after execution of this method.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition. To avoid
+     *                               this exception call decompose() method first.
+     * @throws WrongSizeException    if provided matrix does not have size n-by-n.
+     * @see #decompose()
+     */
+    public void getW(final Matrix m) throws NotAvailableException, WrongSizeException {
+<span class="pc bpc" id="L392" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L393">            throw new NotAvailableException();</span>
+        }
+<span class="fc bfc" id="L395" title="All 4 branches covered.">        if (m.getRows() != w.length || m.getColumns() != w.length) {</span>
+<span class="fc" id="L396">            throw new WrongSizeException();</span>
+        }
+<span class="fc" id="L398">        Matrix.diagonal(w, m);</span>
+<span class="fc" id="L399">    }</span>
+
+    /**
+     * Returns a new diagonal matrix instance containing all singular values on
+     * its diagonal after Singular Value matrix decomposition, which consists
+     * on decomposing a matrix using the following expression: A = U * S * V'.
+     * Where A is provided input matrix of size m-by-n and S is a diagonal
+     * matrix of size n-by-n for m &amp;lt; n.
+     *
+     * @return Returned matrix instance containing all singular values on its
+     * diagonal.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition. To avoid
+     *                               this exception call decompose() method first.
+     * @see #decompose()
+     */
+    public Matrix getW() throws NotAvailableException {
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L417">            throw new NotAvailableException();</span>
+        }
+
+        // copy S array into a new diagonal matrix
+<span class="fc" id="L421">        return Matrix.diagonal(w);</span>
+    }
+
+    /**
+     * Returns the 2-norm of provided input matrix, which is equal to the highest
+     * singular value found after decomposition. This is also called the Ky Fan
+     * 1-norm.
+     * This norm is also equal to the square root of Frobenius norm of the
+     * squared of provided input matrix. In other words:
+     * sqrt(norm(A' * A, 'fro')) in Matlab notation.
+     * Where A is provided input matrix and A' is its transpose, and hence
+     * A' * A can be considered the squared matrix of A, and Frobenius norm
+     * is defined as the square root of the sum of the squared elements of a
+     * matrix: sqr(sum(A(:).^2))
+     *
+     * @return The 2-norm of provided input matrix, which is equal to the
+     * highest singular value.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @see #decompose()
+     */
+    public double getNorm2() throws NotAvailableException {
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L445">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L447">        return w[0];</span>
+    }
+
+    /**
+     * Returns the condition number of provided input matrix found after
+     * decomposition.
+     * The condition number of a matrix measures the sensitivity of the
+     * solution of a system of linear equations to errors in the data.
+     * It gives an indication of the accuracy of the results from matrix
+     * inversion and the solution of a linear system of equations.
+     * A problem with a low condition number is said to be well-conditioned,
+     * whereas a problem with a high condition number is said to be
+     * ill-conditioned.
+     * The condition number is a property of a matrix and is not related to the
+     * algorithm or floating point accuracy of a machine to solve a linear
+     * system of equations or make matrix inversion.
+     * When solving a linear system of equations (A * X = b), one should think
+     * of the condition number as being (very roughly) the rate at which the
+     * solution x will change with respect to a change in b.
+     * Thus, if the condition number is large, even a small error in b may
+     * cause a large error in x. On the other hand, if the condition number is
+     * small then the error in x will not be much bigger than the error in b.
+     * One way to find the condition number is by using the ration of the
+     * maximal and minimal singular values of a matrix, which is what this
+     * method returns.
+     *
+     * @return The condition number of provided input matrix.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @see #decompose()
+     */
+    public double getConditionNumber() throws NotAvailableException {
+<span class="fc" id="L480">        return 1.0 / getReciprocalConditionNumber();</span>
+    }
+
+    /**
+     * Returns the inverse of the condition number, i.e. 1.0 / condition number.
+     * Hence, when reciprocal condition number is close to zero, input matrix
+     * will be ill-conditioned.
+     * For more information see getConditionNumber()
+     *
+     * @return Inverse of the condition number.
+     * @throws NotAvailableException Exception thrown if attempting to call
+     *                               this method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @see #decompose()
+     * @see #getConditionNumber()
+     */
+    public double getReciprocalConditionNumber() throws NotAvailableException {
+<span class="pc bpc" id="L497" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L498">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L501">        final int columns = inputMatrix.getColumns();</span>
+<span class="pc bpc" id="L502" title="1 of 4 branches missed.">        return (w[0] &lt;= 0.0 || w[columns - 1] &lt;= 0.0) ? 0.0 :</span>
+<span class="fc" id="L503">                w[columns - 1] / w[0];</span>
+    }
+
+    /**
+     * Returns effective numerical matrix rank.
+     * By definition rank of a matrix can be found as the number of non-zero
+     * singular values of such matrix found after decomposition.
+     * However, rounding error and machine precision may lead to small but non-
+     * zero, singular values in a rank deficient matrix.
+     * This method tries to cope with such rounding errors by taking into
+     * account only those non-negligible singular values to determine input
+     * matrix rank.
+     * The Rank-nullity theorem states that for a matrix A of size m-by-n then:
+     * rank(A) + nullity(A) = n
+     * Where A is input matrix and n is the number of columns of such matrix.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Effective numerical matrix rank.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  value close to zero.
+     * @see #decompose()
+     */
+    public int getRank(final double singularValueThreshold)
+            throws NotAvailableException {
+<span class="pc bpc" id="L533" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L534">            throw new NotAvailableException();</span>
+        }
+<span class="pc bpc" id="L536" title="1 of 2 branches missed.">        if (singularValueThreshold &lt; MIN_THRESH) {</span>
+<span class="nc" id="L537">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L540">        int r = 0;</span>
+<span class="fc bfc" id="L541" title="All 2 branches covered.">        for (double aW : w) {</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">            if (aW &gt; singularValueThreshold) {</span>
+<span class="fc" id="L543">                r++;</span>
+            }
+        }
+<span class="fc" id="L546">        return r;</span>
+    }
+
+    /**
+     * Returns effective numerical matrix rank.
+     * By definition rank of a matrix can be found as the number of non-zero
+     * singular values of such matrix found after decomposition.
+     * However, rounding error and machine precision may lead to small but non-
+     * zero singular values in a rank deficient matrix.
+     * This method tries to cope with such rounding error by taking into account
+     * only those non-negligible singular values to determine input matrix rank.
+     * The Rank-nullity theorem states that for a matrix A of size m-by-n then:
+     * rank(A) + nullity(A) = n
+     * Where A is input matrix and n is number of columns of such matrix.
+     * Note: This method makes same actions as int getRank(double)
+     * except that singular value threshold is automatically computed by taking
+     * into account input matrix size, maximal singular value and machine
+     * precision. This threshold is good enough for most situations, and hence
+     * we discourage setting it manually.
+     *
+     * @return Effective numerical matrix rank.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @see #decompose()
+     */
+    public int getRank() throws NotAvailableException {
+<span class="fc" id="L573">        return getRank(getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * Returns effective numerical matrix nullity.
+     * By definition nullity of a matrix can be found as the number of zero or
+     * negligible singular values of provided input matrix after decomposition.
+     * Rounding error and machine precision may lead to small but non-zero
+     * singular values in a rank deficient matrix.
+     * This method tries to cope with such rounding error by taking into account
+     * only those negligible singular values to determine input matrix nullity.
+     * The Rank-nullity theorem states that for a matrix A of size m-by-n then:
+     * rank(A) + nullity(A) = n
+     * Where A is input matrix and n is number of columns of such matrix.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Effective numerical matrix nullity.
+     * @throws NotAvailableException    Exception thrown if attempting to call
+     *                                  this method before computing Singular Value decomposition.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  value close to zero.
+     * @see #decompose()
+     */
+    public int getNullity(final double singularValueThreshold)
+            throws NotAvailableException {
+<span class="fc" id="L601">        int n = inputMatrix.getColumns();</span>
+<span class="fc" id="L602">        return n - getRank(singularValueThreshold);</span>
+    }
+
+    /**
+     * Returns effective numerical matrix nullity.
+     * By definition nullity of a matrix can be found as the number of zero or
+     * negligible singular values of provided input matrix after decomposition.
+     * Rounding error and machine precision may lead to small but non-zero
+     * singular values in a rank deficient matrix.
+     * This method tries to cope with such rounding error by taking into account
+     * only those negligible singular values to determine input matrix nullity.
+     * The Rank-nullity theorem states that for a matrix A of size m-by-n then:
+     * rank(A) + nullity(A) = n
+     * Where A is input matrix and n is number of columns of such matrix.
+     * Note: This method makes the same actions as int getNullity(double) except
+     * that singular value threshold is automatically computed by taking into
+     * account input matrix size, maximal singular value and machine precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     *
+     * @return Effective numerical matrix nullity.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @see #decompose()
+     */
+    public int getNullity() throws NotAvailableException {
+<span class="fc" id="L629">        return getNullity(getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * Sets into provided range matrix the Range space of provided input matrix,
+     * which spans a subspace of dimension equal to the rank of input matrix.
+     * Range space is equal to the columns of U corresponding to non-negligible
+     * singular values.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @param range                  Matrix containing Range space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has rank
+     *                                  zero or also if attempting to call this method before computing Singular
+     *                                  Value decomposition. To avoid this exception call decompose() method
+     *                                  first and make sure that input matrix has non-zero rank.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public void getRange(final double singularValueThreshold, final Matrix range)
+            throws NotAvailableException {
+<span class="pc bpc" id="L652" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L653">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L655">        final int rank = getRank(singularValueThreshold);</span>
+<span class="fc" id="L656">        internalGetRange(rank, singularValueThreshold, range);</span>
+<span class="fc" id="L657">    }</span>
+
+    /**
+     * Sets into provided range matrix the Range space of provided input matrix,
+     * which spans a subspace of dimension equal to the rank of input matrix.
+     * Range space is equal to the columns of U corresponding to non-negligible
+     * singular values.
+     * This method performs same actions as getRange(double, Matrix) except that
+     * singular value threshold is automatically computed by taking into account
+     * input matrix size, maximal singular value and machine precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     *
+     * @param range Matrix containing Range space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has rank
+     *                                  zero or also if attempting to call this method before computing Singular
+     *                                  Value decomposition. To avoid this exception call decompose() method
+     *                                  first and make sure that input matrix has non-zero rank.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public void getRange(final Matrix range) throws NotAvailableException {
+<span class="fc" id="L681">        getRange(getNegligibleSingularValueThreshold(), range);</span>
+<span class="fc" id="L682">    }</span>
+
+    /**
+     * Returns matrix containing Range space of provided input matrix, which
+     * spans a subspace of dimension equal to the rank of input matrix.
+     * Range space is equal to the columns of U corresponding to non-negligible
+     * singular values.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Matrix containing Range space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has rank
+     *                                  zero or also if attempting to call this method before computing Singular
+     *                                  Value decomposition. To avoid this exception call decompose() method
+     *                                  first and make sure that input matrix has non-zero rank.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public Matrix getRange(final double singularValueThreshold)
+            throws NotAvailableException {
+<span class="pc bpc" id="L704" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L705">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L707">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L708">        final int rank = getRank(singularValueThreshold);</span>
+
+        Matrix out;
+        try {
+<span class="fc" id="L712">            out = new Matrix(rows, rank);</span>
+<span class="nc" id="L713">        } catch (final WrongSizeException e) {</span>
+<span class="nc" id="L714">            throw new NotAvailableException(e);</span>
+<span class="fc" id="L715">        }</span>
+<span class="fc" id="L716">        internalGetRange(rank, singularValueThreshold, out);</span>
+<span class="fc" id="L717">        return out;</span>
+    }
+
+    /**
+     * Return matrix containing Range space of provided input matrix, which
+     * spans a subspace of dimension equal to the rank of input matrix.
+     * Range space is equal to the columns of U corresponding to non-negligible
+     * singular values.
+     * This method performs same actions as Matrix getRange(double) except that
+     * singular value threshold is automatically computed by taking into account
+     * input matrix size, maximal singular value and machine precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     *
+     * @return Matrix containing Range space of provided input matrix
+     * @throws NotAvailableException Exception thrown if input matrix has rank
+     *                               zero or also if attempting to call this method before computing Singular
+     *                               Value decomposition. To avoid this exception call decompose() method
+     *                               first and make sure that input matrix has non-zero rank.
+     */
+    public Matrix getRange() throws NotAvailableException {
+<span class="fc" id="L738">        return getRange(getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * Sets into provided matrix null-space of provided input matrix, which spans
+     * a subspace of dimension equal to the nullity of input matrix. Null-space
+     * is equal to the columns of V corresponding to negligible singular values.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @param nullspace              Matrix containing null-space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has full
+     *                                  rank, and hence its nullity is zero, or also if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first and make sure that input matrix
+     *                                  is rank deficient.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public void getNullspace(final double singularValueThreshold, final Matrix nullspace)
+            throws NotAvailableException {
+<span class="pc bpc" id="L761" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L762">            throw new NotAvailableException();</span>
+        }
+<span class="fc" id="L764">        final int nullity = getNullity(singularValueThreshold);</span>
+<span class="fc" id="L765">        internalGetNullspace(nullity, singularValueThreshold, nullspace);</span>
+<span class="fc" id="L766">    }</span>
+
+    /**
+     * Sets into provided matrix null-space of provided input matrix, which spans
+     * a subspace of dimension equal to the nullity of input matrix. Null-space
+     * is equal to the columns of V corresponding to negligible singular values.
+     * This method performs same actions as getNullspace(double, Matrix) except
+     * that singular value threshold is automatically computed by taking into
+     * account input matrix size, maximal singular value and machine precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     *
+     * @param nullspace Matrix containing null-space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has full
+     *                                  rank, and hence its nullity is zero, or also if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first and make sure that input matrix
+     *                                  is rank deficient.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public void getNullspace(final Matrix nullspace) throws NotAvailableException {
+<span class="fc" id="L790">        getNullspace(getNegligibleSingularValueThreshold(), nullspace);</span>
+<span class="fc" id="L791">    }</span>
+
+    /**
+     * Returns matrix containing null-space of provided input matrix, which spans
+     * a subspace of dimension equal to the nullity of input matrix. Null-space
+     * is equal to the columns of V corresponding to negligible singular values.
+     *
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Matrix containing null-space of provided input matrix.
+     * @throws NotAvailableException    Exception thrown if input matrix has full
+     *                                  rank, and hence its nullity is zero, or also if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first and make sure that input matrix
+     *                                  is rank deficient.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is negative. Returned singular values after decomposition
+     *                                  are always positive, and hence, provided threshold should be a positive
+     *                                  near to zero value.
+     */
+    public Matrix getNullspace(final double singularValueThreshold)
+            throws NotAvailableException {
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L814">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc" id="L817">        final int columns = inputMatrix.getColumns();</span>
+<span class="fc" id="L818">        final int nullity = getNullity(singularValueThreshold);</span>
+        Matrix out;
+        try {
+<span class="fc" id="L821">            out = new Matrix(columns, nullity);</span>
+<span class="nc" id="L822">        } catch (final WrongSizeException e) {</span>
+<span class="nc" id="L823">            throw new NotAvailableException(e);</span>
+<span class="fc" id="L824">        }</span>
+<span class="fc" id="L825">        internalGetNullspace(nullity, singularValueThreshold, out);</span>
+<span class="fc" id="L826">        return out;</span>
+    }
+
+    /**
+     * Returns matrix containing null-space of provided input matrix, which
+     * spans a subspace of dimension equal to the nullity of input matrix.
+     * Null-space is equal to the columns of V corresponding to negligible
+     * singular values.
+     *
+     * @return Matrix containing null-space of provided input matrix.
+     * This method performs same actions as Matrix {@link #getNullspace(double)} except
+     * that singular value threshold is automatically computed by taking into
+     * account input matrix size, maximal singular value and machine precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     * @throws NotAvailableException Exception thrown if input matrix has full
+     *                               rank, and hence its nullity is zero, or also if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first and make sure that input matrix
+     *                               is rank deficient.
+     */
+    public Matrix getNullspace() throws NotAvailableException {
+<span class="fc" id="L848">        return getNullspace(getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A is the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * matrix.
+     * Note: This method can be reused for different b matrices without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     * Note: Provided result matrix will be resized if needed
+     *
+     * @param b                      Parameters matrix that determine a linear system of equations.
+     *                               Provided matrix must have the same number of rows as provided input
+     *                               matrix for Singular Value decomposition. Besides, each column on
+     *                               parameters matrix will represent a new system of equations, whose
+     *                               solution will be returned on appropriate column as an output of this
+     *                               method.
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @param result                 Matrix containing least squares solution of linear system
+     *                               of equations on each column for each column of provided parameters matrix
+     *                               b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being Singular
+     *                                  Value decomposed.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is lower than minimum allowed value (MIN_THRESH).
+     * @see #decompose()
+     */
+    public void solve(final Matrix b, final double singularValueThreshold, final Matrix result)
+            throws NotAvailableException, WrongSizeException {
+<span class="pc bpc" id="L889" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L890">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc bfc" id="L893" title="All 2 branches covered.">        if (b.getRows() != inputMatrix.getRows()) {</span>
+<span class="fc" id="L894">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc bfc" id="L897" title="All 2 branches covered.">        if (singularValueThreshold &lt; MIN_THRESH) {</span>
+<span class="fc" id="L898">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L901">        final int m = inputMatrix.getRows();</span>
+<span class="fc" id="L902">        final int n = inputMatrix.getColumns();</span>
+<span class="fc" id="L903">        final int p = b.getColumns();</span>
+
+<span class="fc" id="L905">        final double[] bcol = new double[m];</span>
+        double[] xx;
+
+        // resize result matrix if needed
+<span class="pc bpc" id="L909" title="1 of 4 branches missed.">        if (result.getRows() != n || result.getColumns() != p) {</span>
+<span class="fc" id="L910">            result.resize(n, p);</span>
+        }
+
+<span class="fc bfc" id="L913" title="All 2 branches covered.">        for (int j = 0; j &lt; p; j++) {</span>
+<span class="fc bfc" id="L914" title="All 2 branches covered.">            for (int i = 0; i &lt; m; i++) {</span>
+<span class="fc" id="L915">                bcol[i] = b.getElementAt(i, j);</span>
+            }
+
+<span class="fc" id="L918">            xx = solve(bcol, singularValueThreshold);</span>
+            // set column j of X using values in vector xx
+<span class="fc" id="L920">            result.setSubmatrix(0, j, n - 1, j, xx);</span>
+
+        }
+<span class="fc" id="L923">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A is the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * matrix.
+     * Note: This method can be reused for different b matrices without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     * Note: This method performs same actions as Matrix solve(Matrix, double)
+     * except that singular value threshold is automatically computed by taking
+     * into account input matrix size, maximal singular value and machine
+     * precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     * Note: Provided result matrix will be resized if needed
+     *
+     * @param b      Parameters matrix that determines a linear system of equations.
+     *               Provided matrix must have the same number of rows as provided input
+     *               matrix for Singular Value decomposition. Besides, each column on
+     *               parameters matrix will represent a new system of equations, whose
+     *               solution will be returned on appropriate column as an output of this method.
+     * @param result Matrix containing least squares solution of linear system
+     *               of equations on each column for each column of provided parameters matrix
+     *               b.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @throws WrongSizeException    Exception thrown if provided parameters matrix
+     *                               (b) does not have the same number of rows as input matrix being Singular
+     *                               Value decomposed.
+     * @see #decompose()
+     */
+    public void solve(final Matrix b, final Matrix result) throws NotAvailableException,
+            WrongSizeException {
+<span class="fc" id="L964">        solve(b, getNegligibleSingularValueThreshold(), result);</span>
+<span class="fc" id="L965">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A is the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * matrix.
+     * Note: This method can be reused for different b matrices without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     *
+     * @param b                      Parameters matrix that determine a linear system of equations.
+     *                               Provided matrix must have the same number of rows as provided input
+     *                               matrix for Singular Value decomposition. Besides, each column on
+     *                               parameters matrix will represent a new system of equations, whose
+     *                               solution will be returned on appropriate column as an output of this
+     *                               method.
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Matrix containing least squares solution of linear system of
+     * equations on each column for each column of provided parameters matrix b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing Singular Value decomposition. To avoid this
+     *                                  exception call decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided parameters matrix
+     *                                  (b) does not have the same number of rows as input matrix being Singular
+     *                                  Value decomposed.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is lower than minimum allowed value (MIN_THRESH).
+     * @see #decompose()
+     */
+    public Matrix solve(final Matrix b, final double singularValueThreshold)
+            throws NotAvailableException, WrongSizeException {
+<span class="fc" id="L1003">        final int n = inputMatrix.getColumns();</span>
+<span class="fc" id="L1004">        final int p = b.getColumns();</span>
+<span class="fc" id="L1005">        final Matrix x = new Matrix(n, p);</span>
+<span class="fc" id="L1006">        solve(b, singularValueThreshold, x);</span>
+<span class="fc" id="L1007">        return x;</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A is the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * matrix.
+     * Note: This method can be reused for different b matrices without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b matrix must have the same number of rows as provided
+     * input matrix A, otherwise a WrongSizeException will be raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     * Note: This method performs same actions as Matrix solve(Matrix, double)
+     * except that singular value threshold is automatically computed by taking
+     * into account input matrix size, maximal singular value and machine
+     * precision.
+     * This threshold is good enough for most situations, and hence we
+     * discourage setting it manually.
+     *
+     * @param b Parameters matrix that determines a linear system of equations.
+     *          Provided matrix must have the same number of rows as provided input
+     *          matrix for Singular Value decomposition. Besides, each column on
+     *          parameters matrix will represent a new system of equations, whose
+     *          solution will be returned on appropriate column as an output of this method.
+     * @return Matrix containing least squares solution of linear system of
+     * equations on each column for each column of provided parameters matrix b.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing Singular Value decomposition. To avoid this
+     *                               exception call decompose() method first.
+     * @throws WrongSizeException    Exception thrown if provided parameters matrix
+     *                               (b) does not have the same number of rows as input matrix being Singular
+     *                               Value decomposed.
+     * @see #decompose()
+     */
+    public Matrix solve(final Matrix b) throws NotAvailableException,
+            WrongSizeException {
+<span class="fc" id="L1047">        return solve(b, getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A i s the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * array.
+     * Note: This method can be reused for different b arrays without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b array must have the same length as the number of rows
+     * on provided input matrix A, otherwise a WrongSizeException will be
+     * raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     *
+     * @param b                      Parameters array that determines a linear system of equations.
+     *                               Provided array must have the same length as number of rows on provided
+     *                               input matrix for Singular Value decomposition.
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @param result                 Vector where least squares solution of linear system of
+     *                               equations for provided parameters array b will be stored.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing SingularValue decomposition.
+     *                                  To avoid this exception call decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided parameters array
+     *                                  (b) does not have the same length as number of rows on input matrix being
+     *                                  Singular Value decomposed or if provided result array does not have the
+     *                                  same length as the number of columns on input matrix.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is lower than minimum allowed value (MIN_THRESH).
+     * @see #decompose()
+     */
+    public void solve(final double[] b, final double singularValueThreshold,
+                      final double[] result) throws NotAvailableException, WrongSizeException {
+<span class="pc bpc" id="L1085" title="1 of 2 branches missed.">        if (!isDecompositionAvailable()) {</span>
+<span class="nc" id="L1086">            throw new NotAvailableException();</span>
+        }
+
+<span class="fc bfc" id="L1089" title="All 2 branches covered.">        if (b.length != inputMatrix.getRows()) {</span>
+<span class="fc" id="L1090">            throw new WrongSizeException();</span>
+        }
+
+<span class="fc bfc" id="L1093" title="All 2 branches covered.">        if (singularValueThreshold &lt; MIN_THRESH) {</span>
+<span class="fc" id="L1094">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1097">        final int m = inputMatrix.getRows();</span>
+<span class="fc" id="L1098">        final int n = inputMatrix.getColumns();</span>
+
+<span class="pc bpc" id="L1100" title="1 of 2 branches missed.">        if (result.length != n) {</span>
+<span class="nc" id="L1101">            throw new WrongSizeException();</span>
+        }
+
+        double s;
+<span class="fc" id="L1105">        final double[] tmp = new double[n];</span>
+
+<span class="fc bfc" id="L1107" title="All 2 branches covered.">        for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L1108">            s = 0.0;</span>
+<span class="pc bpc" id="L1109" title="1 of 2 branches missed.">            if (w[j] &gt; singularValueThreshold) {</span>
+<span class="fc bfc" id="L1110" title="All 2 branches covered.">                for (int i = 0; i &lt; m; i++) {</span>
+<span class="fc" id="L1111">                    s += u.getElementAt(i, j) * b[i];</span>
+                }
+<span class="fc" id="L1113">                s /= w[j];</span>
+            }
+<span class="fc" id="L1115">            tmp[j] = s;</span>
+        }
+<span class="fc bfc" id="L1117" title="All 2 branches covered.">        for (int j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L1118">            s = 0.0;</span>
+<span class="fc bfc" id="L1119" title="All 2 branches covered.">            for (int jj = 0; jj &lt; n; jj++) {</span>
+<span class="fc" id="L1120">                s += v.getElementAt(j, jj) * tmp[jj];</span>
+            }
+<span class="fc" id="L1122">            result[j] = s;</span>
+        }
+<span class="fc" id="L1124">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A i s the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * array.
+     * Note: This method can be reused for different b arrays without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b array must have the same length as the number of rows
+     * on provided input matrix A, otherwise a WrongSizeException will be
+     * raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     * Note: this method performs same actions as double[] solve(double[],
+     * double) except that singular value threshold is automatically computed by
+     * taking into account input matrix size, maximal singular value and machine
+     * precision.
+     * This threshold is good enough for most situations, and hence we discourage
+     * setting it manually.
+     *
+     * @param b      Parameters array that determines a linear system of equations.
+     *               Provided array must have the same length as number of rows on provided
+     *               input matrix for Singular Value decomposition.
+     * @param result Vector where least squares solution of linear system of
+     *               equations for provided parameters array b will be stored.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing SingularValue decomposition.
+     *                                  To avoid this exception call decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided parameters array
+     *                                  (b) does not have the same length as number of rows on input matrix being
+     *                                  Singular Value decomposed or if provided result array does not have the
+     *                                  same length as the number of columns on input matrix.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is lower than minimum allowed value (MIN_THRESH).
+     * @see #decompose()
+     */
+    public void solve(final double[] b, final double[] result) throws NotAvailableException,
+            WrongSizeException {
+<span class="fc" id="L1165">        solve(b, getNegligibleSingularValueThreshold(), result);</span>
+<span class="fc" id="L1166">    }</span>
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A i s the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * array.
+     * Note: This method can be reused for different b arrays without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b array must have the same length as the number of rows
+     * on provided input matrix A, otherwise a WrongSizeException will be
+     * raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     *
+     * @param b                      Parameters array that determines a linear system of equations.
+     *                               Provided array must have the same length as number of rows on provided
+     *                               input matrix for Singular Value decomposition.
+     * @param singularValueThreshold Threshold used to determine whether a
+     *                               singular value is negligible or not.
+     * @return Vector containing least squares solution of linear system of
+     * equations for provided parameters array b.
+     * @throws NotAvailableException    Exception thrown if attempting to call this
+     *                                  method before computing SingularValue decomposition.
+     *                                  To avoid this exception call decompose() method first.
+     * @throws WrongSizeException       Exception thrown if provided parameters array
+     *                                  (b) does not have the same length as number of rows on input matrix being
+     *                                  Singular Value decomposed.
+     * @throws IllegalArgumentException Exception thrown if provided singular
+     *                                  value threshold is lower than minimum allowed value (MIN_THRESH).
+     * @see #decompose()
+     */
+    public double[] solve(final double[] b, final double singularValueThreshold)
+            throws NotAvailableException, WrongSizeException {
+<span class="fc" id="L1202">        final int n = inputMatrix.getColumns();</span>
+
+<span class="fc" id="L1204">        final double[] x = new double[n];</span>
+<span class="fc" id="L1205">        solve(b, singularValueThreshold, x);</span>
+<span class="fc" id="L1206">        return x;</span>
+    }
+
+    /**
+     * Solves a linear system of equations of the following form: A * X = B
+     * using the pseudo-inverse to find a least squares solution.
+     * Where A i s the input matrix provided for Singular Value decomposition,
+     * X is the solution to the system of equations, and B is the parameters
+     * array.
+     * Note: This method can be reused for different b arrays without having
+     * to recompute Singular Value decomposition on the same input matrix.
+     * Note: Provided b array must have the same length as the number of rows
+     * on provided input matrix A, otherwise a WrongSizeException will be
+     * raised.
+     * Note: In order to execute this method, a Singular Value decomposition
+     * must be available, otherwise a NotAvailableException will be raised. In
+     * order to avoid this exception call decompose() method first.
+     * Note: this method performs same actions as double[] solve(double[],
+     * double) except that singular value threshold is automatically computed by
+     * taking into account input matrix size, maximal singular value and machine
+     * precision.
+     * This threshold is good enough for most situations, and hence we discourage
+     * setting it manually.
+     *
+     * @param b Parameters array that determines a linear system of equations.
+     *          Provided array must have the same length as number of rows on provided
+     *          input matrix for Singular Value decomposition.
+     * @return Vector containing least squares solution of linear system of
+     * equations for provided parameters array b.
+     * @throws NotAvailableException Exception thrown if attempting to call this
+     *                               method before computing SingularValue decomposition.
+     *                               To avoid this exception call decompose() method first.
+     * @throws WrongSizeException    Exception thrown if provided parameters array
+     *                               (b) does not have the same length as number of rows on input matrix being
+     *                               Singular Value decomposed.
+     * @see #decompose()
+     */
+    public double[] solve(final double[] b) throws NotAvailableException,
+            WrongSizeException {
+<span class="fc" id="L1245">        return solve(b, getNegligibleSingularValueThreshold());</span>
+    }
+
+    /**
+     * This method is called internally by decompose(), and actually computes
+     * Singular Value Decomposition.
+     * However, algorithm implemented in this algorithm does not ensure that
+     * singular values are ordered from maximal to minimal, and hence reorder()
+     * method is called next within decompose() as well.
+     *
+     * @throws NoConvergenceException Exception thrown if singular value
+     *                                estimation does not converge within provided number of maximum
+     *                                iterations.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    private void internalDecompose() throws NoConvergenceException {
+<span class="fc" id="L1261">        final int m = inputMatrix.getRows();</span>
+<span class="fc" id="L1262">        final int n = inputMatrix.getColumns();</span>
+
+        boolean flag;
+        int i;
+        int its;
+        int j;
+        int jj;
+        int k;
+<span class="fc" id="L1270">        int l = 0;</span>
+<span class="fc" id="L1271">        int nm = 0;</span>
+        double anorm;
+        double c;
+        double f;
+        double g;
+        double h;
+        double s;
+        double scale;
+        double x;
+        double y;
+        double z;
+<span class="fc" id="L1282">        double[] rv1 = new double[n];</span>
+
+        // Householder reduction to bi-diagonal form
+<span class="fc" id="L1285">        g = scale = anorm = 0.0;</span>
+<span class="fc bfc" id="L1286" title="All 2 branches covered.">        for (i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L1287">            l = i + 2;</span>
+<span class="fc" id="L1288">            rv1[i] = scale * g;</span>
+<span class="fc" id="L1289">            g = s = scale = 0.0;</span>
+<span class="fc bfc" id="L1290" title="All 2 branches covered.">            if (i &lt; m) {</span>
+<span class="fc bfc" id="L1291" title="All 2 branches covered.">                for (k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1292">                    scale += Math.abs(u.getElementAt(k, i));</span>
+                }
+<span class="pc bpc" id="L1294" title="1 of 2 branches missed.">                if (scale != 0.0) {</span>
+<span class="fc bfc" id="L1295" title="All 2 branches covered.">                    for (k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1296">                        u.setElementAt(k, i, u.getElementAt(k, i) / scale);</span>
+<span class="fc" id="L1297">                        s += Math.pow(u.getElementAt(k, i), 2.0);</span>
+                    }
+<span class="fc" id="L1299">                    f = u.getElementAt(i, i);</span>
+<span class="fc" id="L1300">                    g = -sign(Math.sqrt(s), f);</span>
+<span class="fc" id="L1301">                    h = f * g - s;</span>
+<span class="fc" id="L1302">                    u.setElementAt(i, i, f - g);</span>
+<span class="fc bfc" id="L1303" title="All 2 branches covered.">                    for (j = l - 1; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L1304" title="All 2 branches covered.">                        for (s = 0.0, k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1305">                            s += u.getElementAt(k, i) * u.getElementAt(k, j);</span>
+                        }
+<span class="fc" id="L1307">                        f = s / h;</span>
+<span class="fc bfc" id="L1308" title="All 2 branches covered.">                        for (k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1309">                            u.setElementAt(k, j, u.getElementAt(k, j) +</span>
+<span class="fc" id="L1310">                                    f * u.getElementAt(k, i));</span>
+                        }
+                    }
+<span class="fc bfc" id="L1313" title="All 2 branches covered.">                    for (k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1314">                        u.setElementAt(k, i, u.getElementAt(k, i) * scale);</span>
+                    }
+                }
+            }
+<span class="fc" id="L1318">            w[i] = scale * g;</span>
+<span class="fc" id="L1319">            g = s = scale = 0.0;</span>
+<span class="fc bfc" id="L1320" title="All 4 branches covered.">            if (i + 1 &lt;= m &amp;&amp; i + 1 != n) {</span>
+<span class="fc bfc" id="L1321" title="All 2 branches covered.">                for (k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1322">                    scale += Math.abs(u.getElementAt(i, k));</span>
+                }
+<span class="pc bpc" id="L1324" title="1 of 2 branches missed.">                if (scale != 0.0) {</span>
+<span class="fc bfc" id="L1325" title="All 2 branches covered.">                    for (k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1326">                        u.setElementAt(i, k, u.getElementAt(i, k) / scale);</span>
+<span class="fc" id="L1327">                        s += Math.pow(u.getElementAt(i, k), 2.0);</span>
+                    }
+<span class="fc" id="L1329">                    f = u.getElementAt(i, l - 1);</span>
+<span class="fc" id="L1330">                    g = -sign(Math.sqrt(s), f);</span>
+<span class="fc" id="L1331">                    h = f * g - s;</span>
+<span class="fc" id="L1332">                    u.setElementAt(i, l - 1, f - g);</span>
+<span class="fc bfc" id="L1333" title="All 2 branches covered.">                    for (k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1334">                        rv1[k] = u.getElementAt(i, k) / h;</span>
+                    }
+<span class="fc bfc" id="L1336" title="All 2 branches covered.">                    for (j = l - 1; j &lt; m; j++) {</span>
+<span class="fc bfc" id="L1337" title="All 2 branches covered.">                        for (s = 0.0, k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1338">                            s += u.getElementAt(j, k) * u.getElementAt(i, k);</span>
+                        }
+<span class="fc bfc" id="L1340" title="All 2 branches covered.">                        for (k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1341">                            u.setElementAt(j, k,</span>
+<span class="fc" id="L1342">                                    u.getElementAt(j, k) + s * rv1[k]);</span>
+                        }
+                    }
+<span class="fc bfc" id="L1345" title="All 2 branches covered.">                    for (k = l - 1; k &lt; n; k++) {</span>
+<span class="fc" id="L1346">                        u.setElementAt(i, k, u.getElementAt(i, k) * scale);</span>
+                    }
+                }
+            }
+<span class="fc" id="L1350">            anorm = Math.max(anorm, Math.abs(w[i]) + Math.abs(rv1[i]));</span>
+        }
+
+        // Accumulation of right-hand transformations
+<span class="fc bfc" id="L1354" title="All 2 branches covered.">        for (i = n - 1; i &gt;= 0; i--) {</span>
+<span class="fc bfc" id="L1355" title="All 2 branches covered.">            if (i &lt; (n - 1)) {</span>
+<span class="fc bfc" id="L1356" title="All 2 branches covered.">                if (g != 0.0) {</span>
+                    // Double division to avoid possible underflow.
+<span class="fc bfc" id="L1358" title="All 2 branches covered.">                    for (j = l; j &lt; n; j++) {</span>
+<span class="fc" id="L1359">                        v.setElementAt(j, i, u.getElementAt(i, j) /</span>
+<span class="fc" id="L1360">                                u.getElementAt(i, l) / g);</span>
+                    }
+<span class="fc bfc" id="L1362" title="All 2 branches covered.">                    for (j = l; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L1363" title="All 2 branches covered.">                        for (s = 0.0, k = l; k &lt; n; k++) {</span>
+<span class="fc" id="L1364">                            s += u.getElementAt(i, k) * v.getElementAt(k, j);</span>
+                        }
+<span class="fc bfc" id="L1366" title="All 2 branches covered.">                        for (k = l; k &lt; n; k++) {</span>
+<span class="fc" id="L1367">                            v.setElementAt(k, j, v.getElementAt(k, j) +</span>
+<span class="fc" id="L1368">                                    s * v.getElementAt(k, i));</span>
+                        }
+                    }
+                }
+<span class="fc bfc" id="L1372" title="All 2 branches covered.">                for (j = l; j &lt; n; j++) {</span>
+<span class="fc" id="L1373">                    v.setElementAt(i, j, 0.0);</span>
+<span class="fc" id="L1374">                    v.setElementAt(j, i, 0.0);</span>
+                }
+            }
+<span class="fc" id="L1377">            v.setElementAt(i, i, 1.0);</span>
+<span class="fc" id="L1378">            g = rv1[i];</span>
+<span class="fc" id="L1379">            l = i;</span>
+        }
+
+        // Accumulation of left-hand transformations
+<span class="fc bfc" id="L1383" title="All 2 branches covered.">        for (i = Math.min(m, n) - 1; i &gt;= 0; i--) {</span>
+<span class="fc" id="L1384">            l = i + 1;</span>
+<span class="fc" id="L1385">            g = w[i];</span>
+<span class="fc bfc" id="L1386" title="All 2 branches covered.">            for (j = l; j &lt; n; j++) {</span>
+<span class="fc" id="L1387">                u.setElementAt(i, j, 0.0);</span>
+            }
+<span class="pc bpc" id="L1389" title="1 of 2 branches missed.">            if (g != 0.0) {</span>
+<span class="fc" id="L1390">                g = 1.0 / g;</span>
+<span class="fc bfc" id="L1391" title="All 2 branches covered.">                for (j = l; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L1392" title="All 2 branches covered.">                    for (s = 0.0, k = l; k &lt; m; k++) {</span>
+<span class="fc" id="L1393">                        s += u.getElementAt(k, i) * u.getElementAt(k, j);</span>
+                    }
+<span class="fc" id="L1395">                    f = (s / u.getElementAt(i, i)) * g;</span>
+<span class="fc bfc" id="L1396" title="All 2 branches covered.">                    for (k = i; k &lt; m; k++) {</span>
+<span class="fc" id="L1397">                        u.setElementAt(k, j, u.getElementAt(k, j) +</span>
+<span class="fc" id="L1398">                                f * u.getElementAt(k, i));</span>
+                    }
+                }
+<span class="fc bfc" id="L1401" title="All 2 branches covered.">                for (j = i; j &lt; m; j++) {</span>
+<span class="fc" id="L1402">                    u.setElementAt(j, i, u.getElementAt(j, i) * g);</span>
+                }
+            } else {
+<span class="nc bnc" id="L1405" title="All 2 branches missed.">                for (j = i; j &lt; m; j++) {</span>
+<span class="nc" id="L1406">                    u.setElementAt(j, i, 0.0);</span>
+                }
+            }
+<span class="fc" id="L1409">            u.setElementAt(i, i, u.getElementAt(i, i) + 1.0);</span>
+        }
+
+        // Diagonalization of the bi-diagonal form: Loop over singular values and
+        // over allowed iterations.
+<span class="fc bfc" id="L1414" title="All 2 branches covered.">        for (k = n - 1; k &gt;= 0; k--) {</span>
+<span class="pc bpc" id="L1415" title="1 of 2 branches missed.">            for (its = 0; its &lt; maxIters; its++) {</span>
+<span class="fc" id="L1416">                flag = true;</span>
+                // Test for splitting
+                // Note that rrv1[0] is always zero
+<span class="pc bpc" id="L1419" title="1 of 2 branches missed.">                for (l = k; l &gt;= 0; l--) {</span>
+<span class="fc" id="L1420">                    nm = l - 1;</span>
+<span class="fc bfc" id="L1421" title="All 4 branches covered.">                    if (l == 0 || Math.abs(rv1[l]) &lt;= eps * anorm) {</span>
+<span class="fc" id="L1422">                        flag = false;</span>
+                    }
+
+<span class="fc bfc" id="L1425" title="All 4 branches covered.">                    if (!flag || Math.abs(w[nm]) &lt;= eps * anorm) {</span>
+<span class="fc" id="L1426">                        break;</span>
+                    }
+                }
+                // Cancellation of rv1[0] if l &gt; 1
+<span class="fc bfc" id="L1430" title="All 2 branches covered.">                if (flag) {</span>
+<span class="fc" id="L1431">                    c = 0.0;</span>
+<span class="fc" id="L1432">                    s = 1.0;</span>
+<span class="fc bfc" id="L1433" title="All 2 branches covered.">                    for (i = l; i &lt; k + 1; i++) {</span>
+<span class="fc" id="L1434">                        f = s * rv1[i];</span>
+<span class="fc" id="L1435">                        rv1[i] = c * rv1[i];</span>
+<span class="pc bpc" id="L1436" title="1 of 2 branches missed.">                        if (Math.abs(f) &lt;= eps * anorm) {</span>
+<span class="nc" id="L1437">                            break;</span>
+                        }
+<span class="fc" id="L1439">                        g = w[i];</span>
+<span class="fc" id="L1440">                        h = pythag(f, g);</span>
+<span class="fc" id="L1441">                        w[i] = h;</span>
+<span class="pc bpc" id="L1442" title="1 of 2 branches missed.">                        if (h != 0.0) {</span>
+<span class="fc" id="L1443">                            h = 1.0 / h;</span>
+                        } else {
+<span class="nc" id="L1445">                            h = Double.MAX_VALUE;</span>
+                        }
+<span class="fc" id="L1447">                        c = g * h;</span>
+<span class="fc" id="L1448">                        s = -f * h;</span>
+<span class="fc bfc" id="L1449" title="All 2 branches covered.">                        for (j = 0; j &lt; m; j++) {</span>
+<span class="fc" id="L1450">                            y = u.getElementAt(j, nm);</span>
+<span class="fc" id="L1451">                            z = u.getElementAt(j, i);</span>
+<span class="fc" id="L1452">                            u.setElementAt(j, nm, y * c + z * s);</span>
+<span class="fc" id="L1453">                            u.setElementAt(j, i, z * c - y * s);</span>
+                        }
+                    }
+                }
+<span class="fc" id="L1457">                z = w[k];</span>
+                // Convergence.
+<span class="fc bfc" id="L1459" title="All 2 branches covered.">                if (l == k) {</span>
+                    // Singular value is made non-negative
+<span class="fc bfc" id="L1461" title="All 2 branches covered.">                    if (z &lt; 0.0) {</span>
+<span class="fc" id="L1462">                        w[k] = -z;</span>
+<span class="fc bfc" id="L1463" title="All 2 branches covered.">                        for (j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L1464">                            v.setElementAt(j, k, -v.getElementAt(j, k));</span>
+                        }
+                    }
+                    break;
+                }
+<span class="pc bpc" id="L1469" title="1 of 2 branches missed.">                if (its == maxIters - 1) {</span>
+<span class="nc" id="L1470">                    throw new NoConvergenceException();</span>
+                }
+
+                // Shift from bottom 2-by-2 minor.
+<span class="fc" id="L1474">                x = w[l];</span>
+<span class="fc" id="L1475">                nm = k - 1;</span>
+<span class="fc" id="L1476">                y = w[nm];</span>
+<span class="fc" id="L1477">                g = rv1[nm];</span>
+<span class="fc" id="L1478">                h = rv1[k];</span>
+<span class="fc" id="L1479">                f = ((y - z) * (y + z) + (g - h) * (g + h)) / (2.0 * h * y);</span>
+<span class="fc" id="L1480">                g = pythag(f, 1.0);</span>
+<span class="fc" id="L1481">                f = ((x - z) * (x + z) + h * ((y / (f + sign(g, f))) - h)) / x;</span>
+<span class="fc" id="L1482">                c = s = 1.0;</span>
+                // Next QR transformation
+<span class="fc bfc" id="L1484" title="All 2 branches covered.">                for (j = l; j &lt;= nm; j++) {</span>
+<span class="fc" id="L1485">                    i = j + 1;</span>
+<span class="fc" id="L1486">                    g = rv1[i];</span>
+<span class="fc" id="L1487">                    y = w[i];</span>
+<span class="fc" id="L1488">                    h = s * g;</span>
+<span class="fc" id="L1489">                    g = c * g;</span>
+<span class="fc" id="L1490">                    z = pythag(f, h);</span>
+<span class="fc" id="L1491">                    rv1[j] = z;</span>
+<span class="pc bpc" id="L1492" title="1 of 2 branches missed.">                    if (z != 0.0) {</span>
+<span class="fc" id="L1493">                        c = f / z;</span>
+<span class="fc" id="L1494">                        s = h / z;</span>
+                    } else {
+<span class="nc" id="L1496">                        c = Math.signum(f) * Double.MAX_VALUE;</span>
+<span class="nc" id="L1497">                        s = Math.signum(h) * Double.MAX_VALUE;</span>
+                    }
+<span class="fc" id="L1499">                    f = x * c + g * s;</span>
+<span class="fc" id="L1500">                    g = g * c - x * s;</span>
+<span class="fc" id="L1501">                    h = y * s;</span>
+<span class="fc" id="L1502">                    y *= c;</span>
+<span class="fc bfc" id="L1503" title="All 2 branches covered.">                    for (jj = 0; jj &lt; n; jj++) {</span>
+<span class="fc" id="L1504">                        x = v.getElementAt(jj, j);</span>
+<span class="fc" id="L1505">                        z = v.getElementAt(jj, i);</span>
+<span class="fc" id="L1506">                        v.setElementAt(jj, j, x * c + z * s);</span>
+<span class="fc" id="L1507">                        v.setElementAt(jj, i, z * c - x * s);</span>
+                    }
+<span class="fc" id="L1509">                    z = pythag(f, h);</span>
+                    // Rotation can be arbitrary if z = 0
+<span class="fc" id="L1511">                    w[j] = z;</span>
+<span class="pc bpc" id="L1512" title="1 of 2 branches missed.">                    if (z != 0.0) {</span>
+<span class="fc" id="L1513">                        z = 1.0 / z;</span>
+<span class="fc" id="L1514">                        c = f * z;</span>
+<span class="fc" id="L1515">                        s = h * z;</span>
+                    }
+<span class="fc" id="L1517">                    f = c * g + s * y;</span>
+<span class="fc" id="L1518">                    x = c * y - s * g;</span>
+<span class="fc bfc" id="L1519" title="All 2 branches covered.">                    for (jj = 0; jj &lt; m; jj++) {</span>
+<span class="fc" id="L1520">                        y = u.getElementAt(jj, j);</span>
+<span class="fc" id="L1521">                        z = u.getElementAt(jj, i);</span>
+<span class="fc" id="L1522">                        u.setElementAt(jj, j, y * c + z * s);</span>
+<span class="fc" id="L1523">                        u.setElementAt(jj, i, z * c - y * s);</span>
+                    }
+                }
+<span class="fc" id="L1526">                rv1[l] = 0.0;</span>
+<span class="fc" id="L1527">                rv1[k] = f;</span>
+<span class="fc" id="L1528">                w[k] = x;</span>
+            }
+        }
+<span class="fc" id="L1531">    }</span>
+
+    /**
+     * Reorders singular values from maximal to minimal, and also reorders
+     * columns and rows of U and V to ensure that Singular Value Decomposition
+     * still remains valid.
+     */
+    private void reorder() {
+<span class="fc" id="L1539">        final int m = inputMatrix.getRows();</span>
+<span class="fc" id="L1540">        final int n = inputMatrix.getColumns();</span>
+
+        int i;
+        int j;
+        int k;
+        int s;
+<span class="fc" id="L1546">        int inc = 1;</span>
+        double sw;
+<span class="fc" id="L1548">        final double[] su = new double[m];</span>
+<span class="fc" id="L1549">        final double[] sv = new double[n];</span>
+
+        do {
+<span class="fc" id="L1552">            inc *= 3;</span>
+<span class="fc" id="L1553">            inc++;</span>
+<span class="fc bfc" id="L1554" title="All 2 branches covered.">        } while (inc &lt;= n);</span>
+        do {
+<span class="fc" id="L1556">            inc /= 3;</span>
+<span class="fc bfc" id="L1557" title="All 2 branches covered.">            for (i = inc; i &lt; n; i++) {</span>
+<span class="fc" id="L1558">                sw = w[i];</span>
+<span class="fc bfc" id="L1559" title="All 2 branches covered.">                for (k = 0; k &lt; m; k++) {</span>
+<span class="fc" id="L1560">                    su[k] = u.getElementAt(k, i);</span>
+                }
+<span class="fc bfc" id="L1562" title="All 2 branches covered.">                for (k = 0; k &lt; n; k++) {</span>
+<span class="fc" id="L1563">                    sv[k] = v.getElementAt(k, i);</span>
+                }
+<span class="fc" id="L1565">                j = i;</span>
+<span class="fc bfc" id="L1566" title="All 2 branches covered.">                while (w[j - inc] &lt; sw) {</span>
+<span class="fc" id="L1567">                    w[j] = w[j - inc];</span>
+<span class="fc bfc" id="L1568" title="All 2 branches covered.">                    for (k = 0; k &lt; m; k++) {</span>
+<span class="fc" id="L1569">                        u.setElementAt(k, j, u.getElementAt(k, j - inc));</span>
+                    }
+<span class="fc bfc" id="L1571" title="All 2 branches covered.">                    for (k = 0; k &lt; n; k++) {</span>
+<span class="fc" id="L1572">                        v.setElementAt(k, j, v.getElementAt(k, j - inc));</span>
+                    }
+<span class="fc" id="L1574">                    j -= inc;</span>
+<span class="fc bfc" id="L1575" title="All 2 branches covered.">                    if (j &lt; inc) {</span>
+<span class="fc" id="L1576">                        break;</span>
+                    }
+                }
+<span class="fc" id="L1579">                w[j] = sw;</span>
+<span class="fc bfc" id="L1580" title="All 2 branches covered.">                for (k = 0; k &lt; m; k++) {</span>
+<span class="fc" id="L1581">                    u.setElementAt(k, j, su[k]);</span>
+                }
+<span class="fc bfc" id="L1583" title="All 2 branches covered.">                for (k = 0; k &lt; n; k++) {</span>
+<span class="fc" id="L1584">                    v.setElementAt(k, j, sv[k]);</span>
+                }
+            }
+<span class="fc bfc" id="L1587" title="All 2 branches covered.">        } while (inc &gt; 1);</span>
+
+<span class="fc bfc" id="L1589" title="All 2 branches covered.">        for (k = 0; k &lt; n; k++) {</span>
+<span class="fc" id="L1590">            s = 0;</span>
+<span class="fc bfc" id="L1591" title="All 2 branches covered.">            for (i = 0; i &lt; m; i++) {</span>
+<span class="fc bfc" id="L1592" title="All 2 branches covered.">                if (u.getElementAt(i, k) &lt; 0.0) {</span>
+<span class="fc" id="L1593">                    s++;</span>
+                }
+            }
+<span class="fc bfc" id="L1596" title="All 2 branches covered.">            for (j = 0; j &lt; n; j++) {</span>
+<span class="fc bfc" id="L1597" title="All 2 branches covered.">                if (v.getElementAt(j, k) &lt; 0.0) {</span>
+<span class="fc" id="L1598">                    s++;</span>
+                }
+            }
+<span class="fc bfc" id="L1601" title="All 2 branches covered.">            if (s &gt; (m + n) / 2) {</span>
+<span class="fc bfc" id="L1602" title="All 2 branches covered.">                for (i = 0; i &lt; m; i++) {</span>
+<span class="fc" id="L1603">                    u.setElementAt(i, k, -u.getElementAt(i, k));</span>
+                }
+<span class="fc bfc" id="L1605" title="All 2 branches covered.">                for (j = 0; j &lt; n; j++) {</span>
+<span class="fc" id="L1606">                    v.setElementAt(j, k, -v.getElementAt(j, k));</span>
+                }
+            }
+        }
+<span class="fc" id="L1610">    }</span>
+
+    /**
+     * Sets threshold to be used to determine whether a singular value is
+     * negligible or not.
+     * This threshold can be used to consider a singular value as zero or not,
+     * since small singular values might appear in places where they should be
+     * zero because of rounding errors and machine precision.
+     * Singular values considered as zero determine aspects such as rank,
+     * nullability, null-space or range space.
+     *
+     * @param threshold Threshold to be used to determine whether a singular
+     *                  value is negligible or not.
+     */
+    private void setNegligibleSingularValueThreshold(final double threshold) {
+<span class="fc" id="L1625">        tsh = threshold;</span>
+<span class="fc" id="L1626">    }</span>
+
+    /**
+     * Computes norm of a vector of 2 components 'a' and 'b' as
+     * sqrt(pow(a, 2.0)  + pow(b, 2.0)) without destructive underflow or
+     * overflow, that is when a or b are close to maximum or minimum values
+     * allowed by machine precision, computing the previous expression might
+     * lead to highly inaccurate results.
+     * This method implements previous expression to avoid this effect as
+     * much as possible and increase accuracy.
+     *
+     * @param a 1st value
+     * @param b 2nd value
+     * @return Norm of (a, b).
+     */
+    private double pythag(final double a, final double b) {
+<span class="fc" id="L1642">        final double absa = Math.abs(a);</span>
+<span class="fc" id="L1643">        final double absb = Math.abs(b);</span>
+
+<span class="fc bfc" id="L1645" title="All 2 branches covered.">        if (absa &gt; absb) {</span>
+<span class="fc" id="L1646">            return absa * Math.sqrt(1.0 + (absb / absa) * (absb / absa));</span>
+        } else {
+<span class="pc bpc" id="L1648" title="1 of 2 branches missed.">            return (absb == 0.0 ?</span>
+<span class="pc" id="L1649">                    0.0 : absb * Math.sqrt(1.0 + (absa / absb) * (absa / absb)));</span>
+        }
+    }
+
+    /**
+     * Returns a or -a depending on b sign. If b is positive, this method
+     * returns a, otherwise it returns -a
+     *
+     * @param a 1st value
+     * @param b 2nd value
+     * @return a or -a depending on b sign.
+     */
+    private double sign(final double a, final double b) {
+<span class="fc bfc" id="L1662" title="All 2 branches covered.">        if (b &gt;= 0.0) {</span>
+<span class="pc bpc" id="L1663" title="1 of 2 branches missed.">            return a &gt;= 0.0 ? a : -a;</span>
+        } else {
+<span class="pc bpc" id="L1665" title="1 of 2 branches missed.">            return a &gt;= 0.0 ? -a : a;</span>
+        }
+    }
+
+    /**
+     * Internal method to copy range space vector values into provided matrix.
+     * Provided matrix will be resized if needed
+     *
+     * @param rank                   Rank of range space
+     * @param singularValueThreshold Threshold to determine whether a singular
+     *                               value is null
+     * @param range                  Matrix where range space vector values are stored.
+     */
+    private void internalGetRange(final int rank, final double singularValueThreshold,
+                                  final Matrix range) {
+<span class="fc" id="L1680">        final int rows = inputMatrix.getRows();</span>
+<span class="fc" id="L1681">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="pc bpc" id="L1683" title="1 of 4 branches missed.">        if (range.getRows() != rows || range.getColumns() != rank) {</span>
+            try {
+<span class="fc" id="L1685">                range.resize(rows, rank);</span>
+<span class="nc" id="L1686">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L1688">            }</span>
+        }
+
+<span class="fc" id="L1691">        int nr = 0;</span>
+<span class="fc bfc" id="L1692" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L1693" title="All 2 branches covered.">            if (w[j] &gt; singularValueThreshold) {</span>
+                // copy column j of U matrix into column nr of out matrix
+<span class="fc" id="L1695">                range.setSubmatrix(0, nr, rows - 1, nr, u, 0, j, rows - 1, j);</span>
+<span class="fc" id="L1696">                nr++;</span>
+            }
+        }
+<span class="fc" id="L1699">    }</span>
+
+    /**
+     * Internal method to copy null-space vector values into provided matrix.
+     * Provided matrix will be resized if needed
+     *
+     * @param nullity                Nullity of null-space
+     * @param singularValueThreshold Threshold to determine whether a singular
+     *                               value is null
+     * @param nullspace              Matrix where null-space vector values are stored.
+     */
+    private void internalGetNullspace(final int nullity, final double singularValueThreshold,
+                                      final Matrix nullspace) {
+<span class="fc" id="L1712">        final int columns = inputMatrix.getColumns();</span>
+
+<span class="pc bpc" id="L1714" title="1 of 4 branches missed.">        if (nullspace.getRows() != columns || nullspace.getColumns() != nullity) {</span>
+            try {
+<span class="fc" id="L1716">                nullspace.resize(columns, nullity);</span>
+<span class="nc" id="L1717">            } catch (final WrongSizeException ignore) {</span>
+                // never happens
+<span class="fc" id="L1719">            }</span>
+        }
+
+<span class="fc" id="L1722">        int nn = 0;</span>
+<span class="fc bfc" id="L1723" title="All 2 branches covered.">        for (int j = 0; j &lt; columns; j++) {</span>
+<span class="fc bfc" id="L1724" title="All 2 branches covered.">            if (w[j] &lt;= singularValueThreshold) {</span>
+                // copy column j of U matrix into column nn of out matrix
+<span class="fc" id="L1726">                nullspace.setSubmatrix(0, nn, columns - 1, nn, v, 0, j,</span>
+                        columns - 1, j);
+<span class="fc" id="L1728">                nn++;</span>
+            }
+        }
+<span class="fc" id="L1731">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
